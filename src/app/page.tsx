@@ -28,12 +28,12 @@ export default function HomePage() {
         </div>
 
         <div className="mt-14">
-          <SectionHead title="Что выбрать" />
+          <SectionHead title="Какой вариант ваш" />
           <ChoiceHint
             stayTitle={categoryOf("simple").hint.title}
-            stayText="Вы продаёте одну услугу или небольшой набор, нужно рассказать о себе и получать заявки. Цены и тексты меняются редко — хватит простого сайта."
+            stayText={categoryOf("simple").hint.stay}
             leaveTitle={categoryOf("middle").hint.title}
-            leaveText="Каталог живёт, цены меняются, нужно править содержимое самому, вести блог и сводить заявки в CRM — это средний функционал."
+            leaveText={categoryOf("middle").hint.stay}
           />
         </div>
 
