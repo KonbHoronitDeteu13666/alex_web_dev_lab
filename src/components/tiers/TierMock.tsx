@@ -8,7 +8,7 @@ export default function TierMock({ rows }: { rows: MockRow[] }) {
   return (
     <div
       aria-hidden
-      className="grid aspect-[4/5] content-start gap-[5px] rounded-lg border border-line bg-bg p-2"
+      className="grid aspect-[4/5] content-start gap-[5px] rounded-lg border border-line bg-bg/50 p-2"
     >
       {rows.map((row, i) => {
         if (row.kind === "bar") {

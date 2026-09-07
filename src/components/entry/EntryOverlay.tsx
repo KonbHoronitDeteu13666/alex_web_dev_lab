@@ -99,12 +99,9 @@ export default function EntryOverlay() {
       </video>
 
       {phase === "start" && (
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-[radial-gradient(60%_45%_at_50%_62%,rgba(5,7,12,0.72),transparent_75%)]" />
-          <div className="absolute bottom-[12%] left-1/2 grid -translate-x-1/2 justify-items-center gap-4 text-center">
-            <p className="font-mono text-[11px] tracking-[0.24em] text-teal uppercase">
-              {site.brand} · нейролинк готов
-            </p>
+        <div className="absolute inset-0 grid place-items-center">
+          <div className="absolute inset-0 bg-[radial-gradient(55%_45%_at_50%_50%,rgba(5,7,12,0.78),transparent_78%)]" />
+          <div className="relative">
             <EnterButton onClick={enter} />
           </div>
         </div>

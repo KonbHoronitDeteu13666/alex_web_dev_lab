@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Unbounded, Manrope, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import RoomBackdrop from "@/components/layout/RoomBackdrop";
 import { site } from "@/data/site";
 
 const unbounded = Unbounded({
@@ -44,7 +45,10 @@ export default function RootLayout({
       lang="ru"
       className={`${unbounded.variable} ${manrope.variable} ${jetbrains.variable}`}
     >
-      <body className="bg-bg text-ink">{children}</body>
+      <body className="text-ink">
+        <RoomBackdrop />
+        {children}
+      </body>
     </html>
   );
 }
