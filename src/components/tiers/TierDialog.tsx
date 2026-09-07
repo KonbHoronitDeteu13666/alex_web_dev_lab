@@ -62,6 +62,8 @@ export default function TierDialog({
       }}
       className="hud-panel m-auto w-[min(1120px,94vw)] max-w-none rounded-2xl p-0 text-ink backdrop:bg-black/75 backdrop:backdrop-blur-sm"
     >
+      {/* Прокрутки внутри окна быть не должно: содержимое подогнано так,
+          чтобы помещаться целиком. На узких экранах окно просто выше. */}
       <div className="grid max-h-[88vh] grid-rows-[auto_1fr] overflow-hidden">
         {/* шапка окна */}
         <div className="flex items-center gap-4 border-b border-line/70 px-6 py-4 md:px-8">
@@ -84,10 +86,10 @@ export default function TierDialog({
           </button>
         </div>
 
-        <div className="grid gap-6 overflow-y-auto p-6 md:grid-cols-[minmax(0,46%)_1fr] md:gap-8 md:p-8">
+        <div className="grid gap-5 overflow-hidden p-5 md:grid-cols-[minmax(0,42%)_1fr] md:gap-7 md:p-7">
           {/* ---------- слева: живой макет ---------- */}
           <div className="grid content-start gap-3">
-            <div className="relative aspect-[4/3] w-full">
+            <div className="relative aspect-[4/3] w-full max-h-[46vh]">
               <DemoScene key={kind} kind={kind} />
             </div>
 
@@ -113,26 +115,21 @@ export default function TierDialog({
           </div>
 
           {/* ---------- справа: развёрнутое описание ---------- */}
-          <div className="grid content-start gap-6">
-            <div>
-              <div className="flex flex-wrap items-baseline gap-3">
+          <div className="grid content-start gap-5">
+            <div className="flex flex-wrap items-baseline gap-3">
                 {PROMO_ON && (
                   <span className="font-mono text-sm text-strike line-through">
                     {formatPrice(tier.basePrice)}
                   </span>
                 )}
-                <span className="price-glow font-display text-3xl font-bold text-yellow tabular-nums md:text-4xl">
-                  {formatPrice(now)}
-                </span>
-              </div>
-              <p className="mt-3 text-[15px] leading-relaxed text-dim">
-                {tier.gist}
-              </p>
+              <span className="price-glow font-display text-3xl font-bold text-yellow tabular-nums md:text-4xl">
+                {formatPrice(now)}
+              </span>
             </div>
 
-            <div className="grid gap-3">
+            <div className="grid gap-2.5">
               {tier.details.map((paragraph) => (
-                <p key={paragraph} className="text-[15px] leading-relaxed">
+                <p key={paragraph} className="text-[14px] leading-relaxed">
                   {paragraph}
                 </p>
               ))}
@@ -142,20 +139,20 @@ export default function TierDialog({
               <p className="font-mono text-[10px] tracking-[0.22em] text-teal/70 uppercase">
                 что входит
               </p>
-              <ul className="mt-3 grid gap-2">
+              <ul className="mt-2.5 grid gap-1.5 sm:grid-cols-2">
                 {tier.includes.map((item) => (
                   <li
                     key={item}
-                    className="relative pl-[18px] text-sm text-dim"
+                    className="relative pl-[16px] text-[13px] leading-snug text-dim"
                   >
-                    <span className="absolute top-[11px] left-0 h-px w-2 bg-yellow" />
+                    <span className="absolute top-[9px] left-0 h-px w-2 bg-yellow" />
                     {item}
                   </li>
                 ))}
               </ul>
             </div>
 
-            <div className="flex flex-wrap items-center gap-4 border-t border-line/70 pt-5">
+            <div className="flex flex-wrap items-center gap-4 border-t border-line/70 pt-4">
               <a
                 href={site.contact.href}
                 target="_blank"
