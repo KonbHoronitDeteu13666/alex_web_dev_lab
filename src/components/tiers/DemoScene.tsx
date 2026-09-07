@@ -22,6 +22,18 @@ export function sceneCaption(kind: SceneKind) {
   return CAPTIONS[kind];
 }
 
+/** Порядок кирпичей в сцене «одна страница». */
+const BLOCKS: BlockKind[] = [
+  "heading",
+  "text",
+  "grid",
+  "text",
+  "grid",
+  "heading",
+  "text",
+  "grid",
+];
+
 export default function DemoScene({ kind }: { kind: SceneKind }) {
   return (
     <div className="relative h-full w-full overflow-hidden rounded-lg border border-teal/15 bg-bg/70">
@@ -47,7 +59,7 @@ function Scene({ kind }: { kind: SceneKind }) {
       return (
         <div className="h-full overflow-hidden">
           <div className="demo-scroll grid gap-2">
-            {["h", "t", "g", "t", "g", "h", "t", "g"].map((type, i) => (
+            {BLOCKS.map((type, i) => (
               <Block key={i} type={type} />
             ))}
           </div>
@@ -275,9 +287,12 @@ function Scene({ kind }: { kind: SceneKind }) {
   }
 }
 
-function Block({ type }: { type: string }) {
-  if (type === "h") return <span className="h-4 rounded-sm bg-yellow/60" />;
-  if (type === "g")
+/** Кирпичи макета одной страницы: заголовок, строка текста, сетка. */
+type BlockKind = "heading" | "text" | "grid";
+
+function Block({ type }: { type: BlockKind }) {
+  if (type === "heading") return <span className="h-4 rounded-sm bg-yellow/60" />;
+  if (type === "grid")
     return (
       <span className="grid grid-cols-2 gap-2">
         <span className="h-8 rounded-sm bg-line/70" />

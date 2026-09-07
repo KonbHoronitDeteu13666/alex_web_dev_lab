@@ -93,20 +93,6 @@ body {
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-  .enter-halo::after {
-    animation: none;
-  }
-  *,
-  *::before,
-  *::after {
-    transition-duration: 0.01ms !important;
-  }
-}
-
 /* ============================================================
    HUD: стекло, засечки, развёртка. Всё, что делает страницу
    похожей на прибор, а не на тёмный сайт.
@@ -190,29 +176,6 @@ body {
   animation: hud-blink 2.6s steps(1, end) infinite;
 }
 
-/* Дрожание строки, как у плохо синхронизированного дисплея. */
-@keyframes hud-glitch {
-  0%,
-  92%,
-  100% {
-    transform: none;
-    opacity: 1;
-  }
-  93% {
-    transform: translateX(-2px);
-    opacity: 0.75;
-  }
-  95% {
-    transform: translateX(3px) skewX(-1.5deg);
-  }
-  97% {
-    transform: translateX(-1px);
-  }
-}
-.hud-glitch {
-  animation: hud-glitch 5.5s ease-in-out infinite;
-}
-
 /* Появление блока: всплывает из глубины, как проекция на стекле. */
 @keyframes hud-rise {
   from {
@@ -228,14 +191,6 @@ body {
 }
 .hud-rise {
   animation: hud-rise 0.75s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hud-blink,
-  .hud-glitch,
-  .hud-rise {
-    animation: none;
-  }
 }
 
 /* Объём: панель приподнята над фоном, кромка ловит свет сверху,
@@ -554,36 +509,6 @@ body {
   animation: demo-bar 3.8s ease-in-out infinite;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .demo-scroll,
-  .demo-field,
-  .demo-send,
-  .demo-fly,
-  .demo-pop,
-  .demo-layer-slow,
-  .demo-layer-mid,
-  .demo-layer-fast,
-  .demo-tab,
-  .demo-page,
-  .demo-nav,
-  .demo-type,
-  .demo-save,
-  .demo-chip,
-  .demo-filter,
-  .demo-feed,
-  .demo-row,
-  .demo-bar {
-    animation: none;
-  }
-  .demo-page:first-child {
-    opacity: 1;
-    transform: none;
-  }
-  .demo-bar {
-    height: var(--h);
-  }
-}
-
 /* ---------- загрузка на стекле очков ---------- */
 
 @keyframes boot-ring {
@@ -699,18 +624,6 @@ body {
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .boot-ring,
-  .boot-line,
-  .boot-clamp-l,
-  .boot-clamp-r,
-  .boot-wave,
-  .boot-split::before,
-  .boot-split::after {
-    animation: none;
-  }
-}
-
 /* Текст, лежащий прямо на кадре комнаты, без панели под ним.
    Тень отделяет буквы от светлых участков и не глушит сам кадр. */
 @utility on-glass {
@@ -718,4 +631,33 @@ body {
     0 1px 2px rgb(3 5 10 / 0.9),
     0 2px 10px rgb(3 5 10 / 0.75),
     0 0 28px rgb(3 5 10 / 0.5);
+}
+
+/* ============================================================
+   Спокойный режим. Гасим движение одним правилом: список имён
+   анимаций пришлось бы дополнять при каждой новой сцене,
+   и однажды его забыли бы дополнить.
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  /* Сцены, у которых спокойный вид не совпадает с началом анимации:
+     столбики показываем на полную высоту, из стопки страниц оставляем одну. */
+  .demo-bar,
+  .boot-wave {
+    height: var(--h);
+  }
+  .demo-page:not(:first-child) {
+    opacity: 0;
+  }
 }

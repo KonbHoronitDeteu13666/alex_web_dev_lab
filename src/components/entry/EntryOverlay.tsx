@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useRef, useState, useSyncExternalStore } from "react";
-import { site } from "@/data/site";
+import { siteContent } from "@/data/site-content";
 import EnterButton from "./EnterButton";
 import BootScreen from "./BootScreen";
 
@@ -116,13 +116,13 @@ export default function EntryOverlay() {
         muted
         playsInline
         preload="auto"
-        poster={site.scene.poster}
+        poster={siteContent.scene.poster}
         onEnded={() => setPhase("boot")}
         onError={() => setPhase("boot")}
         className="absolute inset-0 h-full w-full object-cover"
       >
-        <source src={site.scene.webm} type="video/webm" />
-        <source src={site.scene.mp4} type="video/mp4" />
+        <source src={siteContent.scene.webm} type="video/webm" />
+        <source src={siteContent.scene.mp4} type="video/mp4" />
       </video>
 
       {phase === "start" && (

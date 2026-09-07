@@ -10,7 +10,7 @@ const itemSchema = z.object({
 
 export type IncludedItem = z.infer<typeof itemSchema>;
 
-export const included = z.array(itemSchema).length(10).parse([
+const rawIncluded = z.array(itemSchema).length(10).parse([
   { text: "Брифинг и сбор требований", order: 0 },
   { text: "Анализ конкурентов", order: 1 },
   { text: "Прототип и структура страниц", order: 2 },
@@ -38,3 +38,8 @@ export const included = z.array(itemSchema).length(10).parse([
     order: 9,
   },
 ]);
+
+/** Порядок фиксируется здесь, чтобы страницы просто перебирали массив. */
+export const included: IncludedItem[] = [...rawIncluded].sort(
+  (a, b) => a.order - b.order,
+);

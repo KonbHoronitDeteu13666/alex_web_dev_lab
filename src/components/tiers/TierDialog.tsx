@@ -3,9 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ROUTES } from "@/lib/routes";
-import { site } from "@/data/site";
+import { siteContent } from "@/data/site-content";
 import type { Tier } from "@/data/tiers";
-import { PROMO_ON, discounted, formatPrice } from "@/lib/price";
+import PriceRow from "@/components/ui/PriceRow";
 import DemoScene, { sceneCaption } from "./DemoScene";
 
 /** Сколько держится одна сцена макета, прежде чем смениться следующей. */
@@ -50,7 +50,6 @@ export default function TierDialog({
   }, [open, tier.demo.length]);
 
   const kind = tier.demo[scene];
-  const now = discounted(tier.basePrice);
 
   return (
     <dialog
@@ -116,16 +115,7 @@ export default function TierDialog({
 
           {/* ---------- справа: развёрнутое описание ---------- */}
           <div className="grid content-start gap-5">
-            <div className="flex flex-wrap items-baseline gap-3">
-                {PROMO_ON && (
-                  <span className="font-mono text-sm text-strike line-through">
-                    {formatPrice(tier.basePrice)}
-                  </span>
-                )}
-              <span className="price-glow font-display text-3xl font-bold text-yellow tabular-nums md:text-4xl">
-                {formatPrice(now)}
-              </span>
-            </div>
+            <PriceRow basePrice={tier.basePrice} size="dialog" />
 
             <div className="grid gap-2.5">
               {tier.details.map((paragraph) => (
@@ -154,7 +144,7 @@ export default function TierDialog({
 
             <div className="flex flex-wrap items-center gap-4 border-t border-line/70 pt-4">
               <a
-                href={site.contact.href}
+                href={siteContent.contact.href}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="key-3d rounded-lg border border-yellow bg-yellow px-5 py-3 font-mono text-[11.5px] tracking-[0.14em] text-bg uppercase transition-opacity hover:opacity-85"

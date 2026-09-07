@@ -10,14 +10,20 @@ export default function PriceRow({
   size = "card",
 }: {
   basePrice: number;
+  /** «от 15 000 ₽» — для плиток раздела, где цена минимальная по категории. */
   from?: boolean;
-  size?: "card" | "tile";
+  size?: "card" | "dialog";
 }) {
   const now = discounted(basePrice);
   const format = from ? formatFrom : formatPrice;
+  const dialog = size === "dialog";
 
   return (
-    <p className="mt-3 flex flex-wrap items-baseline gap-2.5">
+    <p
+      className={`flex flex-wrap items-baseline ${
+        dialog ? "gap-3" : "mt-3 gap-2.5"
+      }`}
+    >
       {PROMO_ON && (
         <span className="font-mono text-sm text-strike line-through">
           {format(basePrice)}
@@ -25,7 +31,7 @@ export default function PriceRow({
       )}
       <span
         className={`font-display font-bold text-yellow price-glow tabular-nums ${
-          size === "card" ? "text-2xl md:text-[26px]" : "text-xl md:text-2xl"
+          dialog ? "text-3xl md:text-4xl" : "text-2xl md:text-[26px]"
         }`}
       >
         {format(now)}

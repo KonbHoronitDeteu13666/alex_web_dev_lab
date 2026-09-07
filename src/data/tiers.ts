@@ -57,8 +57,19 @@ const categorySchema = z.object({
   id: z.enum(["simple", "middle"]),
   title: z.string().min(1),
   note: z.string().min(1),
+  /** Короткое описание для плитки раздела. Одно на весь сайт. */
+  tileText: z.string().min(1),
+  /** Подпись ссылки, ведущей в эту категорию из соседней. */
+  crossLabel: z.string().min(1),
+  /** Служебная строка над заголовком раздела. */
+  eyebrow: z.string().min(1),
   termRange: z.string().min(1),
-  hint: z.object({ stay: z.string().min(1), leave: z.string().min(1) }),
+  hint: z.object({
+    /** «Если …» — когда подходит эта категория. */
+    title: z.string().min(1),
+    stay: z.string().min(1),
+    leave: z.string().min(1),
+  }),
   mock: z.array(mockRowSchema).min(1),
 });
 
@@ -73,6 +84,10 @@ export const categories = z.array(categorySchema).length(2).parse([
     id: "simple",
     title: "Лендинг",
     note: "Лендинг или сайт-визитка: одна страница, форма заявки, без базы данных и личного кабинета.",
+    tileText:
+      "Одна страница, форма заявки, без базы данных и личного кабинета. Четыре тарифа: Старт, Стандарт, Продвинутый, Премиум.",
+    crossLabel: "Перейти к лендингам →",
+    eyebrow: "4 тарифа · одна страница",
     termRange: "3–12 дней",
     mock: [
       { kind: "bar", accent: "yellow", tall: true },
@@ -82,6 +97,7 @@ export const categories = z.array(categorySchema).length(2).parse([
       { kind: "bar", accent: "teal" },
     ],
     hint: {
+      title: "Если одна страница закрывает вопрос",
       stay: "Достаточно рассказать о себе и получать заявки. Каталог небольшой и меняется редко, править содержимое самому не нужно.",
       leave:
         "Нужны фильтры и поиск, блог, админка и сведение заявок в CRM — это уже сайт с CMS.",
@@ -91,6 +107,10 @@ export const categories = z.array(categorySchema).length(2).parse([
     id: "middle",
     title: "Сайт с CMS",
     note: "Многостраничный сайт: 5–15 страниц, админка для контента, каталог товаров или услуг, интеграции с CRM, Telegram и почтой, блог.",
+    tileText:
+      "5–15 страниц, админка для контента, каталог с фильтрами, блог, интеграции с CRM и мессенджерами. Четыре тарифа.",
+    crossLabel: "Перейти к сайтам с CMS →",
+    eyebrow: "4 тарифа · 5–15 страниц",
     termRange: "2–6 недель",
     mock: [
       { kind: "bar", accent: "yellow", tall: true },
@@ -99,6 +119,7 @@ export const categories = z.array(categorySchema).length(2).parse([
       { kind: "bar", accent: "teal" },
     ],
     hint: {
+      title: "Если позиции добавляются постоянно",
       stay: "Позиции добавляются, содержимое меняется, заявки нужно сводить в CRM, а тексты править самому через админку.",
       leave:
         "Задача — одна страница, рассказ о себе и заявки, а содержимое меняется пару раз в год.",
@@ -106,7 +127,7 @@ export const categories = z.array(categorySchema).length(2).parse([
   },
 ]);
 
-export const tiers = z.array(tierSchema).length(8).parse([
+const rawTiers = z.array(tierSchema).length(8).parse([
   {
     id: "start",
     categoryId: "simple",
@@ -200,18 +221,16 @@ export const tiers = z.array(tierSchema).length(8).parse([
     categoryId: "simple",
     title: "Премиум",
     term: "10–12 дней",
-    gist: "Всё из «Продвинутого» плюс вторая страница, параллакс и оптимизация скорости загрузки.",
+    gist: "Всё из «Продвинутого» плюс вторая страница и параллакс при прокрутке.",
     basePrice: 50000,
     includes: [
       "Всё из тарифа «Продвинутый»",
       "Дополнительная страница: услуга, акция или политика конфиденциальности",
       "Сложные анимации: параллакс, эффекты при скролле",
-      "Оптимизация скорости загрузки",
     ],
     details: [
       "Всё из «Продвинутого» плюс вторая страница — под отдельную услугу, акцию или юридический текст. Ссылку на неё можно давать отдельно, не заставляя человека листать главную.",
       "Слои двигаются с разной скоростью при прокрутке: фон отстаёт, передний план опережает — появляется глубина. Тот самый эффект, из-за которого сайт запоминают.",
-      "Отдельно занимаюсь скоростью: сжимаю изображения, убираю лишний код, откладываю всё, что не нужно в первую секунду. Медленный сайт теряет посетителей раньше, чем они увидят предложение.",
     ],
     demo: ["parallax", "pages", "scroll"],
     mock: [
@@ -336,6 +355,9 @@ export const tiers = z.array(tierSchema).length(8).parse([
   },
 ]);
 
+/** Порядок показа фиксируется один раз, при импорте. */
+export const tiers: Tier[] = [...rawTiers].sort((a, b) => a.order - b.order);
+
 // Дубли идентификаторов ловим здесь: схема одного тарифа их не видит.
 const seen = new Set<string>();
 for (const tier of tiers) {
@@ -346,15 +368,18 @@ for (const tier of tiers) {
 }
 
 export function tiersOf(categoryId: CategoryId): Tier[] {
-  return tiers
-    .filter((tier) => tier.categoryId === categoryId)
-    .sort((a, b) => a.order - b.order);
+  return tiers.filter((tier) => tier.categoryId === categoryId);
 }
 
 export function categoryOf(categoryId: CategoryId): Category {
   const found = categories.find((category) => category.id === categoryId);
   if (!found) throw new Error(`Категория не найдена: ${categoryId}`);
   return found;
+}
+
+/** Соседняя категория: нужна для перекрёстных подсказок и ссылок. */
+export function otherCategoryOf(categoryId: CategoryId): Category {
+  return categoryOf(categoryId === "simple" ? "middle" : "simple");
 }
 
 /** Минимальная прайсовая цена категории — для плиток «от …». */

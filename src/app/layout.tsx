@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Unbounded, Manrope, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import RoomBackdrop from "@/components/layout/RoomBackdrop";
+import Glass from "@/components/layout/Glass";
 import { site } from "@/data/site";
 
 const unbounded = Unbounded({
@@ -24,6 +25,7 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(site.url),
   title: {
     default: `${site.name} — ${site.role}`,
     template: `%s — ${site.name}`,
@@ -32,6 +34,8 @@ export const metadata: Metadata = {
   openGraph: {
     title: `${site.name} — ${site.role}`,
     description: site.slogan,
+    url: "/",
+    siteName: site.name,
     locale: "ru_RU",
     type: "website",
   },
@@ -45,8 +49,10 @@ export default function RootLayout({
       lang="ru"
       className={`${unbounded.variable} ${manrope.variable} ${jetbrains.variable}`}
     >
+      {/* Фон комнаты и рамка стекла — на всех страницах, поэтому живут здесь. */}
       <body className="text-ink">
         <RoomBackdrop />
+        <Glass />
         {children}
       </body>
     </html>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { site } from "@/data/site";
+import { siteContent } from "@/data/site-content";
 
 /** Загрузка держится чуть больше двух секунд: фразу читают, ждать не заставляем. */
 const BOOT_MS = 2200;
@@ -101,10 +101,10 @@ export default function BootScreen({ onDone }: { onDone: () => void }) {
           </div>
 
           <p
-            data-text={site.slogan}
+            data-text={siteContent.slogan}
             className="boot-split relative text-center font-display text-2xl leading-tight tracking-tight text-balance md:text-5xl"
           >
-            {site.slogan}
+            {siteContent.slogan}
           </p>
 
           <p className="mt-5 text-center font-mono text-[10px] tracking-[0.3em] text-teal/50 uppercase">

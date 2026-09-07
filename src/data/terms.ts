@@ -17,7 +17,7 @@ const policySchema = z.object({
 export type PaymentStage = z.infer<typeof stageSchema>;
 export type RevisionPolicy = z.infer<typeof policySchema>;
 
-export const paymentStages = z.array(stageSchema).length(4).parse([
+const rawStages = z.array(stageSchema).length(4).parse([
   {
     percent: 10,
     title: "Аванс",
@@ -45,6 +45,11 @@ export const paymentStages = z.array(stageSchema).length(4).parse([
     order: 3,
   },
 ]);
+
+/** Порядок фиксируется здесь, чтобы страницы просто перебирали массив. */
+export const paymentStages: PaymentStage[] = [...rawStages].sort(
+  (a, b) => a.order - b.order,
+);
 
 const total = paymentStages.reduce((sum, stage) => sum + stage.percent, 0);
 if (total !== 100) {

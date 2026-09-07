@@ -1,4 +1,13 @@
 import { z } from "zod";
+import { siteContent } from "./site-content";
+
+/**
+ * Проверенные данные сайта. Схема прогоняется при импорте, поэтому опечатка
+ * в site-content.ts роняет сборку с понятным текстом.
+ *
+ * Импортировать отсюда можно только из серверных компонентов: клиентским
+ * нужен site-content.ts, иначе zod окажется в браузерном бандле.
+ */
 
 const contactSchema = z.object({
   kind: z.literal("telegram"),
@@ -15,6 +24,8 @@ const sceneSchema = z.object({
 });
 
 const siteSchema = z.object({
+  /** Публичный адрес сайта: нужен карте сайта, robots.txt и Open Graph. */
+  url: z.string().url(),
   name: z.string().min(1),
   role: z.string().min(1),
   slogan: z.string().min(1),
@@ -24,25 +35,6 @@ const siteSchema = z.object({
   promoCondition: z.string().min(1),
 });
 
-export const site = siteSchema.parse({
-  name: "Алексей Лобас",
-  role: "Разработка сайтов под ключ",
-  slogan: "Всё ограничено вашей фантазией",
-  description:
-    "Восемь тарифов в двух категориях: от одностраничного лендинга до сайта с админкой, каталогом и интеграциями. Ниже — цены, состав работ, сроки и порядок оплаты.",
-  contact: {
-    kind: "telegram",
-    href: "https://t.me/username",
-    label: "Написать в Telegram",
-  },
-  scene: {
-    webm: "/scene/scene.webm",
-    mp4: "/scene/scene.mp4",
-    poster: "/scene/poster.webp",
-    lastFrame: "/scene/last.webp",
-    durationSec: 8,
-  },
-  promoCondition: "для проектов, которые войдут в примеры работ",
-});
+export const site = siteSchema.parse(siteContent);
 
 export type Site = z.infer<typeof siteSchema>;

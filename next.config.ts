@@ -4,13 +4,17 @@ import type { NextConfig } from "next";
  * Заголовки безопасности. Сайт статический, форм и ввода нет,
  * поэтому список короткий и жёсткий: свои ресурсы плюс встраивание запрещено.
  */
+const dev = process.env.NODE_ENV !== "production";
+
 const securityHeaders = [
   {
     key: "Content-Security-Policy",
     value: [
       "default-src 'self'",
-      // Next.js вставляет свой bootstrap-скрипт инлайном.
-      "script-src 'self' 'unsafe-inline'",
+      // Next.js вставляет свой bootstrap-скрипт инлайном. В режиме разработки
+      // React дополнительно просит eval() ради отладочных стеков — на боевом
+      // сайте этого послабления нет.
+      `script-src 'self' 'unsafe-inline'${dev ? " 'unsafe-eval'" : ""}`,
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data:",
       "media-src 'self'",
@@ -25,9 +29,15 @@ const securityHeaders = [
   { key: "X-Content-Type-Options", value: "nosniff" },
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
   { key: "X-Frame-Options", value: "DENY" },
+  // Ни камера, ни микрофон, ни геолокация сайту не нужны — закрываем заранее.
+  {
+    key: "Permissions-Policy",
+    value: "camera=(), microphone=(), geolocation=(), payment=()",
+  },
 ];
 
 const nextConfig: NextConfig = {
+  poweredByHeader: false,
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },
