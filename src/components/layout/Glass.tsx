@@ -14,7 +14,7 @@ export default function Glass() {
   return (
     <div aria-hidden className="pointer-events-none fixed inset-0 z-40">
       {/* глубина стекла */}
-      <div className="absolute inset-0 bg-[radial-gradient(130%_85%_at_50%_45%,transparent_58%,rgba(3,5,10,0.62)_100%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(130%_85%_at_50%_45%,transparent_62%,rgba(3,5,10,0.5)_100%)]" />
       <div className="absolute inset-0 bg-[radial-gradient(70%_40%_at_50%_112%,rgba(55,212,200,0.10)_0%,transparent_70%)]" />
 
       {/* строки развёртки */}

@@ -9,11 +9,11 @@ export default function RoomBackdrop() {
   return (
     <div aria-hidden className="pointer-events-none fixed inset-0 -z-10">
       <div
-        className="absolute inset-0 scale-[1.03] bg-cover bg-center blur-[1.5px]"
+        className="absolute inset-0 bg-cover bg-center"
         style={{ backgroundImage: `url(${site.scene.lastFrame})` }}
       />
       {/* затемнение: без него жёлтый свет комнаты глушит текст */}
-      <div className="absolute inset-0 bg-bg/48" />
+      <div className="absolute inset-0 bg-bg/16" />
       {/* тёплый отсвет снизу, как от окна */}
       <div className="absolute inset-0 bg-[radial-gradient(80%_45%_at_50%_100%,rgba(244,215,56,0.07),transparent_70%)]" />
     </div>

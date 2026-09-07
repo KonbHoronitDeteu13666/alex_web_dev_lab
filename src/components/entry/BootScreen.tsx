@@ -7,9 +7,25 @@ import { site } from "@/data/site";
 const BOOT_MS = 2200;
 const DONE_MS = 2500;
 
+/** Телеметрия слева: подпись и значение, как на приборной панели. */
+const TELEMETRY = [
+  ["оптика", "KRS-04B"],
+  ["канал", "12.4 ГГц"],
+  ["задержка", "003 мс"],
+  ["профиль", "оператор"],
+];
+
+const WAVE = [
+  0.2, 0.5, 0.35, 0.8, 0.45, 0.95, 0.6, 0.3, 0.7, 0.5, 0.85, 0.4, 0.65, 0.25,
+  0.9, 0.55, 0.35, 0.75, 0.45, 0.6,
+];
+
+const SEGMENTS = 40;
+
 /**
- * Загрузка на стекле очков: прицельное кольцо, фраза с расслоением
- * и полоса на всю ширину. Без плашек — интерфейс идёт прямо по кадру.
+ * Загрузка на стекле очков: рамка захвата сходится к центру, по краям
+ * телеметрия, снизу сегментная шкала и осциллограмма. Фраза стоит в скобках
+ * интерфейса, а не висит сама по себе.
  */
 export default function BootScreen({ onDone }: { onDone: () => void }) {
   const [progress, setProgress] = useState(0);
@@ -33,93 +49,108 @@ export default function BootScreen({ onDone }: { onDone: () => void }) {
   }, [onDone]);
 
   const percent = Math.round(progress * 100);
-  const dash = 2 * Math.PI * 46;
+  const filled = Math.round(progress * SEGMENTS);
 
   return (
-    <div className="absolute inset-0 bg-bg/72 backdrop-blur-[4px]">
-      <div aria-hidden className="scanlines absolute inset-0 opacity-30" />
+    <div className="absolute inset-0 overflow-hidden bg-bg/22 backdrop-blur-[1px]">
+      <div aria-hidden className="scanlines absolute inset-0 opacity-40" />
 
-      {/* служебные подписи по углам, мелко */}
-      <span className="absolute top-8 left-8 font-mono text-[10px] tracking-[0.24em] text-teal/60 uppercase">
-        нейролинк · подключение
-      </span>
-      <span className="absolute top-8 right-8 font-mono text-[10px] tracking-[0.24em] text-teal/60 uppercase tabular-nums">
-        {String(percent).padStart(3, "0")}%
-      </span>
+      {/* ---------- телеметрия слева ---------- */}
+      <div className="absolute top-10 left-10 hidden gap-1.5 md:grid">
+        {TELEMETRY.map(([label, value], i) => (
+          <div
+            key={label}
+            className="boot-line flex items-baseline gap-3 font-mono text-[10px] tracking-[0.2em] uppercase"
+            style={{ animationDelay: `${i * 0.12}s` }}
+          >
+            <span className="w-24 text-teal/45">{label}</span>
+            <span className="text-teal/85 tabular-nums">{value}</span>
+            <span className="h-px w-8 bg-teal/25" />
+          </div>
+        ))}
+      </div>
 
+      {/* ---------- счётчик справа ---------- */}
+      <div className="absolute top-10 right-10 grid justify-items-end gap-2">
+        <span className="font-mono text-[10px] tracking-[0.24em] text-teal/45 uppercase">
+          синхронизация
+        </span>
+        <span className="price-glow font-mono text-4xl leading-none font-bold text-yellow tabular-nums md:text-5xl">
+          {String(percent).padStart(3, "0")}
+        </span>
+        <span className="font-mono text-[10px] tracking-[0.24em] text-teal/60">
+          %
+        </span>
+      </div>
+
+      {/* ---------- рамка захвата и фраза ---------- */}
       <div className="absolute inset-0 grid place-items-center px-6">
-        <div className="grid justify-items-center gap-8">
-          {/* кольцо: внешняя дуга крутится, внутренняя заполняется */}
-          <div className="relative h-32 w-32 md:h-40 md:w-40">
-            <svg viewBox="0 0 100 100" className="absolute inset-0 h-full w-full">
-              <circle
-                cx="50"
-                cy="50"
-                r="46"
-                fill="none"
-                stroke="rgb(55 212 200 / 0.14)"
-                strokeWidth="1.5"
-              />
-              <circle
-                cx="50"
-                cy="50"
-                r="46"
-                fill="none"
-                stroke="#f4d738"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeDasharray={dash}
-                strokeDashoffset={dash * (1 - progress)}
-                transform="rotate(-90 50 50)"
-                style={{ filter: "drop-shadow(0 0 6px rgb(244 215 56 / 0.6))" }}
-              />
-            </svg>
-            <svg
-              viewBox="0 0 100 100"
-              className="boot-spin absolute inset-0 h-full w-full"
-            >
-              <circle
-                cx="50"
-                cy="50"
-                r="38"
-                fill="none"
-                stroke="rgb(55 212 200 / 0.55)"
-                strokeWidth="1"
-                strokeDasharray="18 200"
-                strokeLinecap="round"
-              />
-              <circle
-                cx="50"
-                cy="50"
-                r="38"
-                fill="none"
-                stroke="rgb(55 212 200 / 0.35)"
-                strokeWidth="1"
-                strokeDasharray="6 60"
-                strokeDashoffset="120"
-              />
-            </svg>
-            {/* перекрестие прицела */}
-            <span className="absolute top-1/2 left-1/2 h-px w-5 -translate-x-1/2 -translate-y-1/2 bg-teal/60" />
-            <span className="absolute top-1/2 left-1/2 h-5 w-px -translate-x-1/2 -translate-y-1/2 bg-teal/60" />
+        <div className="relative">
+          {/* скобки, сходящиеся к строке */}
+          <span className="boot-clamp-l absolute top-1/2 -left-10 h-16 w-6 -translate-y-1/2 border-t border-b border-l border-teal/70 md:-left-16 md:h-24 md:w-10" />
+          <span className="boot-clamp-r absolute top-1/2 -right-10 h-16 w-6 -translate-y-1/2 border-t border-r border-b border-teal/70 md:-right-16 md:h-24 md:w-10" />
+
+          {/* прицельное перекрестие над строкой */}
+          <div className="mb-6 flex items-center justify-center gap-3">
+            <span className="h-px w-16 bg-linear-to-r from-transparent to-teal/60 md:w-28" />
+            <span className="relative h-5 w-5">
+              <span className="boot-ring absolute inset-0 rounded-full border border-dashed border-teal/70" />
+              <span className="absolute top-1/2 left-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-yellow shadow-[0_0_10px_2px] shadow-yellow/60" />
+            </span>
+            <span className="h-px w-16 bg-linear-to-l from-transparent to-teal/60 md:w-28" />
           </div>
 
-          {/* фраза с расслоением, как на плохо синхронизированном дисплее */}
           <p
             data-text={site.slogan}
-            className="boot-split relative text-center font-display text-2xl leading-tight text-balance md:text-5xl"
+            className="boot-split relative text-center font-display text-2xl leading-tight tracking-tight text-balance md:text-5xl"
           >
             {site.slogan}
+          </p>
+
+          <p className="mt-5 text-center font-mono text-[10px] tracking-[0.3em] text-teal/50 uppercase">
+            интерфейс разворачивается
           </p>
         </div>
       </div>
 
-      {/* полоса на всю ширину внизу */}
-      <div className="absolute inset-x-0 bottom-0 h-[3px] bg-line/50">
-        <div
-          className="h-full bg-yellow shadow-[0_0_14px_1px] shadow-yellow/70"
-          style={{ width: `${percent}%` }}
-        />
+      {/* ---------- нижняя приборная строка ---------- */}
+      <div className="absolute inset-x-0 bottom-0 grid gap-3 px-6 pb-6 md:px-10 md:pb-8">
+        {/* осциллограмма */}
+        <div className="flex h-8 items-end gap-[3px] opacity-70">
+          {WAVE.map((height, i) => (
+            <span
+              key={i}
+              className="boot-wave flex-1 bg-teal/50"
+              style={
+                {
+                  "--h": `${height * 100}%`,
+                  animationDelay: `${i * 0.07}s`,
+                } as React.CSSProperties
+              }
+            />
+          ))}
+        </div>
+
+        {/* сегментная шкала */}
+        <div className="flex gap-[3px]">
+          {Array.from({ length: SEGMENTS }).map((_, i) => (
+            <span
+              key={i}
+              className={`h-2 flex-1 ${
+                i < filled
+                  ? "bg-yellow shadow-[0_0_8px_-2px] shadow-yellow/80"
+                  : "bg-line/60"
+              }`}
+            />
+          ))}
+        </div>
+
+        <div className="flex items-baseline justify-between font-mono text-[10px] tracking-[0.22em] text-teal/50 uppercase">
+          <span>загрузка интерфейса</span>
+          <span className="tabular-nums">
+            {String(Math.round(progress * 128)).padStart(3, "0")} / 128 модулей
+          </span>
+        </div>
       </div>
     </div>
   );
