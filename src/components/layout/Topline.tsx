@@ -8,7 +8,7 @@ import { site } from "@/data/site";
  */
 export default function Topline({ current }: { current?: RouteKey }) {
   return (
-    <header className="sticky top-0 z-50 border-b border-line-soft bg-bg/70 backdrop-blur-md">
+    <header className="sticky top-0 z-50 border-b border-line-soft bg-bg/55 backdrop-blur-md">
       <div className="mx-auto flex max-w-6xl items-center gap-6 px-5 py-3.5 md:px-10">
         <Link href={ROUTES.home} className="flex items-center gap-2.5">
           <span className="h-[7px] w-[7px] rounded-full bg-teal shadow-[0_0_10px_2px] shadow-teal/50" />

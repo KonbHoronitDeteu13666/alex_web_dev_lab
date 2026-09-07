@@ -38,7 +38,7 @@ export default function TermsPage() {
 
         <div className="mt-12">
           <SectionHead title="Правки" />
-          <div className="rounded-r-xl border-l-[3px] border-yellow bg-panel/70 p-6 backdrop-blur-sm md:p-7">
+          <div className="rounded-r-xl border-l-[3px] border-yellow bg-panel/55 p-6 backdrop-blur-sm md:p-7">
             <p className="text-[15px]">{revisionPolicy.rule}</p>
             <p className="mt-3 text-[15px] text-dim">
               Отдельно оценивается и оплачивается только основательная переделка
@@ -56,7 +56,7 @@ export default function TermsPage() {
             {stages.map((stage) => (
               <div
                 key={stage.title}
-                className="rounded-xl border border-line bg-panel/70 p-5 backdrop-blur-sm md:p-6"
+                className="rounded-xl border border-line bg-panel/55 p-5 backdrop-blur-sm md:p-6"
               >
                 <p className="font-display text-3xl leading-none font-bold text-yellow tabular-nums">
                   {stage.percent}%

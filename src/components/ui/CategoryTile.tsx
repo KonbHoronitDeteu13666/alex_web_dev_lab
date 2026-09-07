@@ -18,7 +18,7 @@ export default function CategoryTile({
   return (
     <Link
       href={href}
-      className="block rounded-xl border border-line bg-panel/70 p-6 backdrop-blur-sm transition-colors hover:border-teal md:p-7"
+      className="block rounded-xl border border-line bg-panel/55 p-6 backdrop-blur-sm transition-colors hover:border-teal md:p-7"
     >
       <h3 className="font-display text-lg font-medium tracking-tight md:text-xl">
         {title}

@@ -3,15 +3,20 @@
 import { useEffect, useState } from "react";
 import { site } from "@/data/site";
 
-/** Загрузка на стекле очков: фраза, полоса на 1,6 с, затем оверлей снимается. */
+/** Полоса заполняется за 3,2 с — столько нужно, чтобы прочитать фразу. */
+const BAR_MS = 3200;
+const LABEL_MS = 2800;
+const DONE_MS = 3600;
+
+/** Загрузка на стекле очков: фраза, полоса, затем оверлей уходит. */
 export default function BootScreen({ onDone }: { onDone: () => void }) {
   const [filled, setFilled] = useState(false);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
     const start = requestAnimationFrame(() => setFilled(true));
-    const label = window.setTimeout(() => setReady(true), 1400);
-    const done = window.setTimeout(onDone, 1900);
+    const label = window.setTimeout(() => setReady(true), LABEL_MS);
+    const done = window.setTimeout(onDone, DONE_MS);
     return () => {
       cancelAnimationFrame(start);
       clearTimeout(label);
@@ -27,8 +32,11 @@ export default function BootScreen({ onDone }: { onDone: () => void }) {
         </p>
         <div className="h-0.5 w-full overflow-hidden bg-line">
           <div
-            className="h-full bg-yellow transition-[width] duration-[1600ms] ease-linear"
-            style={{ width: filled ? "100%" : "0%" }}
+            className="h-full bg-yellow ease-linear"
+            style={{
+              width: filled ? "100%" : "0%",
+              transition: `width ${BAR_MS}ms linear`,
+            }}
           />
         </div>
         <p className="font-mono text-[11px] tracking-[0.2em] text-teal uppercase">

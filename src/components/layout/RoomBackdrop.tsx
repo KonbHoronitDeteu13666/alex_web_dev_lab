@@ -13,7 +13,7 @@ export default function RoomBackdrop() {
         style={{ backgroundImage: `url(${site.scene.lastFrame})` }}
       />
       {/* затемнение: без него жёлтый свет комнаты глушит текст */}
-      <div className="absolute inset-0 bg-bg/82" />
+      <div className="absolute inset-0 bg-bg/70" />
       {/* тёплый отсвет снизу, как от окна */}
       <div className="absolute inset-0 bg-[radial-gradient(80%_45%_at_50%_100%,rgba(244,215,56,0.07),transparent_70%)]" />
     </div>

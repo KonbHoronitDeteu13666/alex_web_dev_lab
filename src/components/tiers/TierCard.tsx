@@ -10,7 +10,7 @@ import TierMock from "./TierMock";
  */
 export default function TierCard({ tier }: { tier: Tier }) {
   return (
-    <details className="tier overflow-hidden rounded-xl border border-line bg-panel/70 backdrop-blur-sm">
+    <details className="tier overflow-hidden rounded-xl border border-line bg-panel/55 backdrop-blur-sm">
       <summary className="grid grid-cols-[96px_1fr] items-center gap-5 p-5 md:grid-cols-[132px_1fr]">
         <TierMock rows={tier.mock} />
         <div>

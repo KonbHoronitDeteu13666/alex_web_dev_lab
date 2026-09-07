@@ -13,6 +13,12 @@ import BootScreen from "./BootScreen";
 
 type Phase = "start" | "play" | "boot";
 
+/** Скорость ролика: посадка в кресло на обычной скорости тянется. */
+const PLAYBACK_RATE = 1.4;
+
+/** Оверлей не исчезает мгновенно — уходит плавно, чтобы сайт не выпрыгивал. */
+const FADE_MS = 700;
+
 const SESSION_KEY = "entered";
 
 /* --- отметка о пройденном входе живёт в sessionStorage --- */
@@ -52,6 +58,7 @@ function markEntered() {
 export default function EntryOverlay() {
   const entered = useSyncExternalStore(subscribe, readEntered, () => true);
   const [phase, setPhase] = useState<Phase>("start");
+  const [fading, setFading] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   // Пока оверлей на экране, страница под ним не прокручивается.
@@ -63,7 +70,10 @@ export default function EntryOverlay() {
     };
   }, [entered]);
 
-  const finish = useCallback(() => markEntered(), []);
+  const finish = useCallback(() => {
+    setFading(true);
+    window.setTimeout(markEntered, FADE_MS);
+  }, []);
 
   const enter = useCallback(() => {
     const reduced = window.matchMedia(
@@ -74,6 +84,7 @@ export default function EntryOverlay() {
       return;
     }
     setPhase("play");
+    if (videoRef.current) videoRef.current.playbackRate = PLAYBACK_RATE;
     // Если браузер отказал в воспроизведении, не оставляем человека
     // перед застывшим кадром — сразу к загрузке.
     videoRef.current?.play().catch(() => setPhase("boot"));
@@ -82,7 +93,10 @@ export default function EntryOverlay() {
   if (entered) return null;
 
   return (
-    <div className="fixed inset-0 z-100 overflow-hidden bg-[#05070c]">
+    <div
+      className="fixed inset-0 z-100 overflow-hidden bg-[#05070c] transition-opacity ease-out"
+      style={{ opacity: fading ? 0 : 1, transitionDuration: `${FADE_MS}ms` }}
+    >
       <video
         ref={videoRef}
         aria-hidden
