@@ -1,0 +1,160 @@
+@import "tailwindcss";
+
+@theme {
+  --color-void: #04050a;
+  --color-deep: #080b14;
+  --color-panel: #0b0f1c;
+  --color-grid: #17203a;
+  --color-line: #1d2942;
+  --color-dim: #6b7a9c;
+  --color-text: #dbe4f5;
+  --color-cyan: #4ff0ff;
+  --color-violet: #8b5cff;
+  --color-acid: #d7ff3e;
+  --color-alert: #ff5470;
+
+  --font-display: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono), ui-monospace, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--color-void);
+}
+
+body {
+  color: var(--color-text);
+  background: transparent;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--color-cyan);
+  color: var(--color-void);
+}
+
+/* ---- служебная типографика интерфейса ---- */
+.label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-dim);
+}
+
+/* ---- появление блока при скролле ---- */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal[data-shown="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---- рамка панели с засечками по углам ---- */
+.panel {
+  position: relative;
+  background: color-mix(in srgb, var(--color-panel) 70%, transparent);
+  border: 1px solid var(--color-line);
+  backdrop-filter: blur(6px);
+}
+.panel::before,
+.panel::after {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border: 1px solid var(--color-cyan);
+  opacity: 0.7;
+}
+.panel::before {
+  top: -1px;
+  left: -1px;
+  border-right: 0;
+  border-bottom: 0;
+}
+.panel::after {
+  right: -1px;
+  bottom: -1px;
+  border-left: 0;
+  border-top: 0;
+}
+
+/* ---- бегущая полоса сканирования по всему экрану ---- */
+@keyframes sweep {
+  0% {
+    transform: translateY(-10vh);
+    opacity: 0;
+  }
+  8%,
+  92% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(110vh);
+    opacity: 0;
+  }
+}
+.sweep {
+  animation: sweep 9s linear infinite;
+}
+
+@keyframes flicker {
+  0%,
+  100% {
+    opacity: 0.75;
+  }
+  45% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.95;
+  }
+}
+.flicker {
+  animation: flicker 4s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+.blink {
+  animation: blink 1.05s step-end infinite;
+}
+
+/* ---- тонкая сетка поверх фона ---- */
+.mesh {
+  background-image:
+    linear-gradient(to right, var(--color-grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-grid) 1px, transparent 1px);
+  background-size: 88px 88px;
+  mask-image: radial-gradient(ellipse at 50% 40%, #000 20%, transparent 78%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .sweep,
+  .flicker,
+  .blink {
+    animation: none;
+  }
+}
