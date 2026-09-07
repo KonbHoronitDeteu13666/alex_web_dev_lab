@@ -1,0 +1,57 @@
+import type { Metadata } from "next";
+import Glass from "@/components/layout/Glass";
+import Topline from "@/components/layout/Topline";
+import FootNav from "@/components/layout/FootNav";
+import SectionHead from "@/components/ui/SectionHead";
+import ChoiceHint from "@/components/ui/ChoiceHint";
+import TierList from "@/components/tiers/TierList";
+import { ROUTES } from "@/lib/routes";
+import { categoryOf, tiersOf } from "@/data/tiers";
+
+const category = categoryOf("middle");
+
+export const metadata: Metadata = {
+  title: category.title,
+  description: category.note,
+};
+
+export default function MiddlePage() {
+  return (
+    <>
+      <Glass />
+      <Topline current="middle" />
+
+      <main className="mx-auto max-w-6xl px-5 py-14 md:px-10 md:py-20">
+        <div className="max-w-[66ch]">
+          <p className="font-mono text-[11px] tracking-[0.2em] text-teal uppercase">
+            Категория 2 из 2 · 4 тарифа
+          </p>
+          <h1 className="mt-3.5 font-display text-3xl leading-[1.1] font-medium tracking-tight text-balance md:text-5xl">
+            {category.title}
+          </h1>
+          <p className="mt-5 text-base leading-relaxed text-dim">
+            {category.note} Сроки {category.termRange}.
+          </p>
+        </div>
+
+        <div className="mt-12">
+          <TierList tiers={tiersOf("middle")} />
+        </div>
+
+        <div className="mt-14">
+          <SectionHead title="Не подходит?" />
+          <ChoiceHint
+            stayTitle="Хватит этой категории"
+            stayText={category.hint.stay}
+            leaveTitle="Достаточно простого сайта"
+            leaveText={category.hint.leave}
+            leaveHref={ROUTES.simple}
+            leaveLabel="Перейти в первую категорию →"
+          />
+        </div>
+      </main>
+
+      <FootNav current="middle" />
+    </>
+  );
+}

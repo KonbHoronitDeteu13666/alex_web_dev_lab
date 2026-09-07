@@ -1,0 +1,1398 @@
+<title>Прототип «Ночной город»</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;500;700&family=Manrope:wght@400;500;600;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+/* Прототип «Ночной город» — артбук №2.
+   Статичная вёрстка с рабочей навигацией, без бэкенда. */
+
+:root {
+  --bg: #0b0d14;
+  --panel: #12151f;
+  --panel-2: #171b28;
+  --line: #222739;
+  --line-soft: #1a1e2c;
+  --ink: #e2e6f1;
+  --dim: #7d859b;
+  --dim-2: #5d6479;
+  --yellow: #f4d738;
+  --teal: #37d4c8;
+  --strike: #6b7288;
+
+  --radius: 12px;
+  --radius-sm: 8px;
+  --shell: 1180px;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 15px/1.65 "Manrope", system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; text-decoration: none; }
+
+:focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; }
+
+h1, h2, h3 { font-family: "Unbounded", system-ui, sans-serif; font-weight: 500; margin: 0; text-wrap: balance; }
+
+.mono, .meta, .price, .price-old {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- стекло очков: рамка поверх всего ---------- */
+
+.glass {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  background:
+    radial-gradient(130% 85% at 50% 45%, transparent 52%, rgba(3, 5, 10, .72) 100%),
+    radial-gradient(70% 40% at 50% 112%, rgba(55, 212, 200, .10) 0%, transparent 70%);
+}
+
+.glass i {
+  position: absolute;
+  width: 26px; height: 26px;
+  border: 1px solid var(--teal);
+  opacity: .5;
+}
+.glass i:nth-child(1) { top: 18px; left: 18px; border-right: 0; border-bottom: 0; }
+.glass i:nth-child(2) { top: 18px; right: 18px; border-left: 0; border-bottom: 0; }
+.glass i:nth-child(3) { bottom: 18px; left: 18px; border-right: 0; border-top: 0; }
+.glass i:nth-child(4) { bottom: 18px; right: 18px; border-left: 0; border-top: 0; }
+
+/* ---------- служебные подписи ---------- */
+
+.meta {
+  font-size: 11px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--dim-2);
+}
+
+.eyebrow {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin: 0 0 14px;
+}
+
+/* ---------- шапка ---------- */
+
+.topline {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(11, 13, 20, .82);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.topline-in {
+  max-width: var(--shell);
+  margin: 0 auto;
+  padding: 14px 40px;
+  display: flex;
+  align-items: center;
+  gap: 26px;
+}
+
+.brand { display: flex; align-items: center; gap: 10px; }
+.brand .dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--teal);
+  box-shadow: 0 0 10px 2px rgba(55, 212, 200, .5);
+}
+.brand span {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.topnav { display: flex; gap: 4px; margin-left: auto; }
+.topnav a {
+  padding: 7px 12px;
+  border-radius: 6px;
+  font-size: 13.5px;
+  color: var(--dim);
+  transition: color .18s, background .18s;
+}
+.topnav a:hover { color: var(--ink); background: var(--panel); }
+.topnav a[aria-current="page"] { color: var(--yellow); }
+
+/* Единственная закреплённая точка выхода в Telegram — в шапке, видна на всех экранах. */
+.tg-btn {
+  background: var(--yellow);
+  color: var(--bg);
+  padding: 10px 20px;
+  border: 1px solid var(--yellow);
+  border-radius: 8px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11.5px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: opacity .18s;
+}
+.tg-btn:hover { opacity: .85; }
+
+/* ---------- каркас страницы ---------- */
+
+.shell { max-width: var(--shell); margin: 0 auto; padding: 54px 40px 90px; }
+
+.page-head { margin-bottom: 40px; max-width: 66ch; }
+.page-head h1 { font-size: clamp(28px, 3.6vw, 46px); line-height: 1.1; }
+.page-head p { color: var(--dim); margin: 16px 0 0; font-size: 16px; }
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin: 0 0 22px;
+}
+.section-head h2 { font-size: 22px; }
+.section-head .rule { flex: 1; height: 1px; background: var(--line); }
+
+/* ---------- карточки тарифов ---------- */
+
+.tiers {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+
+.tier {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.tier > summary {
+  list-style: none;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: 132px 1fr;
+  gap: 20px;
+  padding: 20px;
+  align-items: center;
+}
+.tier > summary::-webkit-details-marker { display: none; }
+.tier[open] > summary { border-bottom: 1px solid var(--line); }
+
+.tier-name { font-family: "Unbounded", sans-serif; font-weight: 500; font-size: 19px; }
+.tier-term { font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: .1em; color: var(--dim); margin-top: 4px; }
+.tier-gist { color: var(--dim); font-size: 13.5px; margin: 10px 0 0; }
+
+.price-row { display: flex; align-items: baseline; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+.price-old { font-size: 14px; color: var(--strike); text-decoration: line-through; }
+.price { font-family: "Unbounded", sans-serif; font-weight: 700; font-size: 26px; color: var(--yellow); line-height: 1; }
+.price-off {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10.5px;
+  letter-spacing: .1em;
+  color: var(--bg);
+  background: var(--yellow);
+  padding: 3px 6px;
+  border-radius: 4px;
+}
+
+.tier-more {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-top: 14px;
+  display: inline-block;
+}
+.tier[open] .tier-more span::after { content: "свернуть"; }
+.tier:not([open]) .tier-more span::after { content: "подробнее"; }
+
+.tier-body { padding: 20px; display: grid; gap: 16px; }
+.tier-body ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+.tier-body li { position: relative; padding-left: 18px; font-size: 14px; color: var(--dim); }
+.tier-body li::before {
+  content: ""; position: absolute; left: 0; top: 11px;
+  width: 8px; height: 1px; background: var(--yellow);
+}
+.tier-body .foot {
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  padding-top: 14px; border-top: 1px solid var(--line-soft);
+}
+
+/* ---------- превью-макет внутри карточки ---------- */
+
+.mock {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 8px;
+  display: grid;
+  gap: 5px;
+  aspect-ratio: 4 / 5;
+  align-content: start;
+}
+.mock .bar { height: 7px; border-radius: 2px; background: var(--line); }
+.mock .bar.accent { background: var(--yellow); opacity: .75; }
+.mock .bar.teal { background: var(--teal); opacity: .6; }
+.mock .bar.tall { height: 16px; }
+.mock .row { display: flex; gap: 5px; }
+.mock .row > * { flex: 1; }
+.mock .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+.mock .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
+.mock .box { border: 1px solid var(--line); border-radius: 2px; height: 20px; }
+.mock .box.fill { background: var(--panel-2); }
+.mock .side { display: grid; grid-template-columns: 22px 1fr; gap: 5px; }
+.mock .stack { display: grid; gap: 4px; align-content: start; }
+
+/* ---------- акция и подсказка ---------- */
+
+.promo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding: 16px 20px;
+  margin: 26px 0;
+  border: 1px dashed var(--yellow);
+  border-radius: var(--radius);
+  background: rgba(244, 215, 56, .05);
+}
+.promo .big { font-family: "Unbounded", sans-serif; font-weight: 700; font-size: 24px; color: var(--yellow); }
+.promo p { margin: 0; font-size: 14px; color: var(--dim); }
+.promo p b { color: var(--ink); font-weight: 600; }
+
+.hint {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel);
+}
+.hint h3 { font-size: 15px; margin-bottom: 6px; }
+.hint p { margin: 0; font-size: 13.5px; color: var(--dim); }
+
+/* ---------- плитки категорий на главной ---------- */
+
+.cats { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.cat {
+  display: block;
+  padding: 26px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  transition: border-color .2s, transform .2s;
+}
+.cat:hover { border-color: var(--teal); transform: translateY(-2px); }
+.cat h3 { font-size: 21px; }
+.cat p { color: var(--dim); font-size: 14px; margin: 10px 0 18px; }
+.cat .from { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+
+/* ---------- простые списки разделов ---------- */
+
+.checks { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 32px; margin: 0; padding: 0; list-style: none; }
+.checks li { position: relative; padding-left: 26px; font-size: 15px; }
+.checks li::before {
+  content: "✓"; position: absolute; left: 0; top: 0;
+  color: var(--teal); font-size: 13px;
+}
+.checks li small { display: block; color: var(--dim-2); font-size: 12.5px; }
+
+.steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.step {
+  padding: 22px 20px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+.step .pct { font-family: "Unbounded", sans-serif; font-weight: 700; font-size: 30px; color: var(--yellow); line-height: 1; }
+.step h3 { font-size: 15px; margin: 12px 0 6px; }
+.step p { margin: 0; font-size: 13.5px; color: var(--dim); }
+
+.callout {
+  padding: 22px 24px;
+  background: var(--panel);
+  border-left: 3px solid var(--yellow);
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+.callout p { margin: 0; font-size: 15px; }
+.callout p + p { margin-top: 12px; color: var(--dim); }
+.callout b { color: var(--yellow); font-weight: 600; }
+
+/* ---------- подвал ---------- */
+
+.foot-nav {
+  max-width: var(--shell);
+  margin: 0 auto;
+  padding: 26px 40px 44px;
+  border-top: 1px solid var(--line-soft);
+  display: flex;
+  gap: 22px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.foot-nav a { font-size: 13.5px; color: var(--dim); }
+.foot-nav a:hover { color: var(--ink); }
+.foot-nav .spacer { flex: 1; }
+
+/* ---------- сцена входа ---------- */
+
+.scene {
+  position: relative;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 40px 20px;
+  background:
+    radial-gradient(90% 60% at 50% 100%, rgba(244, 215, 56, .07), transparent 70%),
+    radial-gradient(70% 50% at 20% 20%, rgba(55, 212, 200, .07), transparent 70%),
+    var(--bg);
+}
+
+.room {
+  position: relative;
+  width: min(980px, 100%);
+  aspect-ratio: 16 / 9;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: linear-gradient(180deg, #0e111a 0%, #090b12 60%, #06080d 100%);
+}
+
+.room .horizon {
+  position: absolute; left: 0; right: 0; top: 58%; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(55, 212, 200, .45), transparent);
+}
+
+.room .chair {
+  position: absolute;
+  left: 50%; top: 52%;
+  translate: -50% -50%;
+  width: 34%; aspect-ratio: 3 / 4;
+  border: 1px solid rgba(244, 215, 56, .45);
+  border-radius: 60px 60px 14px 14px;
+  background: linear-gradient(180deg, rgba(244, 215, 56, .07), rgba(244, 215, 56, .02));
+}
+.room .chair::after {
+  content: "";
+  position: absolute; inset: 22% 18% 12%;
+  border: 1px dashed rgba(55, 212, 200, .35);
+  border-radius: 40px 40px 8px 8px;
+}
+
+.room .enter {
+  position: absolute;
+  left: 50%; top: 20%;
+  translate: -50% 0;
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+}
+.room .enter .key {
+  padding: 10px 22px;
+  border: 1px solid var(--yellow);
+  border-radius: 8px;
+  background: rgba(244, 215, 56, .1);
+  color: var(--yellow);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+
+.room .hands {
+  position: absolute; bottom: -2%; left: 0; right: 0; height: 26%;
+  display: flex; justify-content: space-between; padding: 0 8%;
+}
+.room .hands span {
+  width: 16%;
+  border: 1px solid var(--line);
+  border-bottom: 0;
+  border-radius: 26px 26px 0 0;
+  background: linear-gradient(180deg, #141826, #0d1018);
+}
+.room .hands span::after {
+  content: "";
+  display: block;
+  margin: 30% auto 0;
+  width: 40%; height: 3px;
+  background: var(--teal);
+  opacity: .5;
+  border-radius: 2px;
+}
+
+.scene-side { max-width: 62ch; margin: 34px auto 0; text-align: center; }
+.scene-side h1 { font-size: clamp(24px, 3.4vw, 40px); line-height: 1.12; }
+.scene-side p { color: var(--dim); margin: 14px 0 0; }
+.scene-actions { display: flex; gap: 12px; justify-content: center; margin-top: 26px; flex-wrap: wrap; }
+
+.btn-primary {
+  padding: 14px 28px;
+  border: 1px solid var(--yellow);
+  border-radius: 8px;
+  background: rgba(244, 215, 56, .12);
+  color: var(--yellow);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+.btn-primary:hover { background: var(--yellow); color: var(--bg); }
+
+.btn-ghost {
+  padding: 14px 24px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--dim);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+.btn-ghost:hover { color: var(--ink); border-color: var(--dim); }
+
+.states {
+  max-width: var(--shell);
+  margin: 60px auto 0;
+  padding: 0 40px;
+}
+.states ol { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin: 18px 0 0; padding: 0; list-style: none; }
+.states li {
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--panel);
+  font-size: 13px;
+  color: var(--dim);
+}
+.states li b { display: block; color: var(--ink); font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; margin-bottom: 8px; }
+
+/* ---------- 404 ---------- */
+
+.lost { max-width: 60ch; margin: 0 auto; text-align: center; padding: 90px 0 40px; }
+.lost .code { font-family: "Unbounded", sans-serif; font-weight: 700; font-size: 76px; color: var(--yellow); line-height: 1; }
+.lost h1 { font-size: 26px; margin: 18px 0 12px; }
+.lost p { color: var(--dim); margin: 0; }
+
+/* ---------- адаптив ---------- */
+
+@media (max-width: 900px) {
+  .topline-in, .shell, .foot-nav, .states { padding-left: 22px; padding-right: 22px; }
+  .tiers, .cats, .hint, .checks { grid-template-columns: 1fr; }
+  .steps { grid-template-columns: 1fr 1fr; }
+  .states ol { grid-template-columns: 1fr 1fr; }
+  .topnav { display: none; }
+  .tier > summary { grid-template-columns: 96px 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition: none !important; }
+}
+</style>
+<style>
+  /* --- обвязка предпросмотра: экраны идут один за другим --- */
+  body { background: #06070c; }
+  .glass { display: none; }
+  .preview-nav {
+    position: sticky; top: 0; z-index: 70;
+    display: flex; gap: 6px; flex-wrap: wrap;
+    padding: 12px 20px;
+    background: rgba(6,7,12,.92);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .preview-nav a {
+    padding: 7px 12px; border-radius: 999px;
+    border: 1px solid var(--line);
+    font-family: "JetBrains Mono", monospace; font-size: 11px;
+    letter-spacing: .1em; text-transform: uppercase; color: var(--dim);
+  }
+  .preview-nav a:hover { color: var(--yellow); border-color: var(--yellow); }
+  .preview-intro { max-width: 68ch; padding: 34px 24px 10px; }
+  .preview-intro h1 { font-size: 26px; }
+  .preview-intro p { color: var(--dim); margin: 12px 0 0; }
+  .frame { padding: 34px 24px 60px; scroll-margin-top: 60px; }
+  .frame-bar {
+    display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
+    max-width: var(--shell); margin: 0 auto 14px;
+  }
+  .frame-bar .no {
+    font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: .1em;
+    background: var(--ink); color: var(--bg); padding: 4px 8px;
+  }
+  .frame-bar h2 { font-size: 18px; }
+  .frame-bar .say { color: var(--dim-2); font-size: 13px; }
+  .device {
+    max-width: var(--shell); margin: 0 auto;
+    border: 1px solid var(--line); border-radius: 14px; overflow: hidden;
+    background: var(--bg);
+    position: relative;
+  }
+  .device::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 40;
+    background: radial-gradient(130% 85% at 50% 45%, transparent 55%, rgba(3,5,10,.6) 100%);
+  }
+  .device .topline { position: static; }
+  .device .shell { padding: 40px 34px 46px; }
+  .device .scene { min-height: 0; padding: 34px 24px; }
+  .device .foot-nav { padding: 22px 34px 30px; }
+  .device .states { margin-top: 34px; padding: 0 34px 10px; }
+</style>
+
+<nav class="preview-nav">
+  <a href="#s1">01 · сцена входа</a>
+  <a href="#s2">02 · главная</a>
+  <a href="#s3">03 · простой сайт</a>
+  <a href="#s4">04 · средний функционал</a>
+  <a href="#s5">05 · что входит</a>
+  <a href="#s6">06 · условия</a>
+  <a href="#s7">07 · 404</a>
+</nav>
+
+<div class="preview-intro">
+  <h1>Прототип: семь экранов подряд</h1>
+  <p>Стиль — артбук №2, «Ночной город». Карточки тарифов раскрываются по клику: в свёрнутом виде макет-превью, название, зачёркнутая цена и цена со скидкой 40%; внутри — полный состав пакета. Тексты и цены настоящие, из прайса.</p>
+</div>
+
+
+
+
+<section class="frame" id="s1">
+  <div class="frame-bar"><span class="no">01</span><h2>Сцена входа</h2><span class="say">статичная заглушка вместо 3D</span></div>
+  <div class="device">
+
+<div class="scene">
+  <div>
+    <div class="room">
+      <div class="horizon"></div>
+
+      <div class="enter">
+        <span class="key">Войти</span>
+        <span class="meta">кресло подключения</span>
+      </div>
+
+      <div class="chair"></div>
+      <div class="hands"><span></span><span></span></div>
+    </div>
+
+    <div class="scene-side">
+      <p class="eyebrow">Сцена входа · заглушка вместо 3D</p>
+      <h1>Квартира, кресло, подключение</h1>
+      <p>В прототипе сцена статична: прямоугольники на месте кресла и рук показывают композицию кадра. В рабочей версии здесь обзор движением взгляда, подсветка кресла при наведении и последовательность подключения.</p>
+
+      <div class="scene-actions">
+        <a class="btn-primary" href="home.html">Сесть в кресло</a>
+        <a class="btn-ghost" href="home.html">Пропустить</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="states">
+  <div class="section-head">
+    <h2>Состояния сцены</h2>
+    <span class="rule"></span>
+    <span class="meta">пять шагов до интерфейса очков</span>
+  </div>
+  <ol>
+    <li><b>01 обзор</b>Вид от первого лица, руки с имплантами в кадре, взгляд поворачивается движением мыши.</li>
+    <li><b>02 наведение</b>Взгляд упирается в кресло — над ним проявляется кнопка «Войти».</li>
+    <li><b>03 посадка</b>Персонаж садится, камера опускается и разворачивается к комнате.</li>
+    <li><b>04 подключение</b>Эффект подключения, персонаж моргает, кадр темнеет.</li>
+    <li><b>05 загрузка</b>На стекле очков идёт загрузка и проявляется «Всё ограничено вашей фантазией».</li>
+  </ol>
+
+  <div class="promo" style="margin-top:26px">
+    <span class="big">Телефон</span>
+    <p>Вместо интерактивной сцены проигрывается ролик той же сцены. Последний кадр ролика совпадает с первым кадром интерфейса очков — <b>стык не должен читаться</b>.</p>
+  </div>
+</div>
+
+<div class="foot-nav">
+  <a href="home.html">Главная</a>
+  <a href="simple.html">Простой сайт</a>
+  <a href="middle.html">Средний функционал</a>
+  <a href="included.html">Что входит</a>
+  <a href="terms.html">Условия работы</a>
+  <span class="spacer"></span>
+  <a href="404.html">404</a>
+</div>
+
+  </div>
+</section>
+
+<section class="frame" id="s2">
+  <div class="frame-bar"><span class="no">02</span><h2>Главная</h2><span class="say">интерфейс очков после кресла</span></div>
+  <div class="device">
+
+<header class="topline">
+  <div class="topline-in">
+    <a class="brand" href="home.html"><span class="dot"></span><span>Kiroshi Optics</span></a>
+    <nav class="topnav">
+      <a href="home.html" aria-current="page">Главная</a>
+      <a href="simple.html">Простой сайт</a>
+      <a href="middle.html">Средний функционал</a>
+      <a href="included.html">Что входит</a>
+      <a href="terms.html">Условия</a>
+    </nav>
+    <a class="tg-btn" href="#">Написать в Telegram</a>
+  </div>
+</header>
+
+<main class="shell">
+
+  <div class="page-head">
+    <p class="eyebrow">Разработка сайтов под ключ</p>
+    <h1>Всё ограничено вашей фантазией</h1>
+    <p>Восемь тарифов в двух категориях: от визитки на одну страницу до многостраничного сайта с админ-панелью, каталогом и интеграциями. Цены, состав работ и порядок оплаты — здесь же, без переписки.</p>
+  </div>
+
+
+  <div class="section-head">
+    <h2>Категории</h2>
+    <span class="rule"></span>
+    <span class="meta">8 тарифов</span>
+  </div>
+
+  <div class="cats">
+    <a class="cat" href="simple.html">
+      <h3>Простой сайт</h3>
+      <p>Одна страница, форма заявки, без базы данных и личного кабинета. Четыре тарифа: Старт, Стандарт, Продвинутый, Премиум.</p>
+      <div class="from">
+        <span class="price-old">от 25 000 ₽</span>
+        <span class="price">от 15 000 ₽</span>
+      </div>
+      <p class="meta" style="margin-top:12px">3–12 дней</p>
+    </a>
+
+    <a class="cat" href="middle.html">
+      <h3>Средний функционал</h3>
+      <p>5–15 страниц, админка для контента, каталог с фильтрами, блог, интеграции с CRM и мессенджерами. Четыре тарифа.</p>
+      <div class="from">
+        <span class="price-old">от 75 000 ₽</span>
+        <span class="price">от 45 000 ₽</span>
+      </div>
+      <p class="meta" style="margin-top:12px">2–6 недель</p>
+    </a>
+  </div>
+
+  <div class="section-head" style="margin-top:44px">
+    <h2>Что выбрать</h2>
+    <span class="rule"></span>
+  </div>
+
+  <div class="hint">
+    <div>
+      <h3>Хватит простого сайта</h3>
+      <p>Вы продаёте одну услугу или небольшой набор. Нужно рассказать о себе и получать заявки. Цены и тексты меняются редко, править их через разработчика не проблема.</p>
+    </div>
+    <div>
+      <h3>Нужен средний функционал</h3>
+      <p>У вас каталог, который живёт: позиции добавляются, цены меняются. Нужно править содержимое самому, вести блог, сводить заявки в CRM.</p>
+    </div>
+  </div>
+
+  <div class="section-head" style="margin-top:44px">
+    <h2>Дальше</h2>
+    <span class="rule"></span>
+  </div>
+
+  <div class="cats">
+    <a class="cat" href="included.html">
+      <h3>Что входит «под ключ»</h3>
+      <p>Десять пунктов состава работ, одинаковых для всех тарифов: от брифинга и прототипа до публикации на хостинге и гарантии 14 дней.</p>
+    </a>
+    <a class="cat" href="terms.html">
+      <h3>Условия работы</h3>
+      <p>Как вносятся правки и что считается переделкой. Оплата четырьмя этапами: 10 / 30 / 30 / 30, привязана к результату, а не к календарю.</p>
+    </a>
+  </div>
+
+</main>
+
+<div class="foot-nav">
+  <a href="index.html">Сцена входа</a>
+  <a href="simple.html">Простой сайт</a>
+  <a href="middle.html">Средний функционал</a>
+  <a href="included.html">Что входит</a>
+  <a href="terms.html">Условия работы</a>
+  <span class="spacer"></span>
+  
+</div>
+
+  </div>
+</section>
+
+<section class="frame" id="s3">
+  <div class="frame-bar"><span class="no">03</span><h2>Простой сайт</h2><span class="say">4 тарифа, карточки раскрываются</span></div>
+  <div class="device">
+
+<header class="topline">
+  <div class="topline-in">
+    <a class="brand" href="home.html"><span class="dot"></span><span>Kiroshi Optics</span></a>
+    <nav class="topnav">
+      <a href="home.html">Главная</a>
+      <a href="simple.html" aria-current="page">Простой сайт</a>
+      <a href="middle.html">Средний функционал</a>
+      <a href="included.html">Что входит</a>
+      <a href="terms.html">Условия</a>
+    </nav>
+    <a class="tg-btn" href="#">Написать в Telegram</a>
+  </div>
+</header>
+
+<main class="shell">
+
+  <div class="page-head">
+    <p class="eyebrow">Категория 1 из 2 · 4 тарифа</p>
+    <h1>Простой сайт</h1>
+    <p>Лендинг или сайт-визитка: одна страница, форма заявки, без базы данных и личного кабинета. Сроки от 3 до 12 дней.</p>
+  </div>
+
+
+  <div class="tiers">
+
+    <!-- ---------- Старт ---------- -->
+    <details class="tier">
+      <summary>
+        <div class="mock" aria-hidden="true">
+          <div class="bar tall accent"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="box"></div>
+          <div class="box"></div>
+          <div class="bar teal"></div>
+        </div>
+        <div>
+          <div class="tier-name">Старт</div>
+          <div class="tier-term">3–5 дней</div>
+          <p class="tier-gist">Одна страница на готовой основе: четыре блока и форма заявки на почту.</p>
+          <div class="price-row">
+            <span class="price-old">25 000 ₽</span>
+            <span class="price">15 000 ₽</span>
+          </div>
+          <span class="tier-more"><span></span></span>
+        </div>
+      </summary>
+      <div class="tier-body">
+        <ul>
+          <li>Одностраничный сайт (Landing Page)</li>
+          <li>Адаптивная вёрстка на основе шаблона под ваш бренд: логотип, цвета, тексты</li>
+          <li>До 4 смысловых блоков: о компании, услуги или товары, отзывы, контакты</li>
+          <li>1 форма заявки с отправкой на почту</li>
+          <li>Адаптация под ПК, планшет, смартфон</li>
+        </ul>
+        <div class="foot">
+          <a class="meta" href="included.html">что входит в «под ключ»</a>
+        </div>
+      </div>
+    </details>
+
+    <!-- ---------- Стандарт ---------- -->
+    <details class="tier">
+      <summary>
+        <div class="mock" aria-hidden="true">
+          <div class="bar tall accent"></div>
+          <div class="bar"></div>
+          <div class="grid2"><div class="box fill"></div><div class="box fill"></div></div>
+          <div class="bar"></div>
+          <div class="bar teal"></div>
+        </div>
+        <div>
+          <div class="tier-name">Стандарт</div>
+          <div class="tier-term">5–7 дней</div>
+          <p class="tier-gist">Индивидуальный дизайн, шесть блоков, заявки приходят в Telegram.</p>
+          <div class="price-row">
+            <span class="price-old">32 000 ₽</span>
+            <span class="price">19 200 ₽</span>
+          </div>
+          <span class="tier-more"><span></span></span>
+        </div>
+      </summary>
+      <div class="tier-body">
+        <ul>
+          <li>Индивидуальный дизайн, не шаблон, под ваш бренд</li>
+          <li>До 6 смысловых блоков</li>
+          <li>Форма заявки с интеграцией в Telegram и почту</li>
+          <li>Базовая SEO-разметка: мета-теги, заголовки</li>
+          <li>Подключение Яндекс.Метрики или Google Analytics</li>
+        </ul>
+        <div class="foot">
+          <a class="meta" href="included.html">что входит в «под ключ»</a>
+        </div>
+      </div>
+    </details>
+
+    <!-- ---------- Продвинутый ---------- -->
+    <details class="tier">
+      <summary>
+        <div class="mock" aria-hidden="true">
+          <div class="bar tall accent"></div>
+          <div class="grid3"><div class="box fill"></div><div class="box fill"></div><div class="box fill"></div></div>
+          <div class="grid3"><div class="box fill"></div><div class="box fill"></div><div class="box fill"></div></div>
+          <div class="row"><div class="bar teal"></div><div class="bar accent"></div></div>
+          <div class="bar"></div>
+        </div>
+        <div>
+          <div class="tier-name">Продвинутый</div>
+          <div class="tier-term">7–10 дней</div>
+          <p class="tier-gist">Каталог до 20 позиций, калькулятор или квиз, анимации при скролле.</p>
+          <div class="price-row">
+            <span class="price-old">40 000 ₽</span>
+            <span class="price">24 000 ₽</span>
+          </div>
+          <span class="tier-more"><span></span></span>
+        </div>
+      </summary>
+      <div class="tier-body">
+        <ul>
+          <li>Уникальный дизайн с анимациями и микро-интерактивностью при скролле</li>
+          <li>Каталог товаров или услуг, статичный, до 15–20 позиций</li>
+          <li>Простой калькулятор стоимости или квиз для сбора заявок</li>
+          <li>Несколько форм захвата в разных блоках</li>
+        </ul>
+        <div class="foot">
+          <a class="meta" href="included.html">что входит в «под ключ»</a>
+        </div>
+      </div>
+    </details>
+
+    <!-- ---------- Премиум ---------- -->
+    <details class="tier">
+      <summary>
+        <div class="mock" aria-hidden="true">
+          <div class="bar tall accent"></div>
+          <div class="side">
+            <div class="stack"><div class="bar"></div><div class="bar"></div><div class="bar"></div></div>
+            <div class="stack"><div class="box fill"></div><div class="box fill"></div></div>
+          </div>
+          <div class="grid2"><div class="box"></div><div class="box"></div></div>
+          <div class="bar teal"></div>
+        </div>
+        <div>
+          <div class="tier-name">Премиум</div>
+          <div class="tier-term">10–12 дней</div>
+          <p class="tier-gist">Всё из «Продвинутого» плюс вторая страница, сложные эффекты и разгон скорости.</p>
+          <div class="price-row">
+            <span class="price-old">50 000 ₽</span>
+            <span class="price">30 000 ₽</span>
+          </div>
+          <span class="tier-more"><span></span></span>
+        </div>
+      </summary>
+      <div class="tier-body">
+        <ul>
+          <li>Всё из тарифа «Продвинутый»</li>
+          <li>Дополнительная страница: услуга, акция или политика конфиденциальности</li>
+          <li>Сложные анимации: параллакс, эффекты при скролле</li>
+          <li>Оптимизация скорости загрузки</li>
+        </ul>
+        <div class="foot">
+          <a class="meta" href="included.html">что входит в «под ключ»</a>
+        </div>
+      </div>
+    </details>
+
+  </div>
+
+  <div class="section-head" style="margin-top:44px">
+    <h2>Не подходит?</h2>
+    <span class="rule"></span>
+  </div>
+
+  <div class="hint">
+    <div>
+      <h3>Хватит этой категории</h3>
+      <p>Одна страница закрывает вопрос: рассказать о себе и получить заявку. Каталог небольшой и меняется редко, править содержимое самому не нужно.</p>
+    </div>
+    <div>
+      <h3>Нужен средний функционал</h3>
+      <p>Позиции добавляются постоянно, нужны фильтры и поиск, блог, админка и сведение заявок в CRM. <a href="middle.html" style="color:var(--teal)">Перейти во вторую категорию →</a></p>
+    </div>
+  </div>
+
+</main>
+
+<div class="foot-nav">
+  <a href="index.html">Сцена входа</a>
+  <a href="home.html">Главная</a>
+  <a href="middle.html">Средний функционал</a>
+  <a href="included.html">Что входит</a>
+  <a href="terms.html">Условия работы</a>
+  <span class="spacer"></span>
+  
+</div>
+
+  </div>
+</section>
+
+<section class="frame" id="s4">
+  <div class="frame-bar"><span class="no">04</span><h2>Средний функционал</h2><span class="say">4 тарифа, карточки раскрываются</span></div>
+  <div class="device">
+
+<header class="topline">
+  <div class="topline-in">
+    <a class="brand" href="home.html"><span class="dot"></span><span>Kiroshi Optics</span></a>
+    <nav class="topnav">
+      <a href="home.html">Главная</a>
+      <a href="simple.html">Простой сайт</a>
+      <a href="middle.html" aria-current="page">Средний функционал</a>
+      <a href="included.html">Что входит</a>
+      <a href="terms.html">Условия</a>
+    </nav>
+    <a class="tg-btn" href="#">Написать в Telegram</a>
+  </div>
+</header>
+
+<main class="shell">
+
+  <div class="page-head">
+    <p class="eyebrow">Категория 2 из 2 · 4 тарифа</p>
+    <h1>Средний функционал</h1>
+    <p>Многостраничный сайт: 5–15 страниц, админка для контента, каталог товаров или услуг, интеграции с CRM, Telegram и почтой, блог. Сроки от 2 до 6 недель.</p>
+  </div>
+
+
+  <div class="tiers">
+
+    <!-- ---------- Стандарт ---------- -->
+    <details class="tier">
+      <summary>
+        <div class="mock" aria-hidden="true">
+          <div class="bar tall accent"></div>
+          <div class="row"><div class="bar"></div><div class="bar"></div><div class="bar"></div></div>
+          <div class="grid2"><div class="box fill"></div><div class="box fill"></div></div>
+          <div class="grid2"><div class="box fill"></div><div class="box fill"></div></div>
+          <div class="bar teal"></div>
+        </div>
+        <div>
+          <div class="tier-name">Стандарт</div>
+          <div class="tier-term">2–3 недели</div>
+          <p class="tier-gist">5–7 страниц, простая админка, каталог до 30 позиций.</p>
+          <div class="price-row">
+            <span class="price-old">75 000 ₽</span>
+            <span class="price">45 000 ₽</span>
+          </div>
+          <span class="tier-more"><span></span></span>
+        </div>
+      </summary>
+      <div class="tier-body">
+        <ul>
+          <li>Многостраничный сайт, 5–7 страниц</li>
+          <li>Простая CMS или админка для редактирования текстов и фото</li>
+          <li>Каталог до 30 позиций без фильтров</li>
+          <li>Форма заявки с интеграцией в Telegram-бота</li>
+        </ul>
+        <div class="foot">
+          <a class="meta" href="included.html">что входит в «под ключ»</a>
+        </div>
+      </div>
+    </details>
+
+    <!-- ---------- Оптимальный ---------- -->
+    <details class="tier">
+      <summary>
+        <div class="mock" aria-hidden="true">
+          <div class="bar tall accent"></div>
+          <div class="side">
+            <div class="stack"><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div></div>
+            <div class="stack">
+              <div class="grid2"><div class="box fill"></div><div class="box fill"></div></div>
+              <div class="grid2"><div class="box fill"></div><div class="box fill"></div></div>
+            </div>
+          </div>
+          <div class="row"><div class="bar teal"></div><div class="bar"></div></div>
+        </div>
+        <div>
+          <div class="tier-name">Оптимальный</div>
+          <div class="tier-term">3–4 недели</div>
+          <p class="tier-gist">8–10 страниц, полная админка, фильтры и поиск, блог, CRM.</p>
+          <div class="price-row">
+            <span class="price-old">100 000 ₽</span>
+            <span class="price">60 000 ₽</span>
+          </div>
+          <span class="tier-more"><span></span></span>
+        </div>
+      </summary>
+      <div class="tier-body">
+        <ul>
+          <li>8–10 страниц</li>
+          <li>Полноценная админ-панель: каталог, цены, новости и блог</li>
+          <li>Каталог с фильтрами и поиском</li>
+          <li>Блог с собственной CMS</li>
+          <li>Интеграция с CRM: amoCRM или Bitrix24</li>
+        </ul>
+        <div class="foot">
+          <a class="meta" href="included.html">что входит в «под ключ»</a>
+        </div>
+      </div>
+    </details>
+
+    <!-- ---------- Расширенный ---------- -->
+    <details class="tier">
+      <summary>
+        <div class="mock" aria-hidden="true">
+          <div class="row"><div class="bar accent"></div><div class="bar teal"></div></div>
+          <div class="side">
+            <div class="stack"><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div></div>
+            <div class="stack">
+              <div class="grid3"><div class="box fill"></div><div class="box fill"></div><div class="box fill"></div></div>
+              <div class="grid3"><div class="box fill"></div><div class="box fill"></div><div class="box fill"></div></div>
+            </div>
+          </div>
+          <div class="box"></div>
+        </div>
+        <div>
+          <div class="tier-name">Расширенный</div>
+          <div class="tier-term">4–5 недель</div>
+          <p class="tier-gist">11–15 страниц, категории и подкатегории, личный кабинет клиента.</p>
+          <div class="price-row">
+            <span class="price-old">125 000 ₽</span>
+            <span class="price">75 000 ₽</span>
+          </div>
+          <span class="tier-more"><span></span></span>
+        </div>
+      </summary>
+      <div class="tier-body">
+        <ul>
+          <li>11–15 страниц</li>
+          <li>Каталог с категориями и подкатегориями</li>
+          <li>Личный кабинет клиента: история заявок, без оплаты</li>
+          <li>Интеграции с несколькими каналами: Telegram, WhatsApp, почта, CRM</li>
+        </ul>
+        <div class="foot">
+          <a class="meta" href="included.html">что входит в «под ключ»</a>
+        </div>
+      </div>
+    </details>
+
+    <!-- ---------- Максимальный ---------- -->
+    <details class="tier">
+      <summary>
+        <div class="mock" aria-hidden="true">
+          <div class="row"><div class="bar accent"></div><div class="bar teal"></div></div>
+          <div class="grid2"><div class="box fill"></div><div class="box fill"></div></div>
+          <div class="side">
+            <div class="stack"><div class="bar"></div><div class="bar"></div><div class="bar"></div></div>
+            <div class="stack"><div class="box fill"></div><div class="grid3"><div class="box"></div><div class="box"></div><div class="box"></div></div></div>
+          </div>
+          <div class="bar accent"></div>
+        </div>
+        <div>
+          <div class="tier-name">Максимальный</div>
+          <div class="tier-term">5–6 недель</div>
+          <p class="tier-gist">Всё из «Расширенного» плюс дашборд, конфигуратор, обучение и поддержка 30 дней.</p>
+          <div class="price-row">
+            <span class="price-old">150 000 ₽</span>
+            <span class="price">90 000 ₽</span>
+          </div>
+          <span class="tier-more"><span></span></span>
+        </div>
+      </summary>
+      <div class="tier-body">
+        <ul>
+          <li>Всё из тарифа «Расширенный»</li>
+          <li>Аналитический дашборд для владельца сайта</li>
+          <li>Кастомные виджеты: калькулятор стоимости, конфигуратор товара или услуги</li>
+          <li>Обучение работе с админ-панелью</li>
+          <li>Приоритетная поддержка 30 дней после запуска</li>
+        </ul>
+        <div class="foot">
+          <a class="meta" href="included.html">что входит в «под ключ»</a>
+        </div>
+      </div>
+    </details>
+
+  </div>
+
+  <div class="section-head" style="margin-top:44px">
+    <h2>Не подходит?</h2>
+    <span class="rule"></span>
+  </div>
+
+  <div class="hint">
+    <div>
+      <h3>Хватит этой категории</h3>
+      <p>Каталог живёт, содержимое меняется, заявки нужно сводить в CRM, а тексты править самому через админку.</p>
+    </div>
+    <div>
+      <h3>Достаточно простого сайта</h3>
+      <p>Если задача — одна страница, рассказ о себе и заявки, а содержимое меняется пару раз в год. <a href="simple.html" style="color:var(--teal)">Перейти в первую категорию →</a></p>
+    </div>
+  </div>
+
+</main>
+
+<div class="foot-nav">
+  <a href="index.html">Сцена входа</a>
+  <a href="home.html">Главная</a>
+  <a href="simple.html">Простой сайт</a>
+  <a href="included.html">Что входит</a>
+  <a href="terms.html">Условия работы</a>
+  <span class="spacer"></span>
+  
+</div>
+
+  </div>
+</section>
+
+<section class="frame" id="s5">
+  <div class="frame-bar"><span class="no">05</span><h2>Что входит</h2><span class="say">10 пунктов, общие для всех</span></div>
+  <div class="device">
+
+<header class="topline">
+  <div class="topline-in">
+    <a class="brand" href="home.html"><span class="dot"></span><span>Kiroshi Optics</span></a>
+    <nav class="topnav">
+      <a href="home.html">Главная</a>
+      <a href="simple.html">Простой сайт</a>
+      <a href="middle.html">Средний функционал</a>
+      <a href="included.html" aria-current="page">Что входит</a>
+      <a href="terms.html">Условия</a>
+    </nav>
+    <a class="tg-btn" href="#">Написать в Telegram</a>
+  </div>
+</header>
+
+<main class="shell">
+
+  <div class="page-head">
+    <p class="eyebrow">Одинаково для всех восьми тарифов</p>
+    <h1>Что входит в стоимость «под ключ»</h1>
+    <p>Цена тарифа закрывает весь путь: от первого разговора до сайта, открытого на вашем домене. Отдельно за запуск, настройку и передачу доступов платить не нужно.</p>
+  </div>
+
+  <div class="section-head">
+    <h2>Состав работ</h2>
+    <span class="rule"></span>
+    <span class="meta">10 пунктов</span>
+  </div>
+
+  <ul class="checks">
+    <li>Брифинг и сбор требований</li>
+    <li>Анализ конкурентов</li>
+    <li>Прототип и структура страниц</li>
+    <li>Дизайн-макет<small>адаптация под ПК, планшет и смартфон</small></li>
+    <li>Вёрстка и программирование</li>
+    <li>Наполнение контентом<small>тексты и фото предоставляет заказчик, базовая обработка — по необходимости</small></li>
+    <li>Тестирование в браузерах и на устройствах</li>
+    <li>Публикация на хостинге и привязка вашего домена</li>
+    <li>Подключение аналитики<small>Яндекс.Метрика или Google Analytics</small></li>
+    <li>Гарантийная поддержка 14 дней<small>бесплатное исправление ошибок после сдачи</small></li>
+  </ul>
+
+
+  <div class="section-head" style="margin-top:36px">
+    <h2>Дальше</h2>
+    <span class="rule"></span>
+  </div>
+
+  <div class="cats">
+    <a class="cat" href="simple.html">
+      <h3>Простой сайт</h3>
+      <p>Четыре тарифа, одна страница, заявки на почту или в Telegram.</p>
+      <div class="from">
+        <span class="price-old">от 25 000 ₽</span>
+        <span class="price">от 15 000 ₽</span>
+      </div>
+    </a>
+    <a class="cat" href="middle.html">
+      <h3>Средний функционал</h3>
+      <p>Четыре тарифа, до 15 страниц, админка, каталог, интеграции.</p>
+      <div class="from">
+        <span class="price-old">от 75 000 ₽</span>
+        <span class="price">от 45 000 ₽</span>
+      </div>
+    </a>
+  </div>
+
+</main>
+
+<div class="foot-nav">
+  <a href="index.html">Сцена входа</a>
+  <a href="home.html">Главная</a>
+  <a href="simple.html">Простой сайт</a>
+  <a href="middle.html">Средний функционал</a>
+  <a href="terms.html">Условия работы</a>
+  <span class="spacer"></span>
+  
+</div>
+
+  </div>
+</section>
+
+<section class="frame" id="s6">
+  <div class="frame-bar"><span class="no">06</span><h2>Условия работы</h2><span class="say">правки и оплата</span></div>
+  <div class="device">
+
+<header class="topline">
+  <div class="topline-in">
+    <a class="brand" href="home.html"><span class="dot"></span><span>Kiroshi Optics</span></a>
+    <nav class="topnav">
+      <a href="home.html">Главная</a>
+      <a href="simple.html">Простой сайт</a>
+      <a href="middle.html">Средний функционал</a>
+      <a href="included.html">Что входит</a>
+      <a href="terms.html" aria-current="page">Условия</a>
+    </nav>
+    <a class="tg-btn" href="#">Написать в Telegram</a>
+  </div>
+</header>
+
+<main class="shell">
+
+  <div class="page-head">
+    <p class="eyebrow">Правки и оплата</p>
+    <h1>Условия работы</h1>
+    <p>Два вопроса, которые обычно задают первыми: сколько раз можно переделать и когда платить. Ответы ниже.</p>
+  </div>
+
+  <div class="section-head">
+    <h2>Правки</h2>
+    <span class="rule"></span>
+  </div>
+
+  <div class="callout">
+    <p>Правки вносятся до тех пор, пока результат <b>полностью не устроит заказчика</b>.</p>
+    <p>Отдельно оценивается и оплачивается только основательная переделка после утверждения этапа: смена концепции дизайна, изменение структуры или количества страниц, добавление функционала, не предусмотренного согласованным ТЗ.</p>
+  </div>
+
+  <div class="section-head" style="margin-top:44px">
+    <h2>Оплата</h2>
+    <span class="rule"></span>
+    <span class="meta">4 этапа, привязаны к результату</span>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="pct">10%</div>
+      <h3>Аванс</h3>
+      <p>При подписании договора, до начала работ: согласование ТЗ, сбор материалов, прототип структуры.</p>
+    </div>
+    <div class="step">
+      <div class="pct">30%</div>
+      <h3>Дизайн принят</h3>
+      <p>После утверждения дизайн-макета заказчиком.</p>
+    </div>
+    <div class="step">
+      <div class="pct">30%</div>
+      <h3>Тестовая версия</h3>
+      <p>После реализации функционала и предоставления тестовой версии сайта.</p>
+    </div>
+    <div class="step">
+      <div class="pct">30%</div>
+      <h3>Сдача</h3>
+      <p>После публикации на хостинге и приёмки готового сайта.</p>
+    </div>
+  </div>
+
+
+  <div class="section-head" style="margin-top:36px">
+    <h2>Дальше</h2>
+    <span class="rule"></span>
+  </div>
+
+  <div class="cats">
+    <a class="cat" href="included.html">
+      <h3>Что входит «под ключ»</h3>
+      <p>Десять пунктов состава работ, одинаковых для всех тарифов.</p>
+    </a>
+    <a class="cat" href="simple.html">
+      <h3>Вернуться к тарифам</h3>
+      <p>Восемь пакетов в двух категориях, от 15 000 ₽ со скидкой.</p>
+    </a>
+  </div>
+
+</main>
+
+<div class="foot-nav">
+  <a href="index.html">Сцена входа</a>
+  <a href="home.html">Главная</a>
+  <a href="simple.html">Простой сайт</a>
+  <a href="middle.html">Средний функционал</a>
+  <a href="included.html">Что входит</a>
+  <span class="spacer"></span>
+  
+</div>
+
+  </div>
+</section>
+
+<section class="frame" id="s7">
+  <div class="frame-bar"><span class="no">07</span><h2>Сигнал потерян</h2><span class="say">404 внутри мира</span></div>
+  <div class="device">
+
+<header class="topline">
+  <div class="topline-in">
+    <a class="brand" href="home.html"><span class="dot"></span><span>Kiroshi Optics</span></a>
+    <nav class="topnav">
+      <a href="home.html">Главная</a>
+      <a href="simple.html">Простой сайт</a>
+      <a href="middle.html">Средний функционал</a>
+      <a href="included.html">Что входит</a>
+      <a href="terms.html">Условия</a>
+    </nav>
+    <a class="tg-btn" href="#">Написать в Telegram</a>
+  </div>
+</header>
+
+<main class="shell">
+
+  <div class="lost">
+    <div class="code">404</div>
+    <h1>Сигнал потерян</h1>
+    <p>Раздел не отвечает — ссылка ведёт в пустоту. Очки на месте, канал открыт, можно вернуться назад.</p>
+    <div class="scene-actions">
+      <a class="btn-primary" href="home.html">На главную</a>
+      <a class="btn-ghost" href="simple.html">К тарифам</a>
+    </div>
+  </div>
+
+  <div class="cats" style="margin-top:20px">
+    <a class="cat" href="simple.html">
+      <h3>Простой сайт</h3>
+      <p>Четыре тарифа, одна страница, заявки на почту или в Telegram.</p>
+      <div class="from">
+        <span class="price-old">от 25 000 ₽</span>
+        <span class="price">от 15 000 ₽</span>
+      </div>
+    </a>
+    <a class="cat" href="middle.html">
+      <h3>Средний функционал</h3>
+      <p>Четыре тарифа, до 15 страниц, админка, каталог, интеграции.</p>
+      <div class="from">
+        <span class="price-old">от 75 000 ₽</span>
+        <span class="price">от 45 000 ₽</span>
+      </div>
+    </a>
+  </div>
+
+</main>
+
+<div class="foot-nav">
+  <a href="index.html">Сцена входа</a>
+  <a href="home.html">Главная</a>
+  <a href="included.html">Что входит</a>
+  <a href="terms.html">Условия работы</a>
+  <span class="spacer"></span>
+  
+</div>
+
+  </div>
+</section>

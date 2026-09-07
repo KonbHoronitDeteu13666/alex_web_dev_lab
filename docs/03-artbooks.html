@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Артбуки — три варианта стиля</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tektur:wght@400;600;800&family=Unbounded:wght@300;500;700&family=Exo+2:wght@400;600;800&family=IBM+Plex+Mono:wght@400;600&family=Manrope:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 40px 24px 80px;
+    background: #0a0a0c;
+    color: #e8e8ec;
+    font: 15px/1.6 "Manrope", system-ui, sans-serif;
+  }
+  .head { max-width: 1400px; margin: 0 auto 36px; }
+  .head h1 { font: 700 26px/1.2 "Manrope", sans-serif; margin: 0 0 8px; }
+  .head p { color: #8a8a99; margin: 0; max-width: 70ch; }
+
+  .grid {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  @media (max-width: 1100px) { .grid { grid-template-columns: 1fr; } }
+
+  .book { border: 1px solid #23232b; border-radius: 4px; overflow: hidden; }
+  .book-head { padding: 18px 22px; border-bottom: 1px solid #23232b; display: flex; align-items: baseline; gap: 12px; }
+  .book-head .num { font: 700 13px "IBM Plex Mono", monospace; color: #0a0a0c; background: #e8e8ec; padding: 2px 8px; }
+  .book-head h2 { font: 700 18px "Manrope", sans-serif; margin: 0; }
+  .book-head .tag { margin-left: auto; font: 400 12px "IBM Plex Mono", monospace; color: #8a8a99; }
+
+  .stage { padding: 26px 22px 30px; }
+  .row-label { font: 600 11px "IBM Plex Mono", monospace; letter-spacing: .18em; text-transform: uppercase; color: #6a6a78; margin: 0 0 12px; }
+  .swatches { display: flex; gap: 6px; margin-bottom: 26px; }
+  .sw { flex: 1; height: 64px; border-radius: 3px; display: flex; align-items: flex-end; padding: 6px; }
+  .sw span { font: 500 9.5px "IBM Plex Mono", monospace; opacity: .85; }
+  .fonts { margin-bottom: 26px; }
+  .fonts .pair { font: 400 12px "IBM Plex Mono", monospace; color: #6a6a78; margin-bottom: 10px; }
+  .demo { padding: 24px 20px; border-radius: 4px; }
+  .note { margin-top: 20px; font-size: 13.5px; color: #8a8a99; }
+  .note b { color: #c9c9d4; font-weight: 600; }
+
+  /* ---------- Вариант 1: канон 2077 ---------- */
+  .v1 { --bg:#050505; --panel:#0e0e10; --yellow:#fcee0a; --red:#ff003c; --cyan:#00f0ff; --ink:#f2f2f2; --dim:#8b8b93; }
+  .v1 .demo { background: var(--bg); border: 1px solid #1c1c20; }
+  .v1 .kicker { font: 600 11px "IBM Plex Mono", monospace; letter-spacing: .2em; color: var(--red); text-transform: uppercase; }
+  .v1 .card {
+    margin-top: 14px; background: var(--panel); padding: 20px 18px;
+    clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
+    border-left: 3px solid var(--yellow);
+  }
+  .v1 .card h3 { font: 800 22px/1 "Tektur", sans-serif; margin: 0 0 4px; color: var(--ink); text-transform: uppercase; }
+  .v1 .card .term { font: 400 11px "IBM Plex Mono", monospace; color: var(--cyan); letter-spacing: .12em; text-transform: uppercase; }
+  .v1 .card ul { margin: 14px 0 16px; padding: 0; list-style: none; }
+  .v1 .card li { font: 400 13px/1.5 "Exo 2", sans-serif; color: var(--dim); padding-left: 14px; position: relative; margin-bottom: 5px; }
+  .v1 .card li::before { content: "▸"; position: absolute; left: 0; color: var(--yellow); }
+  .v1 .price { font: 800 30px "Tektur", sans-serif; color: var(--yellow); }
+  .v1 .btn {
+    display: block; width: 100%; margin-top: 16px; padding: 13px;
+    background: var(--yellow); color: #050505; border: 0;
+    font: 800 13px "Tektur", sans-serif; letter-spacing: .16em; text-transform: uppercase;
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+    cursor: pointer;
+  }
+  .v1 .sample-h { font: 800 26px/1 "Tektur", sans-serif; color: var(--ink); text-transform: uppercase; }
+  .v1 .sample-b { font: 400 14px/1.6 "Exo 2", sans-serif; color: var(--dim); margin-top: 8px; }
+
+  /* ---------- Вариант 2: приглушённый ночной город ---------- */
+  .v2 { --bg:#0b0d14; --panel:#12151f; --yellow:#f4d738; --ink:#dfe3ee; --dim:#7d859b; --line:#222739; --teal:#37d4c8; }
+  .v2 .demo { background: var(--bg); border: 1px solid var(--line); }
+  .v2 .kicker { font: 400 11px "JetBrains Mono", monospace; letter-spacing: .22em; color: var(--teal); text-transform: uppercase; }
+  .v2 .card { margin-top: 14px; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 22px 20px; }
+  .v2 .card h3 { font: 500 21px/1.2 "Unbounded", sans-serif; margin: 0 0 6px; color: var(--ink); }
+  .v2 .card .term { font: 400 11px "JetBrains Mono", monospace; color: var(--dim); letter-spacing: .1em; }
+  .v2 .card ul { margin: 16px 0 18px; padding: 0; list-style: none; }
+  .v2 .card li { font: 400 13.5px/1.6 "Manrope", sans-serif; color: var(--dim); padding-left: 16px; position: relative; margin-bottom: 6px; }
+  .v2 .card li::before { content: ""; position: absolute; left: 0; top: 9px; width: 6px; height: 1px; background: var(--yellow); }
+  .v2 .price { font: 700 30px "Unbounded", sans-serif; color: var(--yellow); }
+  .v2 .btn {
+    display: block; width: 100%; margin-top: 18px; padding: 14px; border-radius: 8px;
+    background: transparent; color: var(--yellow); border: 1px solid var(--yellow);
+    font: 600 12px "JetBrains Mono", monospace; letter-spacing: .16em; text-transform: uppercase; cursor: pointer;
+  }
+  .v2 .sample-h { font: 500 24px/1.25 "Unbounded", sans-serif; color: var(--ink); }
+  .v2 .sample-b { font: 400 14px/1.7 "Manrope", sans-serif; color: var(--dim); margin-top: 10px; }
+
+  /* ---------- Вариант 3: терминал ---------- */
+  .v3 { --bg:#07090a; --panel:#0c1011; --amber:#ffb000; --green:#3dff9e; --ink:#d6e2e0; --dim:#6f8280; --line:#1b2426; }
+  .v3 .demo { background: var(--bg); border: 1px solid var(--line); position: relative; overflow: hidden; }
+  .v3 .demo::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: repeating-linear-gradient(to bottom, rgba(255,255,255,.045) 0 1px, transparent 1px 3px);
+  }
+  .v3 .kicker { font: 400 11px "JetBrains Mono", monospace; letter-spacing: .2em; color: var(--green); text-transform: uppercase; }
+  .v3 .card { margin-top: 14px; background: var(--panel); border: 1px solid var(--line); padding: 20px 18px; position: relative; }
+  .v3 .card::before, .v3 .card::after {
+    content: ""; position: absolute; width: 9px; height: 9px; border: 1px solid var(--amber);
+  }
+  .v3 .card::before { top: -1px; left: -1px; border-right: 0; border-bottom: 0; }
+  .v3 .card::after { bottom: -1px; right: -1px; border-left: 0; border-top: 0; }
+  .v3 .card h3 { font: 700 19px/1.2 "JetBrains Mono", monospace; margin: 0 0 6px; color: var(--ink); text-transform: uppercase; letter-spacing: .04em; }
+  .v3 .card .term { font: 400 11px "JetBrains Mono", monospace; color: var(--dim); }
+  .v3 .card ul { margin: 15px 0 16px; padding: 0; list-style: none; }
+  .v3 .card li { font: 400 13px/1.55 "Exo 2", sans-serif; color: var(--dim); padding-left: 16px; position: relative; margin-bottom: 5px; }
+  .v3 .card li::before { content: "+"; position: absolute; left: 0; color: var(--green); }
+  .v3 .price { font: 700 28px "JetBrains Mono", monospace; color: var(--amber); }
+  .v3 .btn {
+    display: block; width: 100%; margin-top: 16px; padding: 13px;
+    background: rgba(255,176,0,.08); color: var(--amber); border: 1px solid var(--amber);
+    font: 700 12px "JetBrains Mono", monospace; letter-spacing: .18em; text-transform: uppercase; cursor: pointer;
+  }
+  .v3 .sample-h { font: 700 22px/1.25 "JetBrains Mono", monospace; color: var(--ink); text-transform: uppercase; }
+  .v3 .sample-b { font: 400 14px/1.65 "Exo 2", sans-serif; color: var(--dim); margin-top: 10px; }
+</style>
+</head>
+<body>
+
+<div class="head">
+  <h1>Артбуки: три прочтения Cyberpunk 2077</h1>
+  <p>Один референс, три разной громкости. Каждая карточка — палитра, шрифтовая пара и типовой блок: заголовок, карточка тарифа, кнопка. Контент в примерах настоящий, из твоего прайса, чтобы было видно, как лягут реальные цифры.</p>
+</div>
+
+<div class="grid">
+
+  <!-- ============ 1 ============ -->
+  <section class="book v1">
+    <div class="book-head">
+      <span class="num">01</span>
+      <h2>Канон</h2>
+      <span class="tag">громко</span>
+    </div>
+    <div class="stage">
+      <p class="row-label">Палитра</p>
+      <div class="swatches">
+        <div class="sw" style="background:#050505"><span style="color:#8b8b93">#050505</span></div>
+        <div class="sw" style="background:#0e0e10"><span style="color:#8b8b93">#0E0E10</span></div>
+        <div class="sw" style="background:#fcee0a"><span style="color:#050505">#FCEE0A</span></div>
+        <div class="sw" style="background:#ff003c"><span style="color:#050505">#FF003C</span></div>
+        <div class="sw" style="background:#00f0ff"><span style="color:#050505">#00F0FF</span></div>
+      </div>
+
+      <p class="row-label">Шрифты</p>
+      <div class="fonts">
+        <p class="pair">Tektur 800 — заголовки / Exo 2 400 — текст</p>
+        <div class="sample-h">Всё ограничено вашей фантазией</div>
+        <p class="sample-b">Разработка сайтов под ключ. Восемь тарифов, от простой визитки до многостраничного проекта с админ-панелью.</p>
+      </div>
+
+      <p class="row-label">Типовой блок</p>
+      <div class="demo">
+        <p class="kicker">Простой сайт / 02</p>
+        <div class="card">
+          <h3>Стандарт</h3>
+          <p class="term">5–7 дней</p>
+          <ul>
+            <li>Индивидуальный дизайн под ваш бренд</li>
+            <li>До 6 смысловых блоков</li>
+            <li>Форма заявки с отправкой в Telegram</li>
+            <li>Базовая SEO-разметка</li>
+          </ul>
+          <div class="price">32 000 ₽</div>
+          <button class="btn">Обсудить</button>
+        </div>
+      </div>
+
+      <p class="note"><b>Характер:</b> кислотный жёлтый как основной цвет, срезанные углы, всё в верхнем регистре, красный на служебных подписях. Максимально узнаваемо, бьёт с первого кадра. Риск: на длинных текстовых блоках такой жёлтый утомляет, а малый бизнес может прочитать это как «дорого и не для меня».</p>
+    </div>
+  </section>
+
+  <!-- ============ 2 ============ -->
+  <section class="book v2">
+    <div class="book-head">
+      <span class="num">02</span>
+      <h2>Ночной город</h2>
+      <span class="tag">приглушённо</span>
+    </div>
+    <div class="stage">
+      <p class="row-label">Палитра</p>
+      <div class="swatches">
+        <div class="sw" style="background:#0b0d14"><span style="color:#7d859b">#0B0D14</span></div>
+        <div class="sw" style="background:#12151f"><span style="color:#7d859b">#12151F</span></div>
+        <div class="sw" style="background:#222739"><span style="color:#7d859b">#222739</span></div>
+        <div class="sw" style="background:#f4d738"><span style="color:#0b0d14">#F4D738</span></div>
+        <div class="sw" style="background:#37d4c8"><span style="color:#0b0d14">#37D4C8</span></div>
+      </div>
+
+      <p class="row-label">Шрифты</p>
+      <div class="fonts">
+        <p class="pair">Unbounded 500 — заголовки / Manrope 400 — текст</p>
+        <div class="sample-h">Всё ограничено вашей фантазией</div>
+        <p class="sample-b">Разработка сайтов под ключ. Восемь тарифов, от простой визитки до многостраничного проекта с админ-панелью.</p>
+      </div>
+
+      <p class="row-label">Типовой блок</p>
+      <div class="demo">
+        <p class="kicker">Простой сайт / 02</p>
+        <div class="card">
+          <h3>Стандарт</h3>
+          <p class="term">5–7 дней</p>
+          <ul>
+            <li>Индивидуальный дизайн под ваш бренд</li>
+            <li>До 6 смысловых блоков</li>
+            <li>Форма заявки с отправкой в Telegram</li>
+            <li>Базовая SEO-разметка</li>
+          </ul>
+          <div class="price">32 000 ₽</div>
+          <button class="btn">Обсудить</button>
+        </div>
+      </div>
+
+      <p class="note"><b>Характер:</b> тот же мир, но громкость убрана. Жёлтый только на цене и главной кнопке, остальное — глубокий синий и бирюза. Скруглённые панели вместо срезов, много воздуха. Цены читаются спокойно, длинные списки не устают. Риск: киберпанк узнаётся не сразу, эффект «вау» слабее.</p>
+    </div>
+  </section>
+
+  <!-- ============ 3 ============ -->
+  <section class="book v3">
+    <div class="book-head">
+      <span class="num">03</span>
+      <h2>Терминал</h2>
+      <span class="tag">техническое</span>
+    </div>
+    <div class="stage">
+      <p class="row-label">Палитра</p>
+      <div class="swatches">
+        <div class="sw" style="background:#07090a"><span style="color:#6f8280">#07090A</span></div>
+        <div class="sw" style="background:#0c1011"><span style="color:#6f8280">#0C1011</span></div>
+        <div class="sw" style="background:#1b2426"><span style="color:#6f8280">#1B2426</span></div>
+        <div class="sw" style="background:#ffb000"><span style="color:#07090a">#FFB000</span></div>
+        <div class="sw" style="background:#3dff9e"><span style="color:#07090a">#3DFF9E</span></div>
+      </div>
+
+      <p class="row-label">Шрифты</p>
+      <div class="fonts">
+        <p class="pair">JetBrains Mono 700 — заголовки / Exo 2 400 — текст</p>
+        <div class="sample-h">Всё ограничено вашей фантазией</div>
+        <p class="sample-b">Разработка сайтов под ключ. Восемь тарифов, от простой визитки до многостраничного проекта с админ-панелью.</p>
+      </div>
+
+      <p class="row-label">Типовой блок</p>
+      <div class="demo">
+        <p class="kicker">Простой сайт / 02</p>
+        <div class="card">
+          <h3>Стандарт</h3>
+          <p class="term">5–7 дней</p>
+          <ul>
+            <li>Индивидуальный дизайн под ваш бренд</li>
+            <li>До 6 смысловых блоков</li>
+            <li>Форма заявки с отправкой в Telegram</li>
+            <li>Базовая SEO-разметка</li>
+          </ul>
+          <div class="price">32 000 ₽</div>
+          <button class="btn">Обсудить</button>
+        </div>
+      </div>
+
+      <p class="note"><b>Характер:</b> интерфейс очков как военный терминал: янтарный люминофор, зелёный на статусах, полосы развёртки поверх панелей, засечки по углам. Моноширинный шрифт в заголовках усиливает ощущение прибора, а не сайта. Риск: моноширинный на длинных заголовках читается тяжелее, а янтарный на белом фоне карточек даст мало контраста — поэтому фон везде тёмный.</p>
+    </div>
+  </section>
+
+</div>
+
+</body>
+</html>

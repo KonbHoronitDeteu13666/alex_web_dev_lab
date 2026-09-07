@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Схема связей разделов</title>
+<style>
+  :root {
+    --bg: #0b0f16;
+    --ink: #e6edf7;
+    --dim: #8b9ab5;
+    --line: #27354e;
+    --cyan: #4ff0ff;
+    --violet: #9b7bff;
+    --acid: #d7ff3e;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 32px 20px 60px;
+    background: var(--bg);
+    color: var(--ink);
+    font: 15px/1.6 "Segoe UI", system-ui, sans-serif;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; }
+  h1 { font-size: 22px; margin: 0 0 6px; font-weight: 600; }
+  p.sub { color: var(--dim); margin: 0 0 26px; font-size: 14px; }
+  .board { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; background: #080c13; }
+  svg { display: block; min-width: 900px; width: 100%; height: auto; }
+  .n-title { font: 600 15px "Segoe UI", system-ui, sans-serif; fill: #e6edf7; }
+  .n-sub { font: 12px "Segoe UI", system-ui, sans-serif; fill: #8b9ab5; }
+  .e-label { font: 11px "Segoe UI", system-ui, sans-serif; fill: #8b9ab5; }
+  .legend { display: flex; flex-wrap: wrap; gap: 22px; margin-top: 22px; font-size: 13px; color: var(--dim); }
+  .legend span { display: inline-flex; align-items: center; gap: 8px; }
+  .swatch { display: inline-block; width: 26px; height: 0; border-top: 2px solid var(--cyan); }
+  .swatch.dashed { border-top-style: dashed; border-top-color: var(--violet); }
+  .swatch.back { border-top-color: var(--line); }
+  .swatch.out { border-top-color: var(--acid); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Схема связей разделов</h1>
+  <p class="sub">Направленные переходы пользователя. Структура, без интерфейса и вёрстки.</p>
+
+  <div class="board">
+    <svg viewBox="0 0 1180 700" xmlns="http://www.w3.org/2000/svg" role="img"
+         aria-label="Граф переходов между разделами сайта">
+      <defs>
+        <marker id="a-cyan" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="#4ff0ff"/>
+        </marker>
+        <marker id="a-violet" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="#9b7bff"/>
+        </marker>
+        <marker id="a-acid" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="#d7ff3e"/>
+        </marker>
+        <marker id="a-dim" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="#27354e"/>
+        </marker>
+      </defs>
+
+      <!-- рёбра -->
+      <path d="M590 118 L590 186" stroke="#4ff0ff" stroke-width="2" fill="none" marker-end="url(#a-cyan)"/>
+      <text class="e-label" x="600" y="158">вход или пропуск</text>
+
+      <path d="M960 118 L960 152 Q960 168 944 168 L740 168 L740 186"
+            stroke="#9b7bff" stroke-width="2" stroke-dasharray="6 5" fill="none" marker-end="url(#a-violet)"/>
+      <text class="e-label" x="790" y="160">после ролика, бесшовно</text>
+
+      <path d="M500 258 L500 292 Q500 308 484 308 L160 308 L160 346"
+            stroke="#4ff0ff" stroke-width="2" fill="none" marker-end="url(#a-cyan)"/>
+      <path d="M560 258 L560 292 Q560 308 544 308 L470 308 L470 346"
+            stroke="#4ff0ff" stroke-width="2" fill="none" marker-end="url(#a-cyan)"/>
+      <path d="M620 258 L620 292 Q620 308 636 308 L750 308 L750 346"
+            stroke="#4ff0ff" stroke-width="2" fill="none" marker-end="url(#a-cyan)"/>
+      <path d="M680 258 L680 292 Q680 308 696 308 L1030 308 L1030 346"
+            stroke="#4ff0ff" stroke-width="2" fill="none" marker-end="url(#a-cyan)"/>
+
+      <path d="M292 396 L338 396" stroke="#4ff0ff" stroke-width="2" fill="none" marker-end="url(#a-cyan)"/>
+      <path d="M338 424 L292 424" stroke="#4ff0ff" stroke-width="2" fill="none" marker-end="url(#a-cyan)"/>
+      <text class="e-label" x="252" y="470">переход между категориями</text>
+
+      <path d="M160 468 L160 528 Q160 544 176 544 L436 544" stroke="#d7ff3e" stroke-width="2" fill="none" marker-end="url(#a-acid)"/>
+      <path d="M470 468 L470 512 Q470 528 486 528 L520 528 L520 510" stroke="#d7ff3e" stroke-width="2" fill="none" marker-end="url(#a-acid)"/>
+      <path d="M750 468 L750 512 Q750 528 734 528 L680 528 L680 510" stroke="#d7ff3e" stroke-width="2" fill="none" marker-end="url(#a-acid)"/>
+      <path d="M1030 468 L1030 528 Q1030 544 1014 544 L744 544" stroke="#d7ff3e" stroke-width="2" fill="none" marker-end="url(#a-acid)"/>
+      <path d="M590 258 L590 510" stroke="#d7ff3e" stroke-width="2" fill="none" marker-end="url(#a-acid)" opacity="0.4"/>
+
+      <path d="M292 214 L436 214" stroke="#27354e" stroke-width="1.5" fill="none" marker-end="url(#a-dim)"/>
+      <path d="M160 258 L160 300 Q160 316 176 316 L200 316 L200 346"
+            stroke="#27354e" stroke-width="1.5" fill="none" marker-end="url(#a-dim)"/>
+      <path d="M1130 348 L1130 240 Q1130 224 1114 224 L744 224"
+            stroke="#27354e" stroke-width="1.5" fill="none" marker-end="url(#a-dim)"/>
+      <text class="e-label" x="76" y="216">возврат на главную</text>
+
+      <!-- узлы -->
+      <g>
+        <rect x="440" y="40" width="300" height="78" rx="10" fill="#131b28" stroke="#4ff0ff" stroke-width="1.5"/>
+        <text class="n-title" x="464" y="70">Сцена входа</text>
+        <text class="n-sub" x="464" y="92">квартира, кресло, подключение</text>
+        <text class="n-sub" x="464" y="110">кнопка пропуска доступна сразу</text>
+      </g>
+
+      <g>
+        <rect x="820" y="40" width="280" height="78" rx="10" fill="#131b28" stroke="#9b7bff" stroke-width="1.5" stroke-dasharray="6 5"/>
+        <text class="n-title" x="844" y="70">Ролик сцены</text>
+        <text class="n-sub" x="844" y="92">мобильные устройства,</text>
+        <text class="n-sub" x="844" y="110">вместо интерактивной сцены</text>
+      </g>
+
+      <g>
+        <rect x="440" y="188" width="300" height="70" rx="10" fill="#131b28" stroke="#4ff0ff" stroke-width="2"/>
+        <text class="n-title" x="464" y="218">Главная — интерфейс очков</text>
+        <text class="n-sub" x="464" y="240">посыл, разводка по разделам, акция</text>
+      </g>
+
+      <g>
+        <rect x="30" y="348" width="262" height="120" rx="10" fill="#131b28" stroke="#27354e" stroke-width="1.5"/>
+        <text class="n-title" x="52" y="380">Тарифы: Простой сайт</text>
+        <text class="n-sub" x="52" y="404">Старт, Стандарт,</text>
+        <text class="n-sub" x="52" y="422">Продвинутый, Премиум</text>
+        <text class="n-sub" x="52" y="446">25 000 – 50 000 ₽, 3–12 дней</text>
+      </g>
+
+      <g>
+        <rect x="338" y="348" width="262" height="120" rx="10" fill="#131b28" stroke="#27354e" stroke-width="1.5"/>
+        <text class="n-title" x="360" y="380">Тарифы: Средний функционал</text>
+        <text class="n-sub" x="360" y="404">Стандарт, Оптимальный,</text>
+        <text class="n-sub" x="360" y="422">Расширенный, Максимальный</text>
+        <text class="n-sub" x="360" y="446">75 000 – 150 000 ₽, 2–6 недель</text>
+      </g>
+
+      <g>
+        <rect x="620" y="348" width="262" height="120" rx="10" fill="#131b28" stroke="#27354e" stroke-width="1.5"/>
+        <text class="n-title" x="642" y="380">Что входит «под ключ»</text>
+        <text class="n-sub" x="642" y="404">10 пунктов состава работ,</text>
+        <text class="n-sub" x="642" y="422">от брифинга до гарантии 14 дней,</text>
+        <text class="n-sub" x="642" y="446">общее для всех тарифов</text>
+      </g>
+
+      <g>
+        <rect x="900" y="348" width="262" height="120" rx="10" fill="#131b28" stroke="#27354e" stroke-width="1.5"/>
+        <text class="n-title" x="922" y="380">Условия работы</text>
+        <text class="n-sub" x="922" y="404">правки и их границы,</text>
+        <text class="n-sub" x="922" y="422">оплата 10 / 30 / 30 / 30</text>
+      </g>
+
+      <g>
+        <rect x="436" y="510" width="308" height="66" rx="10" fill="#131b28" stroke="#d7ff3e" stroke-width="1.5"/>
+        <text class="n-title" x="460" y="540">Telegram</text>
+        <text class="n-sub" x="460" y="562">целевое действие, доступно отовсюду</text>
+      </g>
+
+      <g>
+        <rect x="30" y="188" width="262" height="70" rx="10" fill="#131b28" stroke="#27354e" stroke-width="1.5"/>
+        <text class="n-title" x="52" y="218">Ошибка 404</text>
+        <text class="n-sub" x="52" y="240">битая ссылка, не выходя из мира</text>
+      </g>
+
+      <g>
+        <rect x="30" y="612" width="1132" height="58" rx="10" fill="#0f1620" stroke="#27354e" stroke-width="1.5" stroke-dasharray="4 4"/>
+        <text class="n-sub" x="52" y="638">Сквозные блоки: акция 40% для проектов в примеры работ и подсказка выбора категории.</text>
+        <text class="n-sub" x="52" y="658">Показываются на главной и в обоих разделах с тарифами.</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="legend">
+    <span><i class="swatch"></i> переход по навигации</span>
+    <span><i class="swatch dashed"></i> мобильная ветка</span>
+    <span><i class="swatch out"></i> выход в Telegram</span>
+    <span><i class="swatch back"></i> возврат на главную</span>
+  </div>
+</div>
+</body>
+</html>

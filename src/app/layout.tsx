@@ -1,26 +1,36 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, JetBrains_Mono } from "next/font/google";
+import { Unbounded, Manrope, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import { site } from "@/lib/content";
+import { site } from "@/data/site";
 
-const display = Space_Grotesk({
-  subsets: ["latin"],
-  variable: "--font-display",
+const unbounded = Unbounded({
+  subsets: ["latin", "cyrillic"],
+  weight: ["300", "400", "500", "700"],
+  variable: "--font-unbounded",
   display: "swap",
 });
 
-const mono = JetBrains_Mono({
+const manrope = Manrope({
   subsets: ["latin", "cyrillic"],
-  variable: "--font-mono",
+  variable: "--font-manrope",
+  display: "swap",
+});
+
+const jetbrains = JetBrains_Mono({
+  subsets: ["latin", "cyrillic"],
+  variable: "--font-jetbrains",
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: `${site.name} — ${site.role}`,
-  description: site.tagline,
+  title: {
+    default: `${site.name} — ${site.role}`,
+    template: `%s — ${site.name}`,
+  },
+  description: site.description,
   openGraph: {
     title: `${site.name} — ${site.role}`,
-    description: site.tagline,
+    description: site.slogan,
     locale: "ru_RU",
     type: "website",
   },
@@ -30,8 +40,11 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="ru" className={`${display.variable} ${mono.variable}`}>
-      <body className="font-[family-name:var(--font-display)]">{children}</body>
+    <html
+      lang="ru"
+      className={`${unbounded.variable} ${manrope.variable} ${jetbrains.variable}`}
+    >
+      <body className="bg-bg text-ink">{children}</body>
     </html>
   );
 }
