@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-  useSyncExternalStore,
-} from "react";
+import { useCallback, useRef, useState, useSyncExternalStore } from "react";
 import { site } from "@/data/site";
 import EnterButton from "./EnterButton";
 import BootScreen from "./BootScreen";
@@ -83,21 +77,13 @@ export default function EntryOverlay() {
   const [fading, setFading] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Пока оверлей на экране, страница под ним не прокручивается.
-  // Место полосы прокрутки компенсируем отступом: без этого при снятии
-  // оверлея страница дёргается вбок на ширину полосы.
-  useEffect(() => {
-    if (entered) return;
-    const gap = window.innerWidth - document.documentElement.clientWidth;
-    document.body.style.overflow = "hidden";
-    if (gap > 0) document.body.style.paddingRight = `${gap}px`;
-    return () => {
-      document.body.style.overflow = "";
-      document.body.style.paddingRight = "";
-    };
-  }, [entered]);
-
+  // Прокрутку под оверлеем не блокируем совсем: любое переключение
+  // overflow меняет наличие полосы, а вместе с ней ширину страницы —
+  // именно от этого содержимое дёргалось вбок в момент показа сайта.
+  // Оверлей и так закрывает экран целиком, а точку прокрутки
+  // возвращаем в начало, пока он ещё виден.
   const finish = useCallback(() => {
+    window.scrollTo(0, 0);
     setFading(true);
     window.setTimeout(markEntered, FADE_MS);
   }, []);
