@@ -5,8 +5,8 @@
  */
 export const ROUTES = {
   home: "/",
-  simple: "/prostoy-sayt",
-  middle: "/sredniy-funktsional",
+  simple: "/lending",
+  middle: "/sayt-s-cms",
   included: "/chto-vhodit",
   terms: "/usloviya",
 } as const;
@@ -17,8 +17,8 @@ export type Route = (typeof ROUTES)[RouteKey];
 /** Разделы в порядке показа в шапке и подвале. */
 export const NAV: { key: RouteKey; label: string }[] = [
   { key: "home", label: "Главная" },
-  { key: "simple", label: "Простой сайт" },
-  { key: "middle", label: "Средний функционал" },
+  { key: "simple", label: "Лендинг" },
+  { key: "middle", label: "Сайт с CMS" },
   { key: "included", label: "Что входит" },
   { key: "terms", label: "Условия" },
 ];
