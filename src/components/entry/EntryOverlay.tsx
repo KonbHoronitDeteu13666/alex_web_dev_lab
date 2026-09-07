@@ -21,9 +21,23 @@ const FADE_MS = 700;
 
 const SESSION_KEY = "entered";
 
+/**
+ * Пока идёт отладка, вход должен проигрываться при каждой перезагрузке.
+ * В режиме разработки это включено само; на боевом сайте — только если
+ * явно выставить NEXT_PUBLIC_REPLAY_ENTRY=1. Значение 0 выключает и в dev.
+ */
+const REPLAY_ENTRY =
+  process.env.NEXT_PUBLIC_REPLAY_ENTRY === "1" ||
+  (process.env.NODE_ENV !== "production" &&
+    process.env.NEXT_PUBLIC_REPLAY_ENTRY !== "0");
+
 /* --- отметка о пройденном входе живёт в sessionStorage --- */
 
 const listeners = new Set<() => void>();
+
+// В режиме повтора отметка живёт только в памяти вкладки: перезагрузка
+// сбрасывает её, и вход начинается заново.
+let dismissedInMemory = false;
 
 function subscribe(listener: () => void) {
   listeners.add(listener);
@@ -31,6 +45,7 @@ function subscribe(listener: () => void) {
 }
 
 function readEntered(): boolean {
+  if (REPLAY_ENTRY) return dismissedInMemory;
   try {
     return sessionStorage.getItem(SESSION_KEY) === "1";
   } catch {
@@ -40,6 +55,13 @@ function readEntered(): boolean {
 }
 
 function markEntered() {
+  // В режиме повтора отметку не пишем: оверлей снимается, но следующая
+  // загрузка снова начнётся со стартового кадра.
+  if (REPLAY_ENTRY) {
+    dismissedInMemory = true;
+    listeners.forEach((listener) => listener());
+    return;
+  }
   try {
     sessionStorage.setItem(SESSION_KEY, "1");
   } catch {
