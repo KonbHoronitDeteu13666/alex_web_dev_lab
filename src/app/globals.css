@@ -49,24 +49,6 @@ body {
   color: var(--color-dim-2);
 }
 
-/* Карточка тарифа на <details>: убираем системный маркер. */
-.tier > summary {
-  list-style: none;
-  cursor: pointer;
-}
-.tier > summary::-webkit-details-marker {
-  display: none;
-}
-.tier[open] > summary {
-  border-bottom: 1px solid var(--color-line);
-}
-.tier[open] .tier-toggle::after {
-  content: "свернуть";
-}
-.tier:not([open]) .tier-toggle::after {
-  content: "подробнее";
-}
-
 /* Кнопка входа: срезанные углы и пульсирующая рамка вокруг. */
 .cut-corner {
   clip-path: polygon(
@@ -295,4 +277,370 @@ body {
     inset 0 1px 0 rgb(255 255 255 / 0.35),
     inset 0 -2px 0 rgb(0 0 0 / 0.25),
     0 10px 26px -12px rgb(244 215 56 / 0.55);
+}
+
+/* ============================================================
+   Живой макет в окне тарифа: каждая сцена показывает
+   одну возможность пакета и крутится по кругу.
+   ============================================================ */
+
+@keyframes demo-scroll {
+  0%,
+  8% {
+    transform: translateY(0);
+  }
+  92%,
+  100% {
+    transform: translateY(-42%);
+  }
+}
+.demo-scroll {
+  animation: demo-scroll 6s ease-in-out infinite alternate;
+}
+
+@keyframes demo-field {
+  0%,
+  100% {
+    border-color: var(--color-line);
+    background-color: rgb(23 27 40 / 0.7);
+  }
+  25%,
+  45% {
+    border-color: rgb(55 212 200 / 0.7);
+    background-color: rgb(55 212 200 / 0.08);
+  }
+}
+.demo-field {
+  animation: demo-field 3.6s ease-in-out infinite;
+}
+
+@keyframes demo-send {
+  0%,
+  70%,
+  100% {
+    transform: none;
+    filter: none;
+  }
+  76% {
+    transform: scale(0.94);
+    filter: brightness(1.3);
+  }
+}
+.demo-send {
+  animation: demo-send 3.6s ease-in-out infinite;
+}
+
+@keyframes demo-fly {
+  0%,
+  74% {
+    opacity: 0;
+    transform: translate(-40px, 0) rotate(45deg);
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(18px, -26px) rotate(45deg);
+  }
+}
+.demo-fly {
+  animation: demo-fly 3.6s ease-in-out infinite;
+}
+
+@keyframes demo-pop {
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: translateY(6px);
+  }
+  20%,
+  80% {
+    opacity: 1;
+    transform: none;
+  }
+}
+.demo-pop {
+  animation: demo-pop 4.5s ease-in-out infinite;
+}
+
+@keyframes demo-layer-slow {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-12px);
+  }
+}
+@keyframes demo-layer-mid {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-28px);
+  }
+}
+@keyframes demo-layer-fast {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-48px);
+  }
+}
+.demo-layer-slow {
+  animation: demo-layer-slow 4s ease-in-out infinite alternate;
+}
+.demo-layer-mid {
+  animation: demo-layer-mid 4s ease-in-out infinite alternate;
+}
+.demo-layer-fast {
+  animation: demo-layer-fast 4s ease-in-out infinite alternate;
+}
+
+@keyframes demo-tab {
+  0%,
+  100% {
+    background-color: var(--color-line);
+  }
+  10%,
+  22% {
+    background-color: rgb(244 215 56 / 0.75);
+  }
+}
+.demo-tab {
+  animation: demo-tab 4.5s ease-in-out infinite;
+}
+
+@keyframes demo-page {
+  0%,
+  100% {
+    opacity: 0;
+    transform: translateX(26px);
+  }
+  8%,
+  28% {
+    opacity: 1;
+    transform: none;
+  }
+  36% {
+    opacity: 0;
+    transform: translateX(-26px);
+  }
+}
+.demo-page {
+  animation: demo-page 4.5s ease-in-out infinite;
+}
+
+@keyframes demo-nav {
+  0%,
+  100% {
+    background-color: var(--color-line);
+  }
+  15%,
+  30% {
+    background-color: rgb(55 212 200 / 0.6);
+  }
+}
+.demo-nav {
+  animation: demo-nav 3.2s ease-in-out infinite;
+}
+
+@keyframes demo-type {
+  0%,
+  100% {
+    box-shadow: inset 12px 0 0 -10px rgb(55 212 200 / 0.9);
+  }
+  50% {
+    box-shadow: inset 120px 0 0 -10px rgb(55 212 200 / 0.9);
+  }
+}
+.demo-type {
+  animation: demo-type 3.2s steps(12, end) infinite;
+}
+
+@keyframes demo-save {
+  0%,
+  70%,
+  100% {
+    filter: none;
+  }
+  80% {
+    filter: brightness(1.4);
+  }
+}
+.demo-save {
+  animation: demo-save 3.2s ease-in-out infinite;
+}
+
+@keyframes demo-chip {
+  0%,
+  100% {
+    background-color: transparent;
+    border-color: var(--color-line);
+  }
+  20%,
+  50% {
+    background-color: rgb(55 212 200 / 0.25);
+    border-color: rgb(55 212 200 / 0.7);
+  }
+}
+.demo-chip {
+  animation: demo-chip 4.4s ease-in-out infinite;
+}
+
+@keyframes demo-filter {
+  0%,
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+  35%,
+  65% {
+    opacity: 0.12;
+    transform: scale(0.94);
+  }
+}
+.demo-filter {
+  animation: demo-filter 4.4s ease-in-out infinite;
+}
+
+@keyframes demo-feed {
+  0%,
+  10% {
+    transform: translateY(0);
+  }
+  90%,
+  100% {
+    transform: translateY(-38%);
+  }
+}
+.demo-feed {
+  animation: demo-feed 7s ease-in-out infinite alternate;
+}
+
+@keyframes demo-row {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: translateX(-6px);
+  }
+  25%,
+  75% {
+    opacity: 1;
+    transform: none;
+  }
+}
+.demo-row {
+  animation: demo-row 4s ease-in-out infinite;
+}
+
+@keyframes demo-bar {
+  0%,
+  100% {
+    height: 12%;
+  }
+  45%,
+  70% {
+    height: var(--h);
+  }
+}
+.demo-bar {
+  height: 12%;
+  animation: demo-bar 3.8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .demo-scroll,
+  .demo-field,
+  .demo-send,
+  .demo-fly,
+  .demo-pop,
+  .demo-layer-slow,
+  .demo-layer-mid,
+  .demo-layer-fast,
+  .demo-tab,
+  .demo-page,
+  .demo-nav,
+  .demo-type,
+  .demo-save,
+  .demo-chip,
+  .demo-filter,
+  .demo-feed,
+  .demo-row,
+  .demo-bar {
+    animation: none;
+  }
+  .demo-page:first-child {
+    opacity: 1;
+    transform: none;
+  }
+  .demo-bar {
+    height: var(--h);
+  }
+}
+
+/* ---------- загрузка на стекле очков ---------- */
+
+@keyframes boot-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.boot-spin {
+  animation: boot-spin 3.4s linear infinite;
+}
+
+/* Расслоение строки на красный и бирюзовый каналы: дисплей не держит синхронизацию. */
+.boot-split::before,
+.boot-split::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.boot-split::before {
+  color: #ff4d6d;
+  mix-blend-mode: screen;
+  animation: boot-split-a 2.4s steps(2, end) infinite;
+}
+.boot-split::after {
+  color: var(--color-teal);
+  mix-blend-mode: screen;
+  animation: boot-split-b 2.4s steps(2, end) infinite;
+}
+
+@keyframes boot-split-a {
+  0%,
+  86%,
+  100% {
+    opacity: 0;
+    transform: none;
+  }
+  88%,
+  92% {
+    opacity: 0.55;
+    transform: translate(-2px, 1px);
+  }
+}
+@keyframes boot-split-b {
+  0%,
+  86%,
+  100% {
+    opacity: 0;
+    transform: none;
+  }
+  89%,
+  93% {
+    opacity: 0.5;
+    transform: translate(2px, -1px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .boot-spin,
+  .boot-split::before,
+  .boot-split::after {
+    animation: none;
+  }
 }
