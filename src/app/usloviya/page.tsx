@@ -40,7 +40,7 @@ export default function TermsPage() {
           <SectionHead title="Правки" />
           <div className="rounded-r-xl border-l-[3px] border-yellow hud-panel hud-lift p-6 md:p-7">
             <p className="text-[15px]">{revisionPolicy.rule}</p>
-            <p className="mt-3 text-[15px] text-dim">
+            <p className="mt-3 text-[15px] text-ink/85">
               Отдельно оценивается и оплачивается только основательная переделка
               после утверждения этапа: {revisionPolicy.exceptions.join(", ")}.
             </p>
@@ -64,7 +64,7 @@ export default function TermsPage() {
                 <h3 className="mt-3 font-display text-base font-medium">
                   {stage.title}
                 </h3>
-                <p className="mt-1.5 text-[13.5px] leading-relaxed text-dim">
+                <p className="mt-1.5 text-[13.5px] leading-relaxed text-ink/90">
                   {stage.condition}
                 </p>
               </div>

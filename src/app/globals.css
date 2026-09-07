@@ -8,11 +8,11 @@
   --color-line: #222739;
   --color-line-soft: #1a1e2c;
   --color-ink: #e2e6f1;
-  --color-dim: #7d859b;
-  --color-dim-2: #5d6479;
+  --color-dim: #aab4c9;
+  --color-dim-2: #8a94ab;
   --color-yellow: #f4d738;
   --color-teal: #37d4c8;
-  --color-strike: #6b7288;
+  --color-strike: #8d95a9;
 
   --font-display: var(--font-unbounded), ui-sans-serif, system-ui, sans-serif;
   --font-body: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
@@ -118,11 +118,11 @@ body {
   background:
     linear-gradient(
       180deg,
-      rgb(226 230 241 / 0.085) 0%,
-      rgb(226 230 241 / 0.03) 34%,
-      rgb(8 10 16 / 0.55) 100%
+      rgb(226 230 241 / 0.075) 0%,
+      rgb(11 14 22 / 0.45) 34%,
+      rgb(6 8 13 / 0.72) 100%
     ),
-    rgb(18 21 31 / 0.52);
+    rgb(14 17 26 / 0.72);
   border: 1px solid rgb(55 212 200 / 0.2);
   border-top-color: rgb(226 230 241 / 0.22);
   box-shadow:

@@ -143,7 +143,7 @@ export default function TierDialog({
                 {tier.includes.map((item) => (
                   <li
                     key={item}
-                    className="relative pl-[16px] text-[13px] leading-snug text-dim"
+                    className="relative pl-[16px] text-[13px] leading-snug text-ink/85"
                   >
                     <span className="absolute top-[9px] left-0 h-px w-2 bg-yellow" />
                     {item}

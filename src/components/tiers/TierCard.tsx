@@ -26,7 +26,7 @@ export default function TierCard({ tier }: { tier: Tier }) {
           <span className="mt-1 block font-mono text-[11px] tracking-[0.1em] text-dim">
             {tier.term}
           </span>
-          <span className="mt-2.5 block text-sm leading-relaxed text-dim">
+          <span className="mt-2.5 block text-sm leading-relaxed text-ink/90">
             {tier.gist}
           </span>
           <PriceRow basePrice={tier.basePrice} />

@@ -23,7 +23,7 @@ export default function CategoryTile({
       <h3 className="font-display text-lg font-medium tracking-tight md:text-xl">
         {title}
       </h3>
-      <p className="mt-2.5 text-sm leading-relaxed text-dim">{text}</p>
+      <p className="mt-2.5 text-sm leading-relaxed text-ink/90">{text}</p>
       {basePrice !== undefined && <PriceRow basePrice={basePrice} from size="tile" />}
       {term && <p className="label mt-3">{term}</p>}
     </Link>
