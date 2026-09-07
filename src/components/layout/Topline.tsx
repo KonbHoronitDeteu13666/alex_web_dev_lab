@@ -13,7 +13,7 @@ export default function Topline({ current }: { current?: RouteKey }) {
         <Link href={ROUTES.home} className="flex items-center gap-2.5">
           <span className="h-[7px] w-[7px] rounded-full bg-teal shadow-[0_0_10px_2px] shadow-teal/50" />
           <span className="font-mono text-xs tracking-[0.14em] uppercase">
-            {site.brand}
+            {site.name}
           </span>
         </Link>
 

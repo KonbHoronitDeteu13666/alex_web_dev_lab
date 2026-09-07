@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Glass from "@/components/layout/Glass";
 import Topline from "@/components/layout/Topline";
 import FootNav from "@/components/layout/FootNav";
-import SectionHead from "@/components/ui/SectionHead";
 import ChoiceHint from "@/components/ui/ChoiceHint";
 import TierList from "@/components/tiers/TierList";
 import { ROUTES } from "@/lib/routes";
@@ -39,11 +38,10 @@ export default function SimplePage() {
         </div>
 
         <div className="mt-14">
-          <SectionHead title="Не подходит?" />
           <ChoiceHint
-            stayTitle="Хватит этой категории"
+            stayTitle="Если одна страница закрывает вопрос"
             stayText={category.hint.stay}
-            leaveTitle="Нужен средний функционал"
+            leaveTitle="Если позиции добавляются постоянно"
             leaveText={category.hint.leave}
             leaveHref={ROUTES.middle}
             leaveLabel="Перейти во вторую категорию →"
