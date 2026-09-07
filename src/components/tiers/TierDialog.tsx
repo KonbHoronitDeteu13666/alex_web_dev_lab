@@ -60,11 +60,11 @@ export default function TierDialog({
         // Клик мимо окна закрывает: цель события — сам dialog.
         if (e.target === ref.current) onClose();
       }}
-      className="hud-panel m-auto w-[min(1120px,94vw)] max-w-none rounded-2xl p-0 text-ink backdrop:bg-black/75 backdrop:backdrop-blur-sm"
+      className="hud-panel m-auto max-h-[88vh] w-[min(1120px,94vw)] max-w-none overflow-hidden rounded-2xl p-0 text-ink backdrop:bg-black/75 backdrop:backdrop-blur-sm"
     >
       {/* Прокрутки внутри окна быть не должно: содержимое подогнано так,
           чтобы помещаться целиком. На узких экранах окно просто выше. */}
-      <div className="grid max-h-[88vh] grid-rows-[auto_1fr] overflow-hidden">
+      <div className="grid h-full grid-rows-[auto_1fr] overflow-hidden">
         {/* шапка окна */}
         <div className="flex items-center gap-4 border-b border-line/70 px-6 py-4 md:px-8">
           <span className="font-mono text-[10px] tracking-[0.22em] text-teal/70 uppercase">
