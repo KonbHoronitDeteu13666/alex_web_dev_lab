@@ -159,7 +159,7 @@ export default function TierDialog({
                 rel="noopener noreferrer"
                 className="key-3d rounded-lg border border-yellow bg-yellow px-5 py-3 font-mono text-[11.5px] tracking-[0.14em] text-bg uppercase transition-opacity hover:opacity-85"
               >
-                Обсудить пакет
+                Обсудить проект
               </a>
               <Link
                 href={ROUTES.included}
