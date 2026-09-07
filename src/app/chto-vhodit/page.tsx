@@ -20,12 +20,12 @@ export default function IncludedPage() {
       <Glass />
       <Topline current="included" />
 
-      <main className="mx-auto max-w-6xl px-5 py-14 md:px-10 md:py-20">
+      <main className="hud-rise mx-auto max-w-6xl px-5 py-14 md:px-10 md:py-20">
         <div className="max-w-[66ch]">
           <p className="font-mono text-[11px] tracking-[0.2em] text-teal uppercase">
             Одинаково для всех восьми тарифов
           </p>
-          <h1 className="mt-3.5 font-display text-3xl leading-[1.1] font-medium tracking-tight text-balance md:text-5xl">
+          <h1 className="mt-3.5 font-display text-3xl leading-[1.1] font-medium tracking-tight text-balance text-emboss md:text-5xl">
             Что входит в стоимость «под ключ»
           </h1>
           <p className="mt-5 text-base leading-relaxed text-dim">

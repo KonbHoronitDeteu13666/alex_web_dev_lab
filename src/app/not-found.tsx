@@ -12,7 +12,7 @@ export default function NotFound() {
       <Glass />
       <Topline />
 
-      <main className="mx-auto max-w-6xl px-5 py-14 md:px-10 md:py-20">
+      <main className="hud-rise mx-auto max-w-6xl px-5 py-14 md:px-10 md:py-20">
         <div className="mx-auto max-w-[60ch] pt-16 pb-10 text-center">
           <p className="font-display text-6xl leading-none font-bold text-yellow md:text-7xl">
             404

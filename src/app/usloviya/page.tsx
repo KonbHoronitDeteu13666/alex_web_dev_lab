@@ -22,12 +22,12 @@ export default function TermsPage() {
       <Glass />
       <Topline current="terms" />
 
-      <main className="mx-auto max-w-6xl px-5 py-14 md:px-10 md:py-20">
+      <main className="hud-rise mx-auto max-w-6xl px-5 py-14 md:px-10 md:py-20">
         <div className="max-w-[66ch]">
           <p className="font-mono text-[11px] tracking-[0.2em] text-teal uppercase">
             Правки и оплата
           </p>
-          <h1 className="mt-3.5 font-display text-3xl leading-[1.1] font-medium tracking-tight text-balance md:text-5xl">
+          <h1 className="mt-3.5 font-display text-3xl leading-[1.1] font-medium tracking-tight text-balance text-emboss md:text-5xl">
             Условия работы
           </h1>
           <p className="mt-5 text-base leading-relaxed text-dim">
@@ -38,7 +38,7 @@ export default function TermsPage() {
 
         <div className="mt-12">
           <SectionHead title="Правки" />
-          <div className="rounded-r-xl border-l-[3px] border-yellow bg-panel/55 p-6 backdrop-blur-sm md:p-7">
+          <div className="rounded-r-xl border-l-[3px] border-yellow hud-panel hud-lift p-6 md:p-7">
             <p className="text-[15px]">{revisionPolicy.rule}</p>
             <p className="mt-3 text-[15px] text-dim">
               Отдельно оценивается и оплачивается только основательная переделка
@@ -56,9 +56,9 @@ export default function TermsPage() {
             {stages.map((stage) => (
               <div
                 key={stage.title}
-                className="rounded-xl border border-line bg-panel/55 p-5 backdrop-blur-sm md:p-6"
+                className="rounded-xl hud-panel p-5 md:p-6"
               >
-                <p className="font-display text-3xl leading-none font-bold text-yellow tabular-nums">
+                <p className="font-display text-3xl leading-none font-bold text-yellow price-glow tabular-nums">
                   {stage.percent}%
                 </p>
                 <h3 className="mt-3 font-display text-base font-medium">

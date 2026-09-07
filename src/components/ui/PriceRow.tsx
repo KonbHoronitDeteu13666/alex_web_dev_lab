@@ -24,7 +24,7 @@ export default function PriceRow({
         </span>
       )}
       <span
-        className={`font-display font-bold text-yellow tabular-nums ${
+        className={`font-display font-bold text-yellow price-glow tabular-nums ${
           size === "card" ? "text-2xl md:text-[26px]" : "text-xl md:text-2xl"
         }`}
       >

@@ -38,7 +38,7 @@ export default function Topline({ current }: { current?: RouteKey }) {
           href={site.contact.href}
           target="_blank"
           rel="noopener noreferrer"
-          className="ml-auto rounded-lg border border-yellow bg-yellow px-5 py-2.5 font-mono text-[11.5px] tracking-[0.14em] whitespace-nowrap text-bg uppercase transition-opacity hover:opacity-85 md:ml-0"
+          className="ml-auto rounded-lg border border-yellow bg-yellow key-3d px-5 py-2.5 font-mono text-[11.5px] tracking-[0.14em] whitespace-nowrap text-bg uppercase transition-opacity hover:opacity-85 md:ml-0"
         >
           {site.contact.label}
         </a>
