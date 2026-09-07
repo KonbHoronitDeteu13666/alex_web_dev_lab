@@ -27,7 +27,7 @@ export default function HomePage() {
           <h1 className="mt-3.5 font-display text-3xl leading-[1.1] font-medium tracking-tight text-balance text-emboss on-glass md:text-6xl">
             {site.slogan}
           </h1>
-          <p className="on-glass mt-5 text-base leading-relaxed text-ink/85">
+          <p className="on-glass mt-6 max-w-[54ch] text-lg leading-relaxed text-ink/90 md:text-xl">
             {site.description}
           </p>
         </div>
