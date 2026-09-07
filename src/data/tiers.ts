@@ -59,6 +59,7 @@ const categorySchema = z.object({
   note: z.string().min(1),
   termRange: z.string().min(1),
   hint: z.object({ stay: z.string().min(1), leave: z.string().min(1) }),
+  mock: z.array(mockRowSchema).min(1),
 });
 
 export type MockRow = z.infer<typeof mockRowSchema>;
@@ -73,6 +74,13 @@ export const categories = z.array(categorySchema).length(2).parse([
     title: "Простой сайт",
     note: "Лендинг или сайт-визитка: одна страница, форма заявки, без базы данных и личного кабинета.",
     termRange: "3–12 дней",
+    mock: [
+      { kind: "bar", accent: "yellow", tall: true },
+      { kind: "bar" },
+      { kind: "grid", cols: 2, filled: true },
+      { kind: "bar" },
+      { kind: "bar", accent: "teal" },
+    ],
     hint: {
       stay: "Достаточно рассказать о себе и получать заявки. Каталог небольшой и меняется редко, править содержимое самому не нужно.",
       leave:
@@ -84,6 +92,12 @@ export const categories = z.array(categorySchema).length(2).parse([
     title: "Средний функционал",
     note: "Многостраничный сайт: 5–15 страниц, админка для контента, каталог товаров или услуг, интеграции с CRM, Telegram и почтой, блог.",
     termRange: "2–6 недель",
+    mock: [
+      { kind: "bar", accent: "yellow", tall: true },
+      { kind: "grid", cols: 3 },
+      { kind: "side" },
+      { kind: "bar", accent: "teal" },
+    ],
     hint: {
       stay: "Позиции добавляются, содержимое меняется, заявки нужно сводить в CRM, а тексты править самому через админку.",
       leave:

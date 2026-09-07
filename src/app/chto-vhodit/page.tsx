@@ -62,12 +62,16 @@ export default function IncludedPage() {
               title={categoryOf("simple").title}
               text="Четыре тарифа, одна страница, заявки на почту или в Telegram."
               basePrice={minPriceOf("simple")}
+              term={categoryOf("simple").termRange}
+              mock={categoryOf("simple").mock}
             />
             <CategoryTile
               href={ROUTES.middle}
               title={categoryOf("middle").title}
               text="Четыре тарифа, до 15 страниц, админка, каталог, интеграции."
               basePrice={minPriceOf("middle")}
+              term={categoryOf("middle").termRange}
+              mock={categoryOf("middle").mock}
             />
           </div>
         </div>

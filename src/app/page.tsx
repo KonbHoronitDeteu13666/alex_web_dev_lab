@@ -41,6 +41,7 @@ export default function HomePage() {
               text="Одна страница, форма заявки, без базы данных и личного кабинета. Четыре тарифа: Старт, Стандарт, Продвинутый, Премиум."
               basePrice={minPriceOf("simple")}
               term={simple.termRange}
+              mock={simple.mock}
             />
             <CategoryTile
               href={ROUTES.middle}
@@ -48,6 +49,7 @@ export default function HomePage() {
               text="5–15 страниц, админка для контента, каталог с фильтрами, блог, интеграции с CRM и мессенджерами. Четыре тарифа."
               basePrice={minPriceOf("middle")}
               term={middle.termRange}
+              mock={middle.mock}
             />
           </div>
         </div>
