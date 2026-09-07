@@ -84,11 +84,16 @@ export default function EntryOverlay() {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   // Пока оверлей на экране, страница под ним не прокручивается.
+  // Место полосы прокрутки компенсируем отступом: без этого при снятии
+  // оверлея страница дёргается вбок на ширину полосы.
   useEffect(() => {
     if (entered) return;
+    const gap = window.innerWidth - document.documentElement.clientWidth;
     document.body.style.overflow = "hidden";
+    if (gap > 0) document.body.style.paddingRight = `${gap}px`;
     return () => {
       document.body.style.overflow = "";
+      document.body.style.paddingRight = "";
     };
   }, [entered]);
 

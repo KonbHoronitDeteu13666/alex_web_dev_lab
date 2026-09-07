@@ -22,6 +22,9 @@
 html {
   scroll-behavior: smooth;
   background: var(--color-bg);
+  /* Место под полосу прокрутки держим всегда: иначе появление полосы
+     сдвигает содержимое вбок. */
+  scrollbar-gutter: stable;
 }
 
 body {
