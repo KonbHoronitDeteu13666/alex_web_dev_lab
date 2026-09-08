@@ -14,12 +14,17 @@ export default function TierCard({
   rank?: string;
 }) {
   const [open, setOpen] = useState(false);
+  // Из этого прямоугольника окно разворачивается и в него же складывается.
+  const [origin, setOrigin] = useState<DOMRect | null>(null);
 
   return (
     <>
       <button
         type="button"
-        onClick={() => setOpen(true)}
+        onClick={(e) => {
+          setOrigin(e.currentTarget.getBoundingClientRect());
+          setOpen(true);
+        }}
         aria-haspopup="dialog"
         className={cardShell(true, tier.featured)}
       >
@@ -34,7 +39,13 @@ export default function TierCard({
         />
       </button>
 
-      <TierDialog tier={tier} open={open} onClose={() => setOpen(false)} />
+      <TierDialog
+        key={open ? "open" : "closed"}
+        tier={tier}
+        open={open}
+        origin={origin}
+        onClose={() => setOpen(false)}
+      />
     </>
   );
 }

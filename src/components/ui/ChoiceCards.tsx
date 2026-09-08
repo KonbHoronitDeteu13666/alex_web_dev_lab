@@ -12,6 +12,8 @@ import ChoiceDialog from "./ChoiceDialog";
  */
 export default function ChoiceCards() {
   const [openId, setOpenId] = useState<CategoryId | null>(null);
+  // Из этого прямоугольника окно разворачивается и в него же складывается.
+  const [origin, setOrigin] = useState<DOMRect | null>(null);
 
   return (
     <div className="grid gap-5 md:grid-cols-2">
@@ -19,7 +21,10 @@ export default function ChoiceCards() {
         <Reveal key={category.id} delay={i * 90}>
           <button
             type="button"
-            onClick={() => setOpenId(category.id)}
+            onClick={(e) => {
+              setOrigin(e.currentTarget.getBoundingClientRect());
+              setOpenId(category.id);
+            }}
             aria-haspopup="dialog"
             className="panel panel-glow lift grid h-full w-full content-start gap-5 rounded-2xl p-6 text-left md:p-7"
           >
@@ -56,6 +61,7 @@ export default function ChoiceCards() {
           <ChoiceDialog
             category={category}
             open={openId === category.id}
+            origin={origin}
             onClose={() => setOpenId(null)}
           />
         </Reveal>
