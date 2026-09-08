@@ -1,4 +1,9 @@
-import { PROMO_ON, discounted, formatPrice, formatFrom } from "@/lib/price";
+import {
+  PROMO_ON,
+  RUBLE,
+  discounted,
+  formatAmount,
+} from "@/lib/price";
 
 /**
  * Старая цена зачёркнутой и новая рядом. Процент скидки не показываем —
@@ -18,7 +23,6 @@ export default function PriceRow({
   featured?: boolean;
 }) {
   const now = discounted(basePrice);
-  const format = from ? formatFrom : formatPrice;
   const dialog = size === "dialog";
 
   return (
@@ -33,7 +37,7 @@ export default function PriceRow({
             featured ? "text-bg/50" : "text-strike"
           }`}
         >
-          {format(basePrice)}
+          <Amount value={basePrice} from={from} />
         </span>
       )}
       <span
@@ -41,8 +45,23 @@ export default function PriceRow({
           featured ? "text-bg" : "accent-word text-mint"
         } ${dialog ? "text-3xl md:text-4xl" : "text-2xl md:text-[26px]"}`}
       >
-        {format(now)}
+        <Amount value={now} from={from} />
       </span>
     </p>
+  );
+}
+
+/**
+ * Число своим шрифтом, знак рубля — всегда моноширинным.
+ * Почему так, подробно расписано у RUBLE в lib/price.ts.
+ */
+function Amount({ value, from }: { value: number; from?: boolean }) {
+  return (
+    <>
+      {from && "от "}
+      {formatAmount(value)}
+      {"\u00A0"}
+      <span className="font-mono font-normal">{RUBLE}</span>
+    </>
   );
 }

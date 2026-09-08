@@ -5,21 +5,33 @@ import Backdrop from "@/components/layout/Backdrop";
 
 import { site } from "@/data/site";
 
+/**
+ * Начертания перечислены поимённо, а не взяты по умолчанию: без списка
+ * next/font тянет переменный шрифт со всей осью весов — на кириллице это
+ * сотня килобайт в критическом пути, и заголовок ждёт их на медленной сети.
+ *
+ * В разметке встречаются ровно два веса: font-medium и font-bold, оба
+ * на заголовочном шрифте. Текст и моноширинный идут обычным начертанием.
+ * Добавляете font-semibold или font-bold к тексту — допишите вес сюда,
+ * иначе браузер нарисует его подделкой.
+ */
 const unbounded = Unbounded({
   subsets: ["latin", "cyrillic"],
-  weight: ["300", "400", "500", "700"],
+  weight: ["500", "700"],
   variable: "--font-unbounded",
   display: "swap",
 });
 
 const manrope = Manrope({
   subsets: ["latin", "cyrillic"],
+  weight: ["400"],
   variable: "--font-manrope",
   display: "swap",
 });
 
 const jetbrains = JetBrains_Mono({
   subsets: ["latin", "cyrillic"],
+  weight: ["400"],
   variable: "--font-jetbrains",
   display: "swap",
 });

@@ -41,6 +41,9 @@ export default function Parallax({
       // Доехали и стоим — кадры больше не нужны, ждём следующей прокрутки.
       if (!visible || Math.abs(target - current) < 0.05) {
         raf = 0;
+        // Подсказка композитору нужна только пока слой едет: постоянный
+        // will-change держит отдельный слой всю жизнь страницы.
+        el.style.willChange = "auto";
         return;
       }
       raf = requestAnimationFrame(frame);
@@ -48,6 +51,7 @@ export default function Parallax({
 
     const wake = () => {
       if (!visible || raf) return;
+      el.style.willChange = "transform";
       raf = requestAnimationFrame(frame);
     };
 
@@ -72,7 +76,7 @@ export default function Parallax({
   }, [speed]);
 
   return (
-    <div ref={ref} className={className} style={{ willChange: "transform" }}>
+    <div ref={ref} className={className}>
       {children}
     </div>
   );

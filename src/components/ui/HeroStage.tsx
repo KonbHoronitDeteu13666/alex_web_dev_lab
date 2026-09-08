@@ -1,6 +1,4 @@
-"use client";
-
-import { useEffect, useRef } from "react";
+import Tilt from "@/components/motion/Tilt";
 
 /**
  * Первый экран справа: ноутбук в перспективе, внутри которого страница
@@ -9,74 +7,11 @@ import { useEffect, useRef } from "react";
  *
  * Это одновременно метафора работы и её демонстрация: то же, что человек
  * получит, только в миниатюре.
+ *
+ * Разметка серверная: в браузер уезжает только обёртка Tilt с обработчиком
+ * курсора, а полторы сотни строк каркаса ноутбука остаются на сервере.
  */
 export default function HeroStage() {
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-
-    // Сцена показывается только на широких экранах и следит за курсором.
-    // Значит на телефоне считать нечего: там она скрыта, а курсора нет.
-    const allowed = window.matchMedia(
-      "(min-width: 64rem) and (pointer: fine) and (prefers-reduced-motion: no-preference)",
-    );
-
-    let raf = 0;
-    let visible = false;
-    let stop = () => {};
-
-    const run = () => {
-      stop();
-      if (!allowed.matches) return;
-
-      // Целевой и сглаженный поворот: сцена догоняет курсор, а не дёргается.
-      const target = { x: 0, y: 0 };
-      const current = { x: 0, y: 0 };
-
-      const onMove = (e: PointerEvent) => {
-        const rect = el.getBoundingClientRect();
-        target.x = (e.clientX - (rect.left + rect.width / 2)) / rect.width;
-        target.y = (e.clientY - (rect.top + rect.height / 2)) / rect.height;
-      };
-
-      const frame = () => {
-        current.x += (target.x - current.x) * 0.06;
-        current.y += (target.y - current.y) * 0.06;
-        el.style.transform = `rotateX(${(6 - current.y * 6).toFixed(2)}deg) rotateY(${(
-          -14 +
-          current.x * 8
-        ).toFixed(2)}deg)`;
-        raf = visible ? requestAnimationFrame(frame) : 0;
-      };
-
-      // Кадры крутятся только пока сцена на экране.
-      const io = new IntersectionObserver(([entry]) => {
-        visible = entry.isIntersecting;
-        if (visible && !raf) raf = requestAnimationFrame(frame);
-      });
-      io.observe(el);
-      window.addEventListener("pointermove", onMove, { passive: true });
-
-      stop = () => {
-        io.disconnect();
-        window.removeEventListener("pointermove", onMove);
-        if (raf) cancelAnimationFrame(raf);
-        raf = 0;
-        stop = () => {};
-      };
-    };
-
-    run();
-    allowed.addEventListener("change", run);
-
-    return () => {
-      allowed.removeEventListener("change", run);
-      stop();
-    };
-  }, []);
-
   return (
     <div aria-hidden className="relative select-none">
       {/* свечение под сценой */}
@@ -93,14 +28,7 @@ export default function HeroStage() {
       />
 
       <div style={{ perspective: "1200px" }} className="relative">
-        <div
-          ref={ref}
-          style={{
-            transform: "rotateX(6deg) rotateY(-14deg)",
-            transformStyle: "preserve-3d",
-          }}
-          className="relative"
-        >
+        <Tilt>
           {/* корпус экрана */}
           <div className="relative rounded-[14px] border border-mint/20 bg-panel p-2.5 shadow-[0_40px_80px_-40px_rgba(0,0,0,1),0_0_60px_-24px_rgba(63,240,200,0.5)]">
             <div className="relative aspect-[16/10] overflow-hidden rounded-[8px] border border-line bg-bg">
@@ -165,7 +93,7 @@ export default function HeroStage() {
             style={{ transform: "translateZ(-14px) rotateX(-18deg)" }}
           />
           <div className="mx-auto mt-1 h-1 w-1/3 rounded-full bg-mint/25 blur-[2px]" />
-        </div>
+        </Tilt>
       </div>
     </div>
   );

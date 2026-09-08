@@ -6,19 +6,6 @@ import type { DemoScene as SceneKind } from "@/data/tiers";
  * человек видит не картинку, а то, как это работает.
  */
 
-const CAPTIONS: Record<SceneKind, string> = {
-  scroll: "одна страница, блоки проявляются при прокрутке",
-  form: "заявка с формы уходит в Telegram",
-  catalog: "каталог позиций с ценами",
-  parallax: "слои двигаются с разной скоростью",
-  pages: "несколько страниц, у каждой свой адрес",
-  admin: "правка текста в админке, без разработчика",
-  filters: "фильтры и поиск по каталогу",
-  blog: "лента статей, которую ведёте сами",
-  account: "личный кабинет: история обращений",
-  dashboard: "дашборд: заявки по неделям",
-};
-
 /** Адрес в строке браузера — свой у каждой сцены. */
 const URLS: Record<SceneKind, string> = {
   scroll: "vash-sait.ru",
@@ -32,10 +19,6 @@ const URLS: Record<SceneKind, string> = {
   account: "vash-sait.ru/kabinet",
   dashboard: "vash-sait.ru/admin/otchety",
 };
-
-export function sceneCaption(kind: SceneKind) {
-  return CAPTIONS[kind];
-}
 
 export default function DemoScene({ kind }: { kind: SceneKind }) {
   return (

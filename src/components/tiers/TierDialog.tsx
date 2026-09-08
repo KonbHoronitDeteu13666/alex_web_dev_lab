@@ -1,13 +1,22 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { ROUTES } from "@/lib/routes";
 import { siteContent } from "@/data/site-content";
 import type { Tier } from "@/data/tiers";
 import PriceRow from "@/components/ui/PriceRow";
 import ModalShell from "@/components/ui/ModalShell";
-import DemoScene, { sceneCaption } from "./DemoScene";
+import { sceneCaption } from "./scene-captions";
+
+/**
+ * Сцены живого макета — почти пятьсот строк разметки с анимациями,
+ * которые видно только при открытом окне. Держать их в общем куске
+ * скриптов незачем: грузим отдельным файлом при первом открытии.
+ * Место под сцену уже занято рамкой 4:3, поэтому ничего не прыгает.
+ */
+const DemoScene = dynamic(() => import("./DemoScene"), { ssr: false });
 
 /** Сколько держится одна сцена макета, прежде чем смениться следующей. */
 const SCENE_MS = 5000;
@@ -77,7 +86,7 @@ export default function TierDialog({
         {/* ---------- слева: живой макет ---------- */}
         <div className="grid content-start gap-3">
           <div className="relative aspect-[4/3] max-h-[46dvh] w-full">
-            <DemoScene key={kind} kind={kind} />
+            {open && <DemoScene key={kind} kind={kind} />}
           </div>
 
           <p className="font-mono text-[11px] tracking-[0.12em] text-mint/80">

@@ -211,20 +211,41 @@ body {
   transform: none;
 }
 
-/* Пульс индикатора связи. */
+/* Пульс индикатора связи. Ореол — отдельным слоем через прозрачность
+   и масштаб: box-shadow композитор не умеет, и такая анимация считается
+   на основном потоке, роняя кадры вместе со всей страницей. */
 @keyframes beat {
   0%,
   100% {
     opacity: 1;
-    box-shadow: 0 0 12px 2px rgb(63 240 200 / 0.6);
   }
   50% {
     opacity: 0.45;
-    box-shadow: 0 0 4px 0 rgb(63 240 200 / 0.3);
+  }
+}
+@keyframes beat-halo {
+  0%,
+  100% {
+    opacity: 0.75;
+    transform: scale(1.9);
+  }
+  50% {
+    opacity: 0.25;
+    transform: scale(1.1);
   }
 }
 .beat {
+  position: relative;
   animation: beat 2.6s ease-in-out infinite;
+}
+.beat::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgb(63 240 200 / 0.65), transparent 70%);
+  animation: beat-halo 2.6s ease-in-out infinite;
+  pointer-events: none;
 }
 
 /* ============================================================
