@@ -40,8 +40,8 @@ export default function Topline({ current }: { current?: RouteKey }) {
           </a>
         </div>
 
-        {/* разделы на узких экранах: лента, которая едет вбок */}
-        <nav className="no-bars -mx-5 flex gap-1 overflow-x-auto px-5 pb-2.5 md:hidden">
+        {/* разделы на узких экранах: переносятся, ничего не прячется */}
+        <nav className="flex flex-wrap gap-1 pb-2.5 md:hidden">
           {NAV.map((item) => (
             <NavLink key={item.key} item={item} current={current} />
           ))}

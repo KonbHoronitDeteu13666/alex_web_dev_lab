@@ -17,9 +17,9 @@ export function cardShell(hasMock: boolean, featured = false): string {
   // Скругление задаёт panel/panel-accent — в разметке его не перебиваем.
   // Ширина превью растёт вместе с колонкой: на планшете карточка встаёт
   // в один ряд, поэтому там макету можно быть шире, чем на телефоне.
-  return `${base} grid w-full items-center gap-4 p-5 text-left md:gap-5 md:p-6 ${
+  return `${base} grid w-full items-center gap-4 p-4 text-left sm:p-5 md:gap-5 md:p-6 ${
     hasMock
-      ? "grid-cols-[76px_1fr] sm:grid-cols-[104px_1fr] lg:grid-cols-[132px_1fr]"
+      ? "grid-cols-[64px_1fr] sm:grid-cols-[104px_1fr] lg:grid-cols-[132px_1fr]"
       : "grid-cols-1"
   }`;
 }
@@ -47,8 +47,11 @@ export default function CardFace({
     <>
       {mock && <TierMock rows={mock} featured={featured} />}
 
-      <span className="block">
-        <span className="flex items-baseline gap-3">
+      {/* min-w-0 обязателен: без него колонка не может стать уже своего
+          самого длинного слова, и «Максимальный» раздвигал ряд карточек
+          на всей странице — они вылезали за правое поле. */}
+      <span className="block min-w-0">
+        <span className="flex flex-wrap items-baseline gap-x-3">
           {rank && (
             <span
               className={`font-mono text-[13px] tracking-[0.12em] ${

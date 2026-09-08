@@ -29,7 +29,7 @@ export default function PriceRow({
     >
       {PROMO_ON && (
         <span
-          className={`font-mono text-sm line-through ${
+          className={`font-mono text-xs line-through sm:text-sm ${
             featured ? "text-bg/50" : "text-strike"
           }`}
         >

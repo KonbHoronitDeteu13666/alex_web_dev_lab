@@ -25,7 +25,7 @@ export default function PageHero({
   const home = size === "home";
 
   return (
-    <div className="relative overflow-x-clip">
+    <div className="relative">
       {/* свечение за заголовком */}
       <span
         aria-hidden
