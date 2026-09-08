@@ -22,10 +22,10 @@ export default function IncludedPage() {
 
       <div className="mt-12">
         <SectionHead title="Состав работ" meta={`${included.length} пунктов`} />
-        <ul className="hud-panel grid gap-x-8 gap-y-3 rounded-xl p-6 md:grid-cols-2 md:p-7">
+        <ul className="panel grid gap-x-8 gap-y-3 rounded-xl p-6 md:grid-cols-2 md:p-7">
           {included.map((item) => (
             <li key={item.text} className="relative pl-6 text-[15px]">
-              <span className="absolute top-0 left-0 text-teal">✓</span>
+              <span className="absolute top-0 left-0 text-mint">✓</span>
               {item.text}
               {item.note && (
                 <small className="block text-[12.5px] text-dim-2">

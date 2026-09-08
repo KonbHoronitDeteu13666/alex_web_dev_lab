@@ -11,7 +11,7 @@ import { z } from "zod";
 const mockRowSchema = z.union([
   z.object({
     kind: z.literal("bar"),
-    accent: z.enum(["yellow", "teal"]).optional(),
+    accent: z.enum(["mint", "cool"]).optional(),
     tall: z.boolean().optional(),
   }),
   z.object({
@@ -50,6 +50,8 @@ const tierSchema = z.object({
   details: z.array(z.string().min(1)).min(1, "нет развёрнутого описания"),
   demo: z.array(demoSceneSchema).min(1, "нет сцен для живого макета"),
   mock: z.array(mockRowSchema).min(1),
+  /** Выделенный пакет: один в категории, залит акцентом. */
+  featured: z.boolean().optional(),
   order: z.number().int().nonnegative(),
 });
 
@@ -90,11 +92,11 @@ export const categories = z.array(categorySchema).length(2).parse([
     eyebrow: "4 тарифа · одна страница",
     termRange: "3–12 дней",
     mock: [
-      { kind: "bar", accent: "yellow", tall: true },
+      { kind: "bar", accent: "mint", tall: true },
       { kind: "bar" },
       { kind: "grid", cols: 2, filled: true },
       { kind: "bar" },
-      { kind: "bar", accent: "teal" },
+      { kind: "bar", accent: "cool" },
     ],
     hint: {
       title: "Если одна страница закрывает вопрос",
@@ -113,10 +115,10 @@ export const categories = z.array(categorySchema).length(2).parse([
     eyebrow: "4 тарифа · 5–15 страниц",
     termRange: "2–6 недель",
     mock: [
-      { kind: "bar", accent: "yellow", tall: true },
+      { kind: "bar", accent: "mint", tall: true },
       { kind: "grid", cols: 3 },
       { kind: "side" },
-      { kind: "bar", accent: "teal" },
+      { kind: "bar", accent: "cool" },
     ],
     hint: {
       title: "Если позиции добавляются постоянно",
@@ -149,11 +151,11 @@ const rawTiers = z.array(tierSchema).length(8).parse([
     ],
     demo: ["scroll", "form"],
     mock: [
-      { kind: "bar", accent: "yellow", tall: true },
+      { kind: "bar", accent: "mint", tall: true },
       { kind: "bar" },
       { kind: "bar" },
       { kind: "grid", cols: 2 },
-      { kind: "bar", accent: "teal" },
+      { kind: "bar", accent: "cool" },
     ],
     order: 0,
   },
@@ -179,12 +181,13 @@ const rawTiers = z.array(tierSchema).length(8).parse([
     ],
     demo: ["scroll", "form"],
     mock: [
-      { kind: "bar", accent: "yellow", tall: true },
+      { kind: "bar", accent: "mint", tall: true },
       { kind: "bar" },
       { kind: "grid", cols: 2, filled: true },
       { kind: "bar" },
-      { kind: "bar", accent: "teal" },
+      { kind: "bar", accent: "cool" },
     ],
+    featured: true,
     order: 1,
   },
   {
@@ -208,10 +211,10 @@ const rawTiers = z.array(tierSchema).length(8).parse([
     ],
     demo: ["catalog", "form", "scroll"],
     mock: [
-      { kind: "bar", accent: "yellow", tall: true },
+      { kind: "bar", accent: "mint", tall: true },
       { kind: "grid", cols: 3, filled: true },
       { kind: "grid", cols: 3, filled: true },
-      { kind: "bar", accent: "teal" },
+      { kind: "bar", accent: "cool" },
       { kind: "bar" },
     ],
     order: 2,
@@ -234,10 +237,10 @@ const rawTiers = z.array(tierSchema).length(8).parse([
     ],
     demo: ["parallax", "pages", "scroll"],
     mock: [
-      { kind: "bar", accent: "yellow", tall: true },
+      { kind: "bar", accent: "mint", tall: true },
       { kind: "side" },
       { kind: "grid", cols: 2 },
-      { kind: "bar", accent: "teal" },
+      { kind: "bar", accent: "cool" },
     ],
     order: 3,
   },
@@ -262,10 +265,10 @@ const rawTiers = z.array(tierSchema).length(8).parse([
     ],
     demo: ["pages", "admin", "catalog"],
     mock: [
-      { kind: "bar", accent: "yellow", tall: true },
+      { kind: "bar", accent: "mint", tall: true },
       { kind: "grid", cols: 3 },
       { kind: "grid", cols: 2, filled: true },
-      { kind: "bar", accent: "teal" },
+      { kind: "bar", accent: "cool" },
     ],
     order: 0,
   },
@@ -291,11 +294,12 @@ const rawTiers = z.array(tierSchema).length(8).parse([
     ],
     demo: ["filters", "blog", "admin"],
     mock: [
-      { kind: "bar", accent: "yellow", tall: true },
+      { kind: "bar", accent: "mint", tall: true },
       { kind: "side" },
       { kind: "grid", cols: 2, filled: true },
-      { kind: "bar", accent: "teal" },
+      { kind: "bar", accent: "cool" },
     ],
+    featured: true,
     order: 1,
   },
   {
@@ -318,10 +322,10 @@ const rawTiers = z.array(tierSchema).length(8).parse([
     ],
     demo: ["catalog", "account", "filters"],
     mock: [
-      { kind: "bar", accent: "yellow" },
+      { kind: "bar", accent: "mint" },
       { kind: "side" },
       { kind: "grid", cols: 3, filled: true },
-      { kind: "bar", accent: "teal" },
+      { kind: "bar", accent: "cool" },
     ],
     order: 2,
   },
@@ -346,10 +350,10 @@ const rawTiers = z.array(tierSchema).length(8).parse([
     ],
     demo: ["dashboard", "admin", "account"],
     mock: [
-      { kind: "bar", accent: "yellow" },
+      { kind: "bar", accent: "mint" },
       { kind: "grid", cols: 2, filled: true },
       { kind: "side" },
-      { kind: "bar", accent: "yellow" },
+      { kind: "bar", accent: "mint" },
     ],
     order: 3,
   },

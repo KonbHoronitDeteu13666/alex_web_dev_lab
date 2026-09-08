@@ -4,19 +4,26 @@ import type { MockRow } from "@/data/tiers";
  * Превью-макет пакета. Рисуется из данных, а не из разметки,
  * поэтому все восемь превью говорят на одном визуальном языке.
  */
-export default function TierMock({ rows }: { rows: MockRow[] }) {
+export default function TierMock({
+  rows,
+  featured = false,
+}: {
+  rows: MockRow[];
+  /** На залитой карточке макет тёмный, иначе он теряется на акценте. */
+  featured?: boolean;
+}) {
   return (
     <div
       aria-hidden
-      className="grid aspect-[4/5] content-start gap-[5px] rounded-lg border border-teal/15 bg-bg/60 p-2 shadow-[inset_0_1px_0_rgba(226,230,241,0.06),inset_0_-8px_18px_-12px_rgba(0,0,0,0.9)]"
+      className={`grid aspect-[4/5] content-start gap-[5px] rounded-xl border p-2 shadow-[inset_0_1px_0_rgba(232,244,241,0.08),inset_0_-10px_22px_-14px_rgba(0,0,0,0.95)] ${featured ? "border-bg/25 bg-bg/85" : "border-mint/12 bg-bg/70"}`}
     >
       {rows.map((row, i) => {
         if (row.kind === "bar") {
           const tone =
-            row.accent === "yellow"
-              ? "bg-yellow/75"
-              : row.accent === "teal"
-                ? "bg-teal/60"
+            row.accent === "mint"
+              ? "bg-mint/80 shadow-[0_0_14px_-2px] shadow-mint/60"
+              : row.accent === "cool"
+                ? "bg-mint-deep/60"
                 : "bg-line";
           return (
             <span

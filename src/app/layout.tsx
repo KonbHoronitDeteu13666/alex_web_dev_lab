@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Unbounded, Manrope, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import RoomBackdrop from "@/components/layout/RoomBackdrop";
-import Glass from "@/components/layout/Glass";
+import Backdrop from "@/components/layout/Backdrop";
+
 import { site } from "@/data/site";
 
 const unbounded = Unbounded({
@@ -49,10 +49,10 @@ export default function RootLayout({
       lang="ru"
       className={`${unbounded.variable} ${manrope.variable} ${jetbrains.variable}`}
     >
-      {/* Фон комнаты и рамка стекла — на всех страницах, поэтому живут здесь. */}
+      {/* Подложка со свечением — на всех страницах, поэтому живёт здесь. */}
       <body className="text-ink">
-        <RoomBackdrop />
-        <Glass />
+        <Backdrop />
+
         {children}
       </body>
     </html>

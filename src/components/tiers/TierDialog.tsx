@@ -59,14 +59,14 @@ export default function TierDialog({
         // Клик мимо окна закрывает: цель события — сам dialog.
         if (e.target === ref.current) onClose();
       }}
-      className="hud-panel m-auto max-h-[88vh] w-[min(1120px,94vw)] max-w-none overflow-hidden rounded-2xl p-0 text-ink backdrop:bg-black/75 backdrop:backdrop-blur-sm"
+      className="panel m-auto max-h-[88vh] w-[min(1120px,94vw)] max-w-none overflow-hidden rounded-2xl p-0 text-ink shadow-[0_0_120px_-40px_rgba(63,240,200,0.55)] backdrop:bg-black/80 backdrop:backdrop-blur-md"
     >
       {/* Прокрутки внутри окна быть не должно: содержимое подогнано так,
           чтобы помещаться целиком. На узких экранах окно просто выше. */}
       <div className="grid h-full grid-rows-[auto_1fr] overflow-hidden">
         {/* шапка окна */}
         <div className="flex items-center gap-4 border-b border-line/70 px-6 py-4 md:px-8">
-          <span className="font-mono text-[10px] tracking-[0.22em] text-teal/70 uppercase">
+          <span className="font-mono text-[10px] tracking-[0.22em] text-mint/70 uppercase">
             пакет
           </span>
           <h2 className="font-display text-xl font-medium tracking-tight md:text-2xl">
@@ -79,7 +79,7 @@ export default function TierDialog({
             type="button"
             onClick={onClose}
             aria-label="Закрыть"
-            className="ml-auto rounded-lg border border-line px-3 py-1.5 font-mono text-[11px] tracking-[0.16em] text-dim uppercase transition-colors hover:border-teal hover:text-ink"
+            className="ml-auto rounded-full border border-mint/25 px-4 py-1.5 font-mono text-[11px] tracking-[0.16em] text-dim uppercase transition-colors hover:border-mint hover:text-mint"
           >
             закрыть
           </button>
@@ -92,7 +92,7 @@ export default function TierDialog({
               <DemoScene key={kind} kind={kind} />
             </div>
 
-            <p className="font-mono text-[11px] tracking-[0.12em] text-teal/80">
+            <p className="font-mono text-[11px] tracking-[0.12em] text-mint/80">
               {sceneCaption(kind)}
             </p>
 
@@ -105,7 +105,7 @@ export default function TierDialog({
                     onClick={() => setScene(i)}
                     aria-label={sceneCaption(item)}
                     className={`h-1 flex-1 rounded-full transition-colors ${
-                      i === scene ? "bg-yellow" : "bg-line hover:bg-dim-2"
+                      i === scene ? "bg-mint" : "bg-line hover:bg-dim-2"
                     }`}
                   />
                 ))}
@@ -126,7 +126,7 @@ export default function TierDialog({
             </div>
 
             <div>
-              <p className="font-mono text-[10px] tracking-[0.22em] text-teal/70 uppercase">
+              <p className="font-mono text-[10px] tracking-[0.22em] text-mint/70 uppercase">
                 что входит
               </p>
               <ul className="mt-2.5 grid gap-1.5 sm:grid-cols-2">
@@ -135,7 +135,7 @@ export default function TierDialog({
                     key={item}
                     className="relative pl-[16px] text-[13px] leading-snug text-ink/85"
                   >
-                    <span className="absolute top-[9px] left-0 h-px w-2 bg-yellow" />
+                    <span className="absolute top-[9px] left-0 h-px w-2 bg-mint" />
                     {item}
                   </li>
                 ))}
@@ -147,7 +147,7 @@ export default function TierDialog({
                 href={siteContent.contact.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="key-3d rounded-lg border border-yellow bg-yellow px-5 py-3 font-mono text-[11.5px] tracking-[0.14em] text-bg uppercase transition-opacity hover:opacity-85"
+                className="rounded-full bg-mint px-6 py-3 font-mono text-[11.5px] tracking-[0.14em] text-bg uppercase shadow-[0_0_30px_-6px] shadow-mint/70 transition-all hover:shadow-[0_0_42px_-4px] hover:shadow-mint"
               >
                 Обсудить проект
               </a>

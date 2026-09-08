@@ -24,7 +24,7 @@ export default function TermsPage() {
 
       <div className="mt-12">
         <SectionHead title="Правки" />
-        <div className="rounded-r-xl border-l-[3px] border-yellow hud-panel hud-lift p-6 md:p-7">
+        <div className="rounded-r-xl border-l-[3px] border-mint panel panel-glow lift p-6 md:p-7">
           <p className="text-[15px]">{revisionPolicy.rule}</p>
           <p className="mt-3 text-[15px] text-ink/85">
             Отдельно оценивается и оплачивается только основательная переделка
@@ -40,8 +40,8 @@ export default function TermsPage() {
         />
         <div className="grid gap-3.5 sm:grid-cols-2 lg:grid-cols-4">
           {paymentStages.map((stage) => (
-            <div key={stage.title} className="rounded-xl hud-panel p-5 md:p-6">
-              <p className="font-display text-3xl leading-none font-bold text-yellow price-glow tabular-nums">
+            <div key={stage.title} className="rounded-xl panel p-5 md:p-6">
+              <p className="font-display text-3xl leading-none font-bold text-mint accent-word tabular-nums">
                 {stage.percent}%
               </p>
               <h3 className="mt-3 font-display text-base font-medium">

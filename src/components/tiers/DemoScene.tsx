@@ -36,7 +36,7 @@ const BLOCKS: BlockKind[] = [
 
 export default function DemoScene({ kind }: { kind: SceneKind }) {
   return (
-    <div className="relative h-full w-full overflow-hidden rounded-lg border border-teal/15 bg-bg/70">
+    <div className="relative h-full w-full overflow-hidden rounded-lg border border-mint/15 bg-bg/70">
       {/* строка браузера */}
       <div className="flex items-center gap-1.5 border-b border-line/70 bg-panel-2/60 px-3 py-2">
         <span className="h-1.5 w-1.5 rounded-full bg-dim-2" />
@@ -70,7 +70,7 @@ function Scene({ kind }: { kind: SceneKind }) {
     case "form":
       return (
         <div className="grid h-full grid-rows-[auto_1fr_auto] gap-2">
-          <span className="h-3 w-24 rounded-sm bg-yellow/70" />
+          <span className="h-3 w-24 rounded-sm bg-mint/70" />
           <div className="grid content-start gap-2">
             {[0, 1, 2].map((i) => (
               <span
@@ -81,8 +81,8 @@ function Scene({ kind }: { kind: SceneKind }) {
             ))}
           </div>
           <div className="relative flex items-center gap-2">
-            <span className="demo-send h-6 w-24 rounded-sm bg-yellow" />
-            <span className="demo-fly ml-auto h-4 w-4 rotate-45 border border-teal bg-teal/25" />
+            <span className="demo-send h-6 w-24 rounded-sm bg-mint" />
+            <span className="demo-fly ml-auto h-4 w-4 rotate-45 border border-mint bg-mint/25" />
           </div>
         </div>
       );
@@ -98,7 +98,7 @@ function Scene({ kind }: { kind: SceneKind }) {
               style={{ animationDelay: `${i * 0.12}s` }}
             >
               <span className="h-5 rounded-[2px] bg-line/80" />
-              <span className="h-1.5 w-8 rounded-[2px] bg-yellow/70" />
+              <span className="h-1.5 w-8 rounded-[2px] bg-mint/70" />
             </span>
           ))}
         </div>
@@ -115,11 +115,11 @@ function Scene({ kind }: { kind: SceneKind }) {
           </div>
           <div className="demo-layer-mid absolute inset-x-0 top-8 grid gap-10 px-6">
             {[0, 1].map((i) => (
-              <span key={i} className="h-10 rounded-sm bg-teal/25" />
+              <span key={i} className="h-10 rounded-sm bg-mint/25" />
             ))}
           </div>
           <div className="demo-layer-fast absolute inset-x-0 top-12 px-10">
-            <span className="block h-12 rounded-sm bg-yellow/45" />
+            <span className="block h-12 rounded-sm bg-mint/45" />
           </div>
         </div>
       );
@@ -144,7 +144,7 @@ function Scene({ kind }: { kind: SceneKind }) {
                 className="demo-page absolute inset-0 grid content-start gap-2 p-2"
                 style={{ animationDelay: `${i * 1.5}s` }}
               >
-                <span className="h-3 w-20 rounded-sm bg-yellow/70" />
+                <span className="h-3 w-20 rounded-sm bg-mint/70" />
                 <span className="h-2 rounded-sm bg-line" />
                 <span className="h-2 w-2/3 rounded-sm bg-line" />
                 <span className="mt-1 grid grid-cols-2 gap-2">
@@ -171,10 +171,10 @@ function Scene({ kind }: { kind: SceneKind }) {
             ))}
           </div>
           <div className="grid content-start gap-2 rounded-sm border border-line bg-panel-2/40 p-2">
-            <span className="h-2.5 w-16 rounded-sm bg-teal/50" />
-            <span className="demo-type h-5 rounded-sm border border-teal/40 bg-bg/60" />
+            <span className="h-2.5 w-16 rounded-sm bg-mint/50" />
+            <span className="demo-type h-5 rounded-sm border border-mint/40 bg-bg/60" />
             <span className="h-2 w-3/4 rounded-sm bg-line" />
-            <span className="demo-save mt-1 h-5 w-20 rounded-sm bg-yellow" />
+            <span className="demo-save mt-1 h-5 w-20 rounded-sm bg-mint" />
           </div>
         </div>
       );
@@ -191,7 +191,7 @@ function Scene({ kind }: { kind: SceneKind }) {
                 style={{ animationDelay: `${i * 1.1}s` }}
               />
             ))}
-            <span className="ml-auto h-4 w-16 rounded-sm border border-teal/40 bg-bg/50" />
+            <span className="ml-auto h-4 w-16 rounded-sm border border-mint/40 bg-bg/50" />
           </div>
           <div className="grid grid-cols-3 content-start gap-2">
             {Array.from({ length: 9 }).map((_, i) => (
@@ -217,7 +217,7 @@ function Scene({ kind }: { kind: SceneKind }) {
               >
                 <span className="h-9 rounded-sm bg-line/80" />
                 <span className="grid content-start gap-1">
-                  <span className="h-2 w-3/4 rounded-sm bg-yellow/60" />
+                  <span className="h-2 w-3/4 rounded-sm bg-mint/60" />
                   <span className="h-1.5 rounded-sm bg-line" />
                   <span className="h-1.5 w-2/3 rounded-sm bg-line" />
                 </span>
@@ -231,8 +231,8 @@ function Scene({ kind }: { kind: SceneKind }) {
     case "account":
       return (
         <div className="grid h-full grid-rows-[auto_1fr] gap-2">
-          <div className="flex items-center gap-2 rounded-sm border border-teal/25 bg-panel-2/60 p-2">
-            <span className="h-6 w-6 rounded-full border border-teal/50 bg-teal/15" />
+          <div className="flex items-center gap-2 rounded-sm border border-mint/25 bg-panel-2/60 p-2">
+            <span className="h-6 w-6 rounded-full border border-mint/50 bg-mint/15" />
             <span className="grid gap-1">
               <span className="block h-2 w-20 rounded-sm bg-line" />
               <span className="block h-1.5 w-12 rounded-sm bg-line/70" />
@@ -246,7 +246,7 @@ function Scene({ kind }: { kind: SceneKind }) {
                 style={{ animationDelay: `${i * 0.7}s` }}
               >
                 <span className="h-1.5 flex-1 rounded-sm bg-line" />
-                <span className="h-2 w-10 rounded-full bg-teal/40" />
+                <span className="h-2 w-10 rounded-full bg-mint/40" />
               </span>
             ))}
           </div>
@@ -264,7 +264,7 @@ function Scene({ kind }: { kind: SceneKind }) {
                 className="grid gap-1 rounded-sm border border-line bg-panel-2/60 p-1.5"
               >
                 <span className="h-1.5 w-8 rounded-sm bg-line" />
-                <span className="h-3 w-10 rounded-sm bg-yellow/70" />
+                <span className="h-3 w-10 rounded-sm bg-mint/70" />
               </span>
             ))}
           </div>
@@ -272,7 +272,7 @@ function Scene({ kind }: { kind: SceneKind }) {
             {[0.35, 0.6, 0.45, 0.8, 0.55, 0.95, 0.7].map((height, i) => (
               <span
                 key={i}
-                className="demo-bar flex-1 rounded-t-sm bg-teal/45"
+                className="demo-bar flex-1 rounded-t-sm bg-mint/45"
                 style={
                   {
                     "--h": `${height * 100}%`,
@@ -291,7 +291,7 @@ function Scene({ kind }: { kind: SceneKind }) {
 type BlockKind = "heading" | "text" | "grid";
 
 function Block({ type }: { type: BlockKind }) {
-  if (type === "heading") return <span className="h-4 rounded-sm bg-yellow/60" />;
+  if (type === "heading") return <span className="h-4 rounded-sm bg-mint/60" />;
   if (type === "grid")
     return (
       <span className="grid grid-cols-2 gap-2">

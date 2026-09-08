@@ -1,58 +1,65 @@
 import PageShell from "@/components/layout/PageShell";
-import EntryOverlay from "@/components/entry/EntryOverlay";
 import PageHero from "@/components/ui/PageHero";
 import SectionHead from "@/components/ui/SectionHead";
 import CategoryTile from "@/components/ui/CategoryTile";
 import CategoryTiles from "@/components/ui/CategoryTiles";
 import ChoiceHint from "@/components/ui/ChoiceHint";
+import Reveal from "@/components/motion/Reveal";
 import { ROUTES } from "@/lib/routes";
 import { site } from "@/data/site";
 import { categoryOf, tiers } from "@/data/tiers";
 
 export default function HomePage() {
   return (
-    <>
-      <EntryOverlay />
+    <PageShell current="home">
+      <PageHero
+        size="home"
+        eyebrow={site.role}
+        title={site.slogan}
+        accentWord="фантазией"
+        lead={site.description}
+      />
 
-      <PageShell current="home">
-        <PageHero
-          size="home"
-          eyebrow={site.role}
-          title={site.slogan}
-          lead={site.description}
+      <div className="mt-20">
+        <SectionHead
+          rank="01"
+          title="Категории"
+          meta={`${tiers.length} тарифов`}
         />
+        <CategoryTiles detailed />
+      </div>
 
-        <div className="mt-14">
-          <SectionHead title="Категории" meta={`${tiers.length} тарифов`} />
-          <CategoryTiles detailed />
-        </div>
-
-        <div className="mt-14">
-          <SectionHead title="Какой вариант ваш" />
+      <div className="mt-20">
+        <SectionHead rank="02" title="Какой вариант ваш" />
+        <Reveal>
           <ChoiceHint
             stayTitle={categoryOf("simple").hint.title}
             stayText={categoryOf("simple").hint.stay}
             leaveTitle={categoryOf("middle").hint.title}
             leaveText={categoryOf("middle").hint.stay}
           />
-        </div>
+        </Reveal>
+      </div>
 
-        <div className="mt-14">
-          <SectionHead title="Дальше" />
-          <div className="grid gap-4 md:grid-cols-2">
+      <div className="mt-20">
+        <SectionHead rank="03" title="Дальше" />
+        <div className="grid gap-5 md:grid-cols-2">
+          <Reveal>
             <CategoryTile
               href={ROUTES.included}
               title="Что входит «под ключ»"
               text="Десять пунктов состава работ, одинаковых для всех тарифов: от брифинга и прототипа до публикации на хостинге и гарантии 14 дней."
             />
+          </Reveal>
+          <Reveal delay={90}>
             <CategoryTile
               href={ROUTES.terms}
               title="Условия работы"
               text="Как вносятся правки и что считается переделкой. Оплата четырьмя этапами, привязана к результату, а не к календарю."
             />
-          </div>
+          </Reveal>
         </div>
-      </PageShell>
-    </>
+      </div>
+    </PageShell>
   );
 }

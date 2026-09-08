@@ -6,7 +6,13 @@ import CardFace, { cardShell } from "@/components/ui/CardFace";
 import TierDialog from "./TierDialog";
 
 /** Карточка тарифа. Клик открывает большое окно с живым макетом и описанием. */
-export default function TierCard({ tier }: { tier: Tier }) {
+export default function TierCard({
+  tier,
+  rank,
+}: {
+  tier: Tier;
+  rank?: string;
+}) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -15,7 +21,7 @@ export default function TierCard({ tier }: { tier: Tier }) {
         type="button"
         onClick={() => setOpen(true)}
         aria-haspopup="dialog"
-        className={cardShell(true)}
+        className={cardShell(true, tier.featured)}
       >
         <CardFace
           title={tier.title}
@@ -23,6 +29,8 @@ export default function TierCard({ tier }: { tier: Tier }) {
           term={tier.term}
           basePrice={tier.basePrice}
           mock={tier.mock}
+          rank={rank}
+          featured={tier.featured}
         />
       </button>
 

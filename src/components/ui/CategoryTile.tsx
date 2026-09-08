@@ -11,6 +11,7 @@ export default function CategoryTile({
   basePrice,
   term,
   mock,
+  rank,
 }: {
   href: Route;
   title: string;
@@ -18,6 +19,7 @@ export default function CategoryTile({
   basePrice?: number;
   term?: string;
   mock?: MockRow[];
+  rank?: string;
 }) {
   return (
     <Link href={href} className={cardShell(Boolean(mock))}>
@@ -28,6 +30,7 @@ export default function CategoryTile({
         basePrice={basePrice}
         from
         mock={mock}
+        rank={rank}
       />
     </Link>
   );

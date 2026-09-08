@@ -17,7 +17,7 @@ export default function PageShell({
   return (
     <>
       <Topline current={current} />
-      <main className="hud-rise mx-auto max-w-6xl px-5 py-14 md:px-10 md:py-20">
+      <main className="mx-auto max-w-6xl px-5 py-16 md:px-10 md:py-24">
         {children}
       </main>
       <FootNav current={current} />

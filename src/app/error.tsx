@@ -20,7 +20,7 @@ export default function GlobalError({
   return (
     <main className="mx-auto grid min-h-screen max-w-[60ch] place-items-center px-5 text-center">
       <div>
-        <p className="font-display text-5xl leading-none font-bold text-yellow">
+        <p className="font-display text-5xl leading-none font-bold text-mint">
           Сбой
         </p>
         <h1 className="mt-5 font-display text-2xl font-medium">
@@ -33,7 +33,7 @@ export default function GlobalError({
         <button
           type="button"
           onClick={reset}
-          className="mt-7 rounded-lg border border-yellow bg-yellow/10 px-6 py-3.5 font-mono text-xs tracking-[0.16em] text-yellow uppercase transition-colors hover:bg-yellow hover:text-bg"
+          className="mt-7 rounded-lg border border-mint bg-mint/10 px-6 py-3.5 font-mono text-xs tracking-[0.16em] text-mint uppercase transition-colors hover:bg-mint hover:text-bg"
         >
           Повторить
         </button>
