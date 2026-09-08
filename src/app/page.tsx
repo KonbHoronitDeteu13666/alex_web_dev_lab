@@ -1,5 +1,6 @@
 import PageShell from "@/components/layout/PageShell";
 import PageHero from "@/components/ui/PageHero";
+import HeroStage from "@/components/ui/HeroStage";
 import SectionHead from "@/components/ui/SectionHead";
 import CategoryTile from "@/components/ui/CategoryTile";
 import CategoryTiles from "@/components/ui/CategoryTiles";
@@ -18,6 +19,7 @@ export default function HomePage() {
         title={site.slogan}
         accentWord="фантазией"
         lead={site.description}
+        aside={<HeroStage />}
       />
 
       <div className="mt-20">

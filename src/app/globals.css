@@ -700,3 +700,75 @@ body {
 .no-bars::-webkit-scrollbar {
   display: none;
 }
+
+/* ============================================================
+   Первый экран: ноутбук, внутри которого страница собирает себя.
+   ============================================================ */
+
+/* Блок прилетает на место, держится и в конце цикла уходит. */
+@keyframes hero-build {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.96);
+  }
+  8%,
+  84% {
+    opacity: 1;
+    transform: none;
+  }
+  94%,
+  100% {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+}
+.hero-build {
+  animation: hero-build 9s cubic-bezier(0.16, 1, 0.3, 1) infinite both;
+}
+
+/* Полоса сборки пробегает по экрану сверху вниз. */
+@keyframes hero-scan {
+  0% {
+    transform: translateY(-20%);
+    opacity: 0;
+  }
+  10%,
+  70% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(340%);
+    opacity: 0;
+  }
+}
+.hero-scan {
+  animation: hero-scan 9s ease-in-out infinite;
+}
+
+/* Отражение по стеклу экрана. */
+@keyframes hero-shine {
+  0%,
+  100% {
+    opacity: 0.06;
+    transform: translateX(-30%);
+  }
+  50% {
+    opacity: 0.16;
+    transform: translateX(30%);
+  }
+}
+.hero-shine {
+  animation: hero-shine 12s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-build,
+  .hero-scan,
+  .hero-shine {
+    animation: none;
+  }
+  .hero-build {
+    opacity: 1;
+    transform: none;
+  }
+}
