@@ -1,5 +1,5 @@
 /**
- * Подложка сайта: почти чёрный фон, тонкая сетка и светящиеся пятна,
+ * Подложка сайта: почти чёрный фон и светящиеся пятна,
  * которые медленно плывут. Свечение живёт за содержимым и даёт глубину,
  * поэтому панели поверх читаются как объекты, а не как плоские прямоугольники.
  */
@@ -7,17 +7,6 @@ export default function Backdrop() {
   return (
     <div aria-hidden className="pointer-events-none fixed inset-0 -z-10">
       <div className="absolute inset-0 bg-bg" />
-
-      {/* сетка, растворяющаяся к краям */}
-      <div
-        className="grid-bg absolute inset-0 opacity-70"
-        style={{
-          maskImage:
-            "radial-gradient(ellipse 80% 60% at 50% 35%, #000 20%, transparent 78%)",
-          WebkitMaskImage:
-            "radial-gradient(ellipse 80% 60% at 50% 35%, #000 20%, transparent 78%)",
-        }}
-      />
 
       {/* пятна света: два мятных и одно холодное, разной скорости */}
       <span

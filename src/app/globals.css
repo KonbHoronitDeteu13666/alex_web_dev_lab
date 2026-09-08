@@ -161,14 +161,6 @@ body {
 
 /* ---------- фон ---------- */
 
-/* Тонкая сетка на подложке. */
-@utility grid-bg {
-  background-image:
-    linear-gradient(to right, rgb(63 240 200 / 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgb(63 240 200 / 0.05) 1px, transparent 1px);
-  background-size: 96px 96px;
-}
-
 /* Светящееся пятно на подложке. */
 @utility orb {
   position: absolute;
