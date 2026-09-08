@@ -13,6 +13,11 @@ const EASING = "cubic-bezier(0.16, 1, 0.3, 1)";
  *
  * Сам <dialog> растянут на весь экран и прозрачен — карточку центрирует
  * разметка, поэтому окно стоит посередине на любом экране.
+ *
+ * Все запущенные анимации держим под рукой и гасим перед каждой новой.
+ * Затухание при закрытии идёт с fill: forwards — без отмены оно осталось бы
+ * на элементе навсегда, и следующее открытие показало бы только затемнённую
+ * подложку: ::backdrop рисуется отдельно и прозрачность окна на него не влияет.
  */
 export default function ModalShell({
   open,
@@ -30,7 +35,15 @@ export default function ModalShell({
 }) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
-  const closing = useRef(false);
+  /** Окно уже развёрнуто: второй раз анимацию открытия не запускаем. */
+  const shown = useRef(false);
+  const running = useRef<Animation[]>([]);
+
+  /** Снимает следы предыдущих анимаций, включая залипший fill. */
+  const stopAnimations = useCallback(() => {
+    for (const animation of running.current) animation.cancel();
+    running.current = [];
+  }, []);
 
   /** Шаги превращения: из прямоугольника карточки в прямоугольник окна. */
   const frames = useCallback((): Keyframe[] | null => {
@@ -62,48 +75,70 @@ export default function ModalShell({
   const close = useCallback(() => {
     const dialog = dialogRef.current;
     const card = cardRef.current;
-    if (!dialog?.open || closing.current) return;
+    if (!dialog?.open) return;
+
+    stopAnimations();
 
     const steps = frames();
-    if (!steps || reduced()) {
+    if (!steps || !card || reduced()) {
       dialog.close();
       return;
     }
 
-    closing.current = true;
-    dialog.animate([{ opacity: 1 }, { opacity: 0 }], {
+    const fade = dialog.animate([{ opacity: 1 }, { opacity: 0 }], {
       duration: CLOSE_MS,
       easing: "ease-in",
       fill: "forwards",
     });
-    const back = card!.animate([steps[1], steps[0]], {
+    const back = card.animate([steps[1], steps[0]], {
       duration: CLOSE_MS,
       easing: "ease-in",
     });
+    running.current = [fade, back];
+
     back.onfinish = () => {
-      closing.current = false;
+      // Сначала закрываем — окно исчезает, — и только потом снимаем заливку,
+      // иначе на один кадр мелькнёт полностью непрозрачная карточка.
       dialog.close();
+      stopAnimations();
     };
-  }, [frames]);
+  }, [frames, stopAnimations]);
 
   useEffect(() => {
     const dialog = dialogRef.current;
     if (!dialog) return;
 
-    if (open && !dialog.open) {
-      dialog.showModal();
+    if (open) {
+      // Повторный вызов при том же открытом окне (сменился origin) ничего
+      // не переигрывает: анимация открытия одна на одно открытие.
+      if (shown.current) return;
+      shown.current = true;
+
+      // Могли нажать по карточке, пока окно ещё складывалось: гасим
+      // незаконченное закрытие, иначе оно доиграет и закроет окно.
+      stopAnimations();
+      if (!dialog.open) dialog.showModal();
+
       const steps = frames();
-      if (steps && !reduced()) {
-        cardRef.current?.animate(steps, { duration: OPEN_MS, easing: EASING });
-        dialog.animate([{ opacity: 0 }, { opacity: 1 }], {
-          duration: OPEN_MS,
-          easing: EASING,
-        });
+      const card = cardRef.current;
+      if (steps && card && !reduced()) {
+        running.current = [
+          card.animate(steps, { duration: OPEN_MS, easing: EASING }),
+          dialog.animate([{ opacity: 0 }, { opacity: 1 }], {
+            duration: OPEN_MS,
+            easing: EASING,
+          }),
+        ];
       }
+      return;
     }
 
-    if (!open && dialog.open) close();
-  }, [open, frames, close]);
+    shown.current = false;
+    if (dialog.open) close();
+  }, [open, frames, close, stopAnimations]);
+
+  // Уходим со страницы с открытым окном — за собой прибираем.
+  useEffect(() => stopAnimations, [stopAnimations]);
 
   return (
     <dialog

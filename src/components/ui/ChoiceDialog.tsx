@@ -46,15 +46,15 @@ export default function ChoiceDialog({
       </div>
 
       <div className="no-bars grid min-h-0 content-start gap-5 overflow-y-auto p-5 md:p-7">
-        <p className="max-w-[70ch] text-sm leading-relaxed text-ink/85">
+        <p className="max-w-[70ch] text-[13.5px] leading-relaxed text-dim">
           {category.note}
         </p>
 
-        <div className="grid max-w-[76ch] gap-4">
+        <div className="grid gap-x-8 gap-y-4 md:grid-cols-2">
           {category.story.map((paragraph) => (
             <p
               key={paragraph}
-              className="text-[15px] leading-relaxed text-ink/90"
+              className="text-[14px] leading-relaxed text-ink/90"
             >
               {paragraph}
             </p>
