@@ -3,11 +3,11 @@ import PageHero from "@/components/ui/PageHero";
 import SectionHead from "@/components/ui/SectionHead";
 import CategoryTile from "@/components/ui/CategoryTile";
 import CategoryTiles from "@/components/ui/CategoryTiles";
-import ChoiceHint from "@/components/ui/ChoiceHint";
+import ChoiceCards from "@/components/ui/ChoiceCards";
 import Reveal from "@/components/motion/Reveal";
 import { ROUTES } from "@/lib/routes";
 import { site } from "@/data/site";
-import { categoryOf, tiers } from "@/data/tiers";
+import { tiers } from "@/data/tiers";
 
 export default function HomePage() {
   return (
@@ -31,14 +31,7 @@ export default function HomePage() {
 
       <div className="mt-20">
         <SectionHead rank="02" title="Какой вариант ваш" />
-        <Reveal>
-          <ChoiceHint
-            stayTitle={categoryOf("simple").hint.title}
-            stayText={categoryOf("simple").hint.stay}
-            leaveTitle={categoryOf("middle").hint.title}
-            leaveText={categoryOf("middle").hint.stay}
-          />
-        </Reveal>
+        <ChoiceCards />
       </div>
 
       <div className="mt-20">
