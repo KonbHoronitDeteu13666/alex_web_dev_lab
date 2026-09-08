@@ -23,6 +23,9 @@
   --color-mint-deep: #16bfa0;
   --color-mint-soft: #a9fce9;
 
+  /* Стандартная длительность интерфейсного перехода. */
+  --dur-ui: 150ms;
+
   --font-display: var(--font-unbounded), ui-sans-serif, system-ui, sans-serif;
   --font-body: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-jetbrains), ui-monospace, monospace;
@@ -114,7 +117,7 @@ body {
   );
   filter: blur(28px);
   pointer-events: none;
-  transition: opacity 0.45s ease;
+  transition: opacity var(--dur-ui) ease;
 }
 
 /* Панель, залитая акцентом: одна в ряду, как в референсе. */
@@ -138,9 +141,9 @@ body {
 /* Приподнимание при наведении: панель выходит ближе к зрителю. */
 @utility lift {
   transition:
-    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-    border-color 0.45s ease,
-    box-shadow 0.45s ease;
+    transform var(--dur-ui) cubic-bezier(0.16, 1, 0.3, 1),
+    border-color var(--dur-ui) ease,
+    box-shadow var(--dur-ui) ease;
 }
 .lift:hover {
   transform: translateY(-6px);
@@ -201,8 +204,8 @@ body {
   opacity: 0;
   transform: translateY(26px);
   transition:
-    opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity var(--dur-ui) cubic-bezier(0.16, 1, 0.3, 1),
+    transform var(--dur-ui) cubic-bezier(0.16, 1, 0.3, 1);
 }
 .reveal[data-shown="true"] {
   opacity: 1;
@@ -244,4 +247,440 @@ body {
   *::after {
     transition-duration: 0.01ms !important;
   }
+}
+
+/* ============================================================
+   Живые макеты в окне тарифа. Циклы бесшовные: лента едет на -50%
+   при удвоенном содержимом, поэтому стык не читается.
+   ============================================================ */
+
+/* Лента прокручивается сама, без рывка на возврате. */
+@keyframes demo-marquee {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-50%);
+  }
+}
+.demo-marquee {
+  animation: demo-marquee 9s linear infinite;
+}
+.demo-marquee-slow {
+  animation: demo-marquee 14s linear infinite;
+}
+
+/* Курсор ходит по сцене и нажимает. Путь задаётся переменными. */
+@keyframes demo-cursor {
+  0% {
+    transform: translate(var(--x1), var(--y1)) scale(1);
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  38% {
+    transform: translate(var(--x2), var(--y2)) scale(1);
+  }
+  46% {
+    transform: translate(var(--x2), var(--y2)) scale(0.82);
+  }
+  54% {
+    transform: translate(var(--x2), var(--y2)) scale(1);
+  }
+  84% {
+    transform: translate(var(--x3), var(--y3)) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--x3), var(--y3)) scale(1);
+    opacity: 0;
+  }
+}
+.demo-cursor {
+  animation: demo-cursor var(--dur, 5s) cubic-bezier(0.5, 0, 0.2, 1) infinite;
+}
+
+/* Волна нажатия под курсором в момент клика. */
+@keyframes demo-ping {
+  0%,
+  40%,
+  100% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  48% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  62% {
+    opacity: 0;
+    transform: scale(1.8);
+  }
+}
+.demo-ping {
+  animation: demo-ping var(--dur, 5s) ease-out infinite;
+}
+
+/* Текст набирается: полоса заливки растёт ступенями. */
+@keyframes demo-type {
+  0%,
+  6% {
+    width: 8%;
+  }
+  40%,
+  70% {
+    width: 78%;
+  }
+  86%,
+  100% {
+    width: 8%;
+  }
+}
+.demo-type {
+  animation: demo-type 5s steps(14, end) infinite;
+}
+
+@keyframes demo-caret {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+.demo-caret {
+  animation: demo-caret 0.9s step-end infinite;
+}
+
+/* Поле подсвечивается, когда до него дошла очередь. */
+@keyframes demo-focus {
+  0%,
+  100% {
+    border-color: var(--color-line);
+    background-color: rgb(16 26 30 / 0.7);
+  }
+  18%,
+  34% {
+    border-color: rgb(63 240 200 / 0.75);
+    background-color: rgb(63 240 200 / 0.08);
+  }
+}
+.demo-focus {
+  animation: demo-focus 5s ease-in-out infinite;
+}
+
+/* Кнопка отправки проваливается и вспыхивает. */
+@keyframes demo-press {
+  0%,
+  62%,
+  100% {
+    transform: none;
+    filter: none;
+  }
+  68% {
+    transform: scale(0.94);
+    filter: brightness(1.35);
+  }
+  74% {
+    transform: none;
+  }
+}
+.demo-press {
+  animation: demo-press 5s ease-in-out infinite;
+}
+
+/* Сообщение улетает в мессенджер и там появляется отметка. */
+@keyframes demo-fly {
+  0%,
+  70% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0.7);
+  }
+  76% {
+    opacity: 1;
+    transform: translate(20%, -30%) scale(1);
+  }
+  92% {
+    opacity: 0;
+    transform: translate(120%, -150%) scale(0.6);
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.demo-fly {
+  animation: demo-fly 5s ease-in-out infinite;
+}
+
+@keyframes demo-badge {
+  0%,
+  86%,
+  100% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  92% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+  96% {
+    transform: scale(1);
+  }
+}
+.demo-badge {
+  animation: demo-badge 5s ease-out infinite;
+}
+
+/* Карточки каталога выкладываются по очереди и остаются. */
+@keyframes demo-drop {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.94);
+  }
+  14%,
+  86% {
+    opacity: 1;
+    transform: none;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+}
+.demo-drop {
+  animation: demo-drop 6s ease-in-out infinite;
+}
+
+/* Одна карточка поднимается под курсором. */
+@keyframes demo-raise {
+  0%,
+  34%,
+  76%,
+  100% {
+    transform: none;
+    box-shadow: none;
+    border-color: var(--color-line);
+  }
+  46%,
+  66% {
+    transform: translateY(-4px);
+    border-color: rgb(63 240 200 / 0.6);
+    box-shadow: 0 0 22px -6px rgb(63 240 200 / 0.7);
+  }
+}
+.demo-raise {
+  animation: demo-raise 5s ease-in-out infinite;
+}
+
+/* Слои параллакса: разная скорость, движение туда-обратно без остановки. */
+@keyframes demo-layer {
+  0%,
+  100% {
+    transform: translateY(calc(var(--amp) * -1));
+  }
+  50% {
+    transform: translateY(var(--amp));
+  }
+}
+.demo-layer {
+  animation: demo-layer 6s ease-in-out infinite;
+}
+
+/* Вкладки: активная перекидывается по кругу. */
+@keyframes demo-tab {
+  0%,
+  100% {
+    background-color: var(--color-line);
+  }
+  6%,
+  20% {
+    background-color: var(--color-mint);
+  }
+}
+.demo-tab {
+  animation: demo-tab 6s ease-in-out infinite;
+}
+
+/* Страница въезжает справа, уезжает влево. */
+@keyframes demo-page {
+  0%,
+  100% {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+  6%,
+  26% {
+    opacity: 1;
+    transform: none;
+  }
+  33% {
+    opacity: 0;
+    transform: translateX(-24px);
+  }
+}
+.demo-page {
+  animation: demo-page 6s ease-in-out infinite;
+}
+
+/* Всплывающее уведомление «сохранено». */
+@keyframes demo-toast {
+  0%,
+  70%,
+  100% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  76%,
+  92% {
+    opacity: 1;
+    transform: none;
+  }
+}
+.demo-toast {
+  animation: demo-toast 5s ease-out infinite;
+}
+
+/* Фильтр включается. */
+@keyframes demo-chip {
+  0%,
+  100% {
+    background-color: transparent;
+    border-color: var(--color-line);
+    color: var(--color-dim-2);
+  }
+  30%,
+  80% {
+    background-color: rgb(63 240 200 / 0.22);
+    border-color: rgb(63 240 200 / 0.7);
+    color: var(--color-mint);
+  }
+}
+.demo-chip {
+  animation: demo-chip 5.5s ease-in-out infinite;
+}
+
+/* Позиции, не прошедшие фильтр, схлопываются. */
+@keyframes demo-cut {
+  0%,
+  22% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  34%,
+  74% {
+    opacity: 0.08;
+    transform: scale(0.9);
+  }
+  86%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.demo-cut {
+  animation: demo-cut 5.5s ease-in-out infinite;
+}
+
+/* Столбики дашборда растут по очереди и держатся. */
+@keyframes demo-grow {
+  0% {
+    height: 8%;
+  }
+  30%,
+  88% {
+    height: var(--h);
+  }
+  100% {
+    height: 8%;
+  }
+}
+.demo-grow {
+  height: 8%;
+  animation: demo-grow 5.5s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+/* Линия графика рисуется слева направо. */
+@keyframes demo-draw {
+  0% {
+    stroke-dashoffset: 300;
+  }
+  45%,
+  88% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: 300;
+  }
+}
+.demo-draw {
+  stroke-dasharray: 300;
+  animation: demo-draw 5.5s ease-in-out infinite;
+}
+
+/* Статус заявки переключается. */
+@keyframes demo-status {
+  0%,
+  100% {
+    background-color: rgb(157 179 177 / 0.35);
+    width: 34%;
+  }
+  40%,
+  80% {
+    background-color: var(--color-mint);
+    width: 62%;
+  }
+}
+.demo-status {
+  animation: demo-status 5s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .demo-marquee,
+  .demo-marquee-slow,
+  .demo-cursor,
+  .demo-ping,
+  .demo-type,
+  .demo-caret,
+  .demo-focus,
+  .demo-press,
+  .demo-fly,
+  .demo-badge,
+  .demo-drop,
+  .demo-raise,
+  .demo-layer,
+  .demo-tab,
+  .demo-page,
+  .demo-toast,
+  .demo-chip,
+  .demo-cut,
+  .demo-grow,
+  .demo-draw,
+  .demo-status {
+    animation: none;
+  }
+  .demo-grow {
+    height: var(--h);
+  }
+  .demo-draw {
+    stroke-dashoffset: 0;
+  }
+  .demo-page:first-of-type {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Стандарт интерфейса: любой переход состояния длится 150 мс.
+   Классы Tailwind transition-* берут длительность отсюда, поэтому
+   писать duration-* в разметке не нужно. */
+.transition,
+.transition-all,
+.transition-colors,
+.transition-opacity,
+.transition-transform,
+.transition-shadow {
+  transition-duration: var(--dur-ui);
 }
