@@ -74,6 +74,16 @@ const categorySchema = z.object({
     /** Признаки, по которым человек узнаёт свой случай. */
     signs: z.array(z.string().min(1)).min(3),
   }),
+  /** Разбор задач: что нужно заказчику и какой пакет это закрывает. */
+  needs: z
+    .array(
+      z.object({
+        situation: z.string().min(1),
+        detail: z.string().min(1),
+        tierId: z.string().min(1),
+      }),
+    )
+    .min(3),
   mock: z.array(mockRowSchema).min(1),
 });
 
@@ -99,6 +109,32 @@ export const categories = z.array(categorySchema).length(2).parse([
       { kind: "grid", cols: 2, filled: true },
       { kind: "bar" },
       { kind: "bar", accent: "cool" },
+    ],
+    needs: [
+      {
+        situation: "Проверить спрос на услугу",
+        detail:
+          "Сайта нет, тексты не написаны, нужно быстро выйти в рекламу и посмотреть, идут ли заявки.",
+        tierId: "start",
+      },
+      {
+        situation: "Есть бренд и фотографии",
+        detail:
+          "Нужен свой дизайн, а не шаблон, шесть блоков про услуги и отзывы, заявки сразу в Telegram.",
+        tierId: "standart",
+      },
+      {
+        situation: "Показать позиции и посчитать цену",
+        detail:
+          "До двадцати товаров или услуг с ценами, калькулятор или квиз, несколько форм на странице.",
+        tierId: "prodvinutyy",
+      },
+      {
+        situation: "Нужен эффект и вторая страница",
+        detail:
+          "Параллакс и движение при прокрутке, отдельная страница под акцию или юридический текст.",
+        tierId: "premium",
+      },
     ],
     hint: {
       title: "Если одна страница закрывает вопрос",
@@ -127,6 +163,32 @@ export const categories = z.array(categorySchema).length(2).parse([
       { kind: "grid", cols: 3 },
       { kind: "side" },
       { kind: "bar", accent: "cool" },
+    ],
+    needs: [
+      {
+        situation: "Править тексты самому",
+        detail:
+          "Пять-семь страниц и админка: меняете цены, фотографии и описания без разработчика.",
+        tierId: "standart-plus",
+      },
+      {
+        situation: "Каталог растёт, нужен поиск",
+        detail:
+          "Фильтры и поиск по каталогу, блог для поисковиков, заявки складываются в amoCRM или Bitrix24.",
+        tierId: "optimalnyy",
+      },
+      {
+        situation: "Много категорий и постоянные клиенты",
+        detail:
+          "Вложенные категории, личный кабинет с историей обращений, заявки сразу в четыре канала.",
+        tierId: "rasshirennyy",
+      },
+      {
+        situation: "Смотреть цифры и собирать заказ",
+        detail:
+          "Дашборд по заявкам и источникам, конфигуратор товара, обучение по админке и поддержка месяц.",
+        tierId: "maksimalnyy",
+      },
     ],
     hint: {
       title: "Если позиции добавляются постоянно",
@@ -403,4 +465,29 @@ export function otherCategoryOf(categoryId: CategoryId): Category {
 /** Минимальная прайсовая цена категории — для плиток «от …». */
 export function minPriceOf(categoryId: CategoryId): number {
   return Math.min(...tiersOf(categoryId).map((tier) => tier.basePrice));
+}
+
+// Разбор задач ссылается на тарифы по идентификатору: проверяем, что все
+// названные пакеты существуют, иначе на главной окажется пустая рекомендация.
+for (const category of categories) {
+  for (const need of category.needs) {
+    const tier = tiers.find((item) => item.id === need.tierId);
+    if (!tier) {
+      throw new Error(
+        `В разборе задач категории «${category.title}» назван неизвестный тариф: ${need.tierId}`,
+      );
+    }
+    if (tier.categoryId !== category.id) {
+      throw new Error(
+        `Тариф «${tier.title}» из другой категории попал в разбор задач «${category.title}»`,
+      );
+    }
+  }
+}
+
+/** Тариф по идентификатору — для разбора задач на главной. */
+export function tierById(id: string): Tier {
+  const found = tiers.find((tier) => tier.id === id);
+  if (!found) throw new Error(`Тариф не найден: ${id}`);
+  return found;
 }

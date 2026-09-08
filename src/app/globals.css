@@ -684,3 +684,27 @@ body {
 .transition-shadow {
   transition-duration: var(--dur-ui);
 }
+
+/* Модальное окно: сам <dialog> растянут на весь экран и прозрачен,
+   а карточка центрируется разметкой — так она стоит по центру на любом
+   экране, включая низкие и вытянутые. Полосы прокрутки внутри скрыты:
+   содержимое подогнано, скролл остаётся только как страховка. */
+@utility modal-shell {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  background: transparent;
+  border: 0;
+  padding: 1rem;
+  overflow: hidden;
+}
+
+@utility no-bars {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-bars::-webkit-scrollbar {
+  display: none;
+}
