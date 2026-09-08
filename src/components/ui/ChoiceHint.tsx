@@ -18,7 +18,7 @@ export default function ChoiceHint({
   leaveLabel?: string;
 }) {
   return (
-    <div className="grid gap-5 rounded-xl panel panel-glow lift p-6 md:grid-cols-2 md:p-7">
+    <div className="grid gap-5 panel panel-glow lift p-6 md:grid-cols-2 md:p-7">
       <div>
         <h3 className="font-display text-base font-medium">{stayTitle}</h3>
         <p className="mt-2 text-sm leading-relaxed text-ink/90">{stayText}</p>

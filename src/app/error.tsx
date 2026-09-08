@@ -18,7 +18,7 @@ export default function GlobalError({
   }, [error]);
 
   return (
-    <main className="mx-auto grid min-h-screen max-w-[60ch] place-items-center px-5 text-center">
+    <main className="mx-auto grid min-h-dvh max-w-[60ch] place-items-center px-5 text-center">
       <div>
         <p className="font-display text-5xl leading-none font-bold text-mint">
           Сбой

@@ -13,11 +13,14 @@ import PriceRow from "./PriceRow";
  * Выделенная карточка залита акцентом — одна в ряду, как в референсе.
  */
 export function cardShell(hasMock: boolean, featured = false): string {
-  const base = featured
-    ? "panel-accent lift"
-    : "panel panel-glow lift";
-  return `${base} grid w-full items-center gap-5 rounded-2xl p-5 text-left md:p-6 ${
-    hasMock ? "grid-cols-[96px_1fr] md:grid-cols-[132px_1fr]" : "grid-cols-1"
+  const base = featured ? "panel-accent lift" : "panel panel-glow lift";
+  // Скругление задаёт panel/panel-accent — в разметке его не перебиваем.
+  // Ширина превью растёт вместе с колонкой: на планшете карточка встаёт
+  // в один ряд, поэтому там макету можно быть шире, чем на телефоне.
+  return `${base} grid w-full items-center gap-4 p-5 text-left md:gap-5 md:p-6 ${
+    hasMock
+      ? "grid-cols-[76px_1fr] sm:grid-cols-[104px_1fr] lg:grid-cols-[132px_1fr]"
+      : "grid-cols-1"
   }`;
 }
 

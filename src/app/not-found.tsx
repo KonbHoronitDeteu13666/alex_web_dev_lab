@@ -7,13 +7,13 @@ export default function NotFound() {
   return (
     <PageShell>
       <div className="mx-auto max-w-[60ch] pt-16 pb-10 text-center">
-        <p className=" accent-word font-display text-6xl leading-none font-bold text-mint md:text-7xl">
+        <p className="accent-word font-display text-6xl leading-none font-bold text-mint md:text-7xl">
           404
         </p>
-        <h1 className=" mt-5 font-display text-2xl font-medium">
+        <h1 className="mt-5 font-display text-2xl font-medium">
           Сигнал потерян
         </h1>
-        <p className=" mt-3 text-ink/85">
+        <p className="mt-3 text-ink/85">
           Раздел не отвечает — ссылка ведёт в пустоту. Очки на месте, канал
           открыт, можно вернуться назад.
         </p>

@@ -29,6 +29,14 @@ export default function TierDialog({
   onClose: () => void;
 }) {
   const [scene, setScene] = useState(0);
+  const [wasOpen, setWasOpen] = useState(open);
+
+  // Каждое открытие начинается с первой сцены. Правка состояния прямо
+  // при отрисовке, а не в эффекте: лишнего кадра со старой сценой не будет.
+  if (open !== wasOpen) {
+    setWasOpen(open);
+    if (open) setScene(0);
+  }
 
   // Сцены сменяют друг друга, пока окно открыто.
   useEffect(() => {
@@ -45,7 +53,7 @@ export default function TierDialog({
   return (
     <ModalShell open={open} onClose={onClose} origin={origin}>
       {/* шапка окна */}
-      <div className="flex items-center gap-4 border-b border-line/70 px-6 py-4 md:px-8">
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-2 border-b border-line/70 px-5 py-4 md:px-8">
         <span className="font-mono text-[10px] tracking-[0.22em] text-mint/70 uppercase">
           пакет
         </span>
@@ -68,7 +76,7 @@ export default function TierDialog({
       <div className="no-bars grid min-h-0 gap-5 overflow-y-auto p-5 md:grid-cols-[minmax(0,42%)_1fr] md:gap-7 md:p-7">
         {/* ---------- слева: живой макет ---------- */}
         <div className="grid content-start gap-3">
-          <div className="relative aspect-[4/3] w-full max-h-[46vh]">
+          <div className="relative aspect-[4/3] max-h-[46dvh] w-full">
             <DemoScene key={kind} kind={kind} />
           </div>
 

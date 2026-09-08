@@ -23,8 +23,11 @@
   --color-mint-deep: #16bfa0;
   --color-mint-soft: #a9fce9;
 
-  /* Стандартная длительность интерфейсного перехода. */
+  /* Стандартная длительность интерфейсного перехода. Отсюда её берут
+     и утилиты Tailwind transition-*, и рукописные правила ниже,
+     поэтому duration-* в разметке писать не нужно. */
   --dur-ui: 150ms;
+  --default-transition-duration: var(--dur-ui);
 
   --font-display: var(--font-unbounded), ui-sans-serif, system-ui, sans-serif;
   --font-body: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
@@ -40,6 +43,10 @@ html {
 }
 
 body {
+  /* Пятна подложки и свечение за заголовком намеренно шире экрана.
+     clip обрезает их по горизонтали, не создавая контейнер прокрутки,
+     поэтому закреплённая шапка продолжает работать. */
+  overflow-x: clip;
   color: var(--color-ink);
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
@@ -218,27 +225,6 @@ body {
 }
 .beat {
   animation: beat 2.6s ease-in-out infinite;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-  .drift,
-  .drift-slow,
-  .beat {
-    animation: none;
-  }
-  .reveal {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
-  *,
-  *::before,
-  *::after {
-    transition-duration: 0.01ms !important;
-  }
 }
 
 /* ============================================================
@@ -629,54 +615,6 @@ body {
   animation: demo-status 5s ease-in-out infinite;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .demo-marquee,
-  .demo-marquee-slow,
-  .demo-cursor,
-  .demo-ping,
-  .demo-type,
-  .demo-caret,
-  .demo-focus,
-  .demo-press,
-  .demo-fly,
-  .demo-badge,
-  .demo-drop,
-  .demo-raise,
-  .demo-layer,
-  .demo-tab,
-  .demo-page,
-  .demo-toast,
-  .demo-chip,
-  .demo-cut,
-  .demo-grow,
-  .demo-draw,
-  .demo-status {
-    animation: none;
-  }
-  .demo-grow {
-    height: var(--h);
-  }
-  .demo-draw {
-    stroke-dashoffset: 0;
-  }
-  .demo-page:first-of-type {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-/* Стандарт интерфейса: любой переход состояния длится 150 мс.
-   Классы Tailwind transition-* берут длительность отсюда, поэтому
-   писать duration-* в разметке не нужно. */
-.transition,
-.transition-all,
-.transition-colors,
-.transition-opacity,
-.transition-transform,
-.transition-shadow {
-  transition-duration: var(--dur-ui);
-}
-
 /* Модальное окно: сам <dialog> растянут на весь экран и прозрачен,
    а карточка центрируется разметкой — так она стоит по центру на любом
    экране, включая низкие и вытянутые. Полосы прокрутки внутри скрыты:
@@ -761,14 +699,36 @@ body {
   animation: hero-shine 12s ease-in-out infinite;
 }
 
+/* ============================================================
+   Спокойный режим. Движение гасится одним правилом: перечислять
+   имена анимаций пришлось бы при каждой новой сцене, и однажды
+   список забыли бы дополнить.
+   ============================================================ */
 @media (prefers-reduced-motion: reduce) {
-  .hero-build,
-  .hero-scan,
-  .hero-shine {
-    animation: none;
+  html {
+    scroll-behavior: auto;
   }
-  .hero-build {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  /* Случаи, где спокойный вид не совпадает с началом анимации. */
+  .reveal {
     opacity: 1;
     transform: none;
+  }
+  .demo-grow {
+    height: var(--h);
+  }
+  .demo-draw {
+    stroke-dashoffset: 0;
+  }
+  .demo-page:not(:first-of-type) {
+    opacity: 0;
   }
 }

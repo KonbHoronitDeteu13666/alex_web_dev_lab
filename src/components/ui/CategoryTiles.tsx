@@ -14,7 +14,9 @@ export default function CategoryTiles({
   detailed?: boolean;
 }) {
   return (
-    <div className="grid gap-5 md:grid-cols-2">
+    <div
+      className={`grid gap-5 ${detailed ? "lg:grid-cols-2" : "md:grid-cols-2"}`}
+    >
       {categories.map((category, i) => (
         <Reveal key={category.id} delay={i * 90}>
           <CategoryTile

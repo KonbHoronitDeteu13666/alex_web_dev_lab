@@ -11,12 +11,12 @@ export default function FootNav({ current }: { current?: RouteKey }) {
           <Link
             key={item.key}
             href={ROUTES[item.key]}
-            className=" text-sm text-dim transition-colors hover:text-ink"
+            className="text-sm text-dim transition-colors hover:text-ink"
           >
             {item.label}
           </Link>
         ))}
-        <span className="label  ml-auto">
+        <span className="label ml-auto">
           © {new Date().getFullYear()} {site.name}
         </span>
       </div>

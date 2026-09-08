@@ -25,7 +25,7 @@ export default function PageHero({
   const home = size === "home";
 
   return (
-    <div className="relative">
+    <div className="relative overflow-x-clip">
       {/* свечение за заголовком */}
       <span
         aria-hidden
@@ -56,7 +56,9 @@ export default function PageHero({
 
             <h1
               className={`mt-6 font-display leading-[1.04] font-medium tracking-tight text-balance ${
-                home ? "text-4xl md:text-7xl" : "text-3xl md:text-5xl"
+                home
+                  ? "text-4xl sm:text-5xl lg:text-7xl"
+                  : "text-3xl sm:text-4xl lg:text-5xl"
               }`}
             >
               {renderTitle(title, accentWord)}
@@ -65,7 +67,7 @@ export default function PageHero({
             <p
               className={
                 home
-                  ? "mt-7 max-w-[52ch] text-lg leading-relaxed text-ink/85 md:text-xl"
+                  ? "mt-7 max-w-[52ch] text-lg leading-relaxed text-ink/85 lg:text-xl"
                   : "mt-5 max-w-[60ch] text-base leading-relaxed text-ink/85"
               }
             >

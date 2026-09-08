@@ -40,7 +40,6 @@ export default function TierCard({
       </button>
 
       <TierDialog
-        key={open ? "open" : "closed"}
         tier={tier}
         open={open}
         origin={origin}

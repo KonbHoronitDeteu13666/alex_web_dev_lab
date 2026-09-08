@@ -126,7 +126,7 @@ export default function ModalShell({
         <div
           ref={cardRef}
           style={{ width }}
-          className="panel grid max-h-full grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-2xl shadow-[0_0_120px_-40px_rgba(63,240,200,0.55)]"
+          className="panel grid max-h-full grid-rows-[auto_minmax(0,1fr)] overflow-hidden shadow-[0_0_120px_-40px_rgba(63,240,200,0.55)]"
         >
           {children}
         </div>

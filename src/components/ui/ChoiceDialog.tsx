@@ -28,7 +28,7 @@ export default function ChoiceDialog({
       origin={origin}
       width="min(980px, 100%)"
     >
-      <div className="flex items-center gap-4 border-b border-line px-6 py-4 md:px-8">
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-2 border-b border-line px-5 py-4 md:px-8">
         <span className="font-mono text-[10px] tracking-[0.22em] text-mint/70 uppercase">
           кому подходит
         </span>
