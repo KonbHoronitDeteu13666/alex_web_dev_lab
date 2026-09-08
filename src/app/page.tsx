@@ -35,7 +35,7 @@ export default function HomePage() {
       </div>
 
       <div className="mt-20">
-        <SectionHead rank="03" title="Дальше" />
+        <SectionHead rank="03" title="Важное" />
         <div className="grid gap-5 md:grid-cols-2">
           <Reveal>
             <CategoryTile
