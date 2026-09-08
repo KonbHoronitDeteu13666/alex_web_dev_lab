@@ -38,6 +38,9 @@ export default function ModalShell({
   /** Окно уже развёрнуто: второй раз анимацию открытия не запускаем. */
   const shown = useRef(false);
   const running = useRef<Animation[]>([]);
+  /** Номер текущего открытия: по нему опоздавшее закрытие понимает,
+      что окно уже переоткрыли, и не лезет его закрывать. */
+  const cycle = useRef(0);
 
   /** Снимает следы предыдущих анимаций, включая залипший fill. */
   const stopAnimations = useCallback(() => {
@@ -96,12 +99,19 @@ export default function ModalShell({
     });
     running.current = [fade, back];
 
-    back.onfinish = () => {
+    // Закрытие не должно зависеть от одного события: если кадры перестанут
+    // идти (вкладка ушла в фон, система придушила анимации), onfinish
+    // не придёт, и окно останется висеть невидимым поверх страницы.
+    const token = cycle.current;
+    const shut = () => {
+      if (cycle.current !== token || !dialog.open) return;
       // Сначала закрываем — окно исчезает, — и только потом снимаем заливку,
       // иначе на один кадр мелькнёт полностью непрозрачная карточка.
       dialog.close();
       stopAnimations();
     };
+    back.onfinish = shut;
+    window.setTimeout(shut, CLOSE_MS + 120);
   }, [frames, stopAnimations]);
 
   useEffect(() => {
@@ -116,6 +126,7 @@ export default function ModalShell({
 
       // Могли нажать по карточке, пока окно ещё складывалось: гасим
       // незаконченное закрытие, иначе оно доиграет и закроет окно.
+      cycle.current += 1;
       stopAnimations();
       if (!dialog.open) dialog.showModal();
 
