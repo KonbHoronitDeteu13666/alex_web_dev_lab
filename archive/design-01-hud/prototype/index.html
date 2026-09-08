@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Прототип · Вход</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;500;700&family=Manrope:wght@400;500;600;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="entry">
+
+<!-- Три состояния входа живут в одном экране и сменяют друг друга:
+     кадр с кнопкой → ролик посадки → загрузка → переход на сайт. -->
+<div class="entry-stage">
+
+  <video
+    id="scene"
+    class="entry-video"
+    src="assets/scene.mp4"
+    poster="assets/poster.webp"
+    muted
+    playsinline
+    preload="auto"
+  ></video>
+
+  <!-- 1. Стартовый кадр -->
+  <div class="entry-step" id="step-start">
+    <div class="entry-center">
+      <p class="entry-kicker"></p>
+      <button class="enter-btn" id="enter" type="button">
+        <span class="enter-btn__label">Войти</span>
+        <span class="enter-btn__hint">подключение к креслу</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- 2. Ролик: поверх только кнопка пропуска -->
+  <div class="entry-step" id="step-play" hidden>
+    <button class="skip-btn" id="skip" type="button">Пропустить</button>
+  </div>
+
+  <!-- 3. Загрузка на стекле очков -->
+  <div class="entry-step" id="step-boot" hidden>
+    <div class="boot">
+      <p class="boot-line">Всё ограничено вашей фантазией</p>
+      <div class="boot-bar"><span id="boot-fill"></span></div>
+      <p class="boot-meta" id="boot-meta">загрузка интерфейса</p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const video = document.getElementById('scene');
+  const stepStart = document.getElementById('step-start');
+  const stepPlay = document.getElementById('step-play');
+  const stepBoot = document.getElementById('step-boot');
+  const bootFill = document.getElementById('boot-fill');
+  const bootMeta = document.getElementById('boot-meta');
+
+  const NEXT = 'home.html';
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function show(step) {
+    [stepStart, stepPlay, stepBoot].forEach(s => { s.hidden = s !== step; });
+  }
+
+  function boot() {
+    show(stepBoot);
+    // Полоса заполняется за 1,6 с, затем уходим на сайт.
+    requestAnimationFrame(() => { bootFill.style.width = '100%'; });
+    setTimeout(() => { bootMeta.textContent = 'интерфейс готов'; }, 1400);
+    setTimeout(() => { window.location.href = NEXT; }, 1900);
+  }
+
+  document.getElementById('enter').addEventListener('click', () => {
+    if (reduced) { boot(); return; }
+    show(stepPlay);
+    video.play().catch(boot);   // если автозапуск не дали — сразу к загрузке
+  });
+
+  document.getElementById('skip').addEventListener('click', () => {
+    video.pause();
+    boot();
+  });
+
+  video.addEventListener('ended', boot);
+</script>
+
+</body>
+</html>

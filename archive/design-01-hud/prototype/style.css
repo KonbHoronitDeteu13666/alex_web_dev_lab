@@ -1,0 +1,673 @@
+/* Прототип «Ночной город» — артбук №2.
+   Статичная вёрстка с рабочей навигацией, без бэкенда. */
+
+:root {
+  --bg: #0b0d14;
+  --panel: #12151f;
+  --panel-2: #171b28;
+  --line: #222739;
+  --line-soft: #1a1e2c;
+  --ink: #e2e6f1;
+  --dim: #7d859b;
+  --dim-2: #5d6479;
+  --yellow: #f4d738;
+  --teal: #37d4c8;
+  --strike: #6b7288;
+
+  --radius: 12px;
+  --radius-sm: 8px;
+  --shell: 1180px;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 15px/1.65 "Manrope", system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; text-decoration: none; }
+
+:focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; }
+
+h1, h2, h3 { font-family: "Unbounded", system-ui, sans-serif; font-weight: 500; margin: 0; text-wrap: balance; }
+
+.mono, .meta, .price, .price-old {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- стекло очков: рамка поверх всего ---------- */
+
+.glass {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  background:
+    radial-gradient(130% 85% at 50% 45%, transparent 52%, rgba(3, 5, 10, .72) 100%),
+    radial-gradient(70% 40% at 50% 112%, rgba(55, 212, 200, .10) 0%, transparent 70%);
+}
+
+.glass i {
+  position: absolute;
+  width: 26px; height: 26px;
+  border: 1px solid var(--teal);
+  opacity: .5;
+}
+.glass i:nth-child(1) { top: 18px; left: 18px; border-right: 0; border-bottom: 0; }
+.glass i:nth-child(2) { top: 18px; right: 18px; border-left: 0; border-bottom: 0; }
+.glass i:nth-child(3) { bottom: 18px; left: 18px; border-right: 0; border-top: 0; }
+.glass i:nth-child(4) { bottom: 18px; right: 18px; border-left: 0; border-top: 0; }
+
+/* ---------- служебные подписи ---------- */
+
+.meta {
+  font-size: 11px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--dim-2);
+}
+
+.eyebrow {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin: 0 0 14px;
+}
+
+/* ---------- шапка ---------- */
+
+.topline {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(11, 13, 20, .82);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.topline-in {
+  max-width: var(--shell);
+  margin: 0 auto;
+  padding: 14px 40px;
+  display: flex;
+  align-items: center;
+  gap: 26px;
+}
+
+.brand { display: flex; align-items: center; gap: 10px; }
+.brand .dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--teal);
+  box-shadow: 0 0 10px 2px rgba(55, 212, 200, .5);
+}
+.brand span {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.topnav { display: flex; gap: 4px; margin-left: auto; }
+.topnav a {
+  padding: 7px 12px;
+  border-radius: 6px;
+  font-size: 13.5px;
+  color: var(--dim);
+  transition: color .18s, background .18s;
+}
+.topnav a:hover { color: var(--ink); background: var(--panel); }
+.topnav a[aria-current="page"] { color: var(--yellow); }
+
+/* Единственная закреплённая точка выхода в Telegram — в шапке, видна на всех экранах. */
+.tg-btn {
+  background: var(--yellow);
+  color: var(--bg);
+  padding: 10px 20px;
+  border: 1px solid var(--yellow);
+  border-radius: 8px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11.5px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: opacity .18s;
+}
+.tg-btn:hover { opacity: .85; }
+
+/* ---------- каркас страницы ---------- */
+
+.shell { max-width: var(--shell); margin: 0 auto; padding: 54px 40px 90px; }
+
+.page-head { margin-bottom: 40px; max-width: 66ch; }
+.page-head h1 { font-size: clamp(28px, 3.6vw, 46px); line-height: 1.1; }
+.page-head p { color: var(--dim); margin: 16px 0 0; font-size: 16px; }
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin: 0 0 22px;
+}
+.section-head h2 { font-size: 22px; }
+.section-head .rule { flex: 1; height: 1px; background: var(--line); }
+
+/* ---------- карточки тарифов ---------- */
+
+.tiers {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+
+.tier {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.tier > summary {
+  list-style: none;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: 132px 1fr;
+  gap: 20px;
+  padding: 20px;
+  align-items: center;
+}
+.tier > summary::-webkit-details-marker { display: none; }
+.tier[open] > summary { border-bottom: 1px solid var(--line); }
+
+.tier-name { font-family: "Unbounded", sans-serif; font-weight: 500; font-size: 19px; }
+.tier-term { font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: .1em; color: var(--dim); margin-top: 4px; }
+.tier-gist { color: var(--dim); font-size: 13.5px; margin: 10px 0 0; }
+
+.price-row { display: flex; align-items: baseline; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+.price-old { font-size: 14px; color: var(--strike); text-decoration: line-through; }
+.price { font-family: "Unbounded", sans-serif; font-weight: 700; font-size: 26px; color: var(--yellow); line-height: 1; }
+.price-off {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10.5px;
+  letter-spacing: .1em;
+  color: var(--bg);
+  background: var(--yellow);
+  padding: 3px 6px;
+  border-radius: 4px;
+}
+
+.tier-more {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-top: 14px;
+  display: inline-block;
+}
+.tier[open] .tier-more span::after { content: "свернуть"; }
+.tier:not([open]) .tier-more span::after { content: "подробнее"; }
+
+.tier-body { padding: 20px; display: grid; gap: 16px; }
+.tier-body ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+.tier-body li { position: relative; padding-left: 18px; font-size: 14px; color: var(--dim); }
+.tier-body li::before {
+  content: ""; position: absolute; left: 0; top: 11px;
+  width: 8px; height: 1px; background: var(--yellow);
+}
+.tier-body .foot {
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  padding-top: 14px; border-top: 1px solid var(--line-soft);
+}
+
+/* ---------- превью-макет внутри карточки ---------- */
+
+.mock {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 8px;
+  display: grid;
+  gap: 5px;
+  aspect-ratio: 4 / 5;
+  align-content: start;
+}
+.mock .bar { height: 7px; border-radius: 2px; background: var(--line); }
+.mock .bar.accent { background: var(--yellow); opacity: .75; }
+.mock .bar.teal { background: var(--teal); opacity: .6; }
+.mock .bar.tall { height: 16px; }
+.mock .row { display: flex; gap: 5px; }
+.mock .row > * { flex: 1; }
+.mock .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+.mock .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
+.mock .box { border: 1px solid var(--line); border-radius: 2px; height: 20px; }
+.mock .box.fill { background: var(--panel-2); }
+.mock .side { display: grid; grid-template-columns: 22px 1fr; gap: 5px; }
+.mock .stack { display: grid; gap: 4px; align-content: start; }
+
+/* ---------- акция и подсказка ---------- */
+
+.promo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding: 16px 20px;
+  margin: 26px 0;
+  border: 1px dashed var(--yellow);
+  border-radius: var(--radius);
+  background: rgba(244, 215, 56, .05);
+}
+.promo .big { font-family: "Unbounded", sans-serif; font-weight: 700; font-size: 24px; color: var(--yellow); }
+.promo p { margin: 0; font-size: 14px; color: var(--dim); }
+.promo p b { color: var(--ink); font-weight: 600; }
+
+.hint {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel);
+}
+.hint h3 { font-size: 15px; margin-bottom: 6px; }
+.hint p { margin: 0; font-size: 13.5px; color: var(--dim); }
+
+/* ---------- плитки категорий на главной ---------- */
+
+.cats { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.cat {
+  display: block;
+  padding: 26px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  transition: border-color .2s, transform .2s;
+}
+.cat:hover { border-color: var(--teal); transform: translateY(-2px); }
+.cat h3 { font-size: 21px; }
+.cat p { color: var(--dim); font-size: 14px; margin: 10px 0 18px; }
+.cat .from { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+
+/* ---------- простые списки разделов ---------- */
+
+.checks { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 32px; margin: 0; padding: 0; list-style: none; }
+.checks li { position: relative; padding-left: 26px; font-size: 15px; }
+.checks li::before {
+  content: "✓"; position: absolute; left: 0; top: 0;
+  color: var(--teal); font-size: 13px;
+}
+.checks li small { display: block; color: var(--dim-2); font-size: 12.5px; }
+
+.steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.step {
+  padding: 22px 20px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+.step .pct { font-family: "Unbounded", sans-serif; font-weight: 700; font-size: 30px; color: var(--yellow); line-height: 1; }
+.step h3 { font-size: 15px; margin: 12px 0 6px; }
+.step p { margin: 0; font-size: 13.5px; color: var(--dim); }
+
+.callout {
+  padding: 22px 24px;
+  background: var(--panel);
+  border-left: 3px solid var(--yellow);
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+.callout p { margin: 0; font-size: 15px; }
+.callout p + p { margin-top: 12px; color: var(--dim); }
+.callout b { color: var(--yellow); font-weight: 600; }
+
+/* ---------- подвал ---------- */
+
+.foot-nav {
+  max-width: var(--shell);
+  margin: 0 auto;
+  padding: 26px 40px 44px;
+  border-top: 1px solid var(--line-soft);
+  display: flex;
+  gap: 22px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.foot-nav a { font-size: 13.5px; color: var(--dim); }
+.foot-nav a:hover { color: var(--ink); }
+.foot-nav .spacer { flex: 1; }
+
+/* ---------- сцена входа ---------- */
+
+.scene {
+  position: relative;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 40px 20px;
+  background:
+    radial-gradient(90% 60% at 50% 100%, rgba(244, 215, 56, .07), transparent 70%),
+    radial-gradient(70% 50% at 20% 20%, rgba(55, 212, 200, .07), transparent 70%),
+    var(--bg);
+}
+
+.room {
+  position: relative;
+  width: min(980px, 100%);
+  aspect-ratio: 16 / 9;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: linear-gradient(180deg, #0e111a 0%, #090b12 60%, #06080d 100%);
+}
+
+.room .horizon {
+  position: absolute; left: 0; right: 0; top: 58%; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(55, 212, 200, .45), transparent);
+}
+
+.room .chair {
+  position: absolute;
+  left: 50%; top: 52%;
+  translate: -50% -50%;
+  width: 34%; aspect-ratio: 3 / 4;
+  border: 1px solid rgba(244, 215, 56, .45);
+  border-radius: 60px 60px 14px 14px;
+  background: linear-gradient(180deg, rgba(244, 215, 56, .07), rgba(244, 215, 56, .02));
+}
+.room .chair::after {
+  content: "";
+  position: absolute; inset: 22% 18% 12%;
+  border: 1px dashed rgba(55, 212, 200, .35);
+  border-radius: 40px 40px 8px 8px;
+}
+
+.room .enter {
+  position: absolute;
+  left: 50%; top: 20%;
+  translate: -50% 0;
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+}
+.room .enter .key {
+  padding: 10px 22px;
+  border: 1px solid var(--yellow);
+  border-radius: 8px;
+  background: rgba(244, 215, 56, .1);
+  color: var(--yellow);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+
+.room .hands {
+  position: absolute; bottom: -2%; left: 0; right: 0; height: 26%;
+  display: flex; justify-content: space-between; padding: 0 8%;
+}
+.room .hands span {
+  width: 16%;
+  border: 1px solid var(--line);
+  border-bottom: 0;
+  border-radius: 26px 26px 0 0;
+  background: linear-gradient(180deg, #141826, #0d1018);
+}
+.room .hands span::after {
+  content: "";
+  display: block;
+  margin: 30% auto 0;
+  width: 40%; height: 3px;
+  background: var(--teal);
+  opacity: .5;
+  border-radius: 2px;
+}
+
+.scene-side { max-width: 62ch; margin: 34px auto 0; text-align: center; }
+.scene-side h1 { font-size: clamp(24px, 3.4vw, 40px); line-height: 1.12; }
+.scene-side p { color: var(--dim); margin: 14px 0 0; }
+.scene-actions { display: flex; gap: 12px; justify-content: center; margin-top: 26px; flex-wrap: wrap; }
+
+.btn-primary {
+  padding: 14px 28px;
+  border: 1px solid var(--yellow);
+  border-radius: 8px;
+  background: rgba(244, 215, 56, .12);
+  color: var(--yellow);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+.btn-primary:hover { background: var(--yellow); color: var(--bg); }
+
+.btn-ghost {
+  padding: 14px 24px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--dim);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+.btn-ghost:hover { color: var(--ink); border-color: var(--dim); }
+
+.states {
+  max-width: var(--shell);
+  margin: 60px auto 0;
+  padding: 0 40px;
+}
+.states ol { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin: 18px 0 0; padding: 0; list-style: none; }
+.states li {
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--panel);
+  font-size: 13px;
+  color: var(--dim);
+}
+.states li b { display: block; color: var(--ink); font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; margin-bottom: 8px; }
+
+/* ---------- 404 ---------- */
+
+.lost { max-width: 60ch; margin: 0 auto; text-align: center; padding: 90px 0 40px; }
+.lost .code { font-family: "Unbounded", sans-serif; font-weight: 700; font-size: 76px; color: var(--yellow); line-height: 1; }
+.lost h1 { font-size: 26px; margin: 18px 0 12px; }
+.lost p { color: var(--dim); margin: 0; }
+
+/* ---------- адаптив ---------- */
+
+@media (max-width: 900px) {
+  .topline-in, .shell, .foot-nav, .states { padding-left: 22px; padding-right: 22px; }
+  .tiers, .cats, .hint, .checks { grid-template-columns: 1fr; }
+  .steps { grid-template-columns: 1fr 1fr; }
+  .states ol { grid-template-columns: 1fr 1fr; }
+  .topnav { display: none; }
+  .tier > summary { grid-template-columns: 96px 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition: none !important; }
+}
+
+/* ---------- вход: кадр → ролик → загрузка ---------- */
+
+body.entry { overflow: hidden; }
+
+.entry-stage {
+  position: fixed;
+  inset: 0;
+  background: #05070c;
+}
+
+.entry-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.entry-step {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+
+/* лёгкое затемнение под кнопкой, чтобы она не тонула в кадре */
+#step-start::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(60% 45% at 50% 62%, rgba(5, 7, 12, .72), transparent 75%);
+}
+
+.entry-center {
+  position: absolute;
+  left: 50%;
+  bottom: 14%;
+  translate: -50% 0;
+  display: grid;
+  justify-items: center;
+  gap: 18px;
+  text-align: center;
+}
+
+.entry-kicker {
+  margin: 0;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: var(--teal);
+}
+
+/* Кнопка входа: срезанный угол, обводка, пульсирующая рамка. */
+.enter-btn {
+  position: relative;
+  display: grid;
+  gap: 4px;
+  padding: 18px 46px;
+  border: 1px solid var(--yellow);
+  background: rgba(244, 215, 56, .1);
+  color: var(--yellow);
+  cursor: pointer;
+  clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
+  transition: background .2s, color .2s;
+}
+.enter-btn:hover { background: var(--yellow); color: #05070c; }
+
+.enter-btn__label {
+  font-family: "Unbounded", sans-serif;
+  font-weight: 700;
+  font-size: 22px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.enter-btn__hint {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10.5px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  opacity: .75;
+}
+
+.enter-btn::after {
+  content: "";
+  position: absolute;
+  inset: -7px;
+  border: 1px solid rgba(244, 215, 56, .35);
+  clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+  animation: pulse 2.4s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: .3; inset: -7px; }
+  50% { opacity: .8; inset: -11px; }
+}
+
+.skip-btn {
+  position: absolute;
+  right: 28px;
+  bottom: 26px;
+  padding: 10px 18px;
+  border: 1px solid var(--line);
+  background: rgba(5, 7, 12, .6);
+  color: var(--dim);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 8px;
+}
+.skip-btn:hover { color: var(--ink); border-color: var(--dim); }
+
+/* Загрузка: стекло очков темнеет, текст проявляется. */
+#step-boot {
+  display: grid;
+  place-items: center;
+  background: rgba(5, 7, 12, .72);
+  backdrop-filter: blur(3px);
+}
+
+.boot {
+  width: min(520px, 82vw);
+  display: grid;
+  gap: 16px;
+  justify-items: center;
+  text-align: center;
+}
+
+.boot-line {
+  margin: 0;
+  font-family: "Unbounded", sans-serif;
+  font-weight: 400;
+  font-size: clamp(18px, 3.2vw, 30px);
+  line-height: 1.25;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+.boot-bar {
+  width: 100%;
+  height: 2px;
+  background: var(--line);
+  overflow: hidden;
+}
+.boot-bar span {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: var(--yellow);
+  transition: width 1.6s linear;
+}
+
+.boot-meta {
+  margin: 0;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--teal);
+}
+
+@media (max-width: 720px) {
+  .entry-center { bottom: 10%; }
+  .enter-btn { padding: 16px 34px; }
+  .enter-btn__label { font-size: 19px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .enter-btn::after { animation: none; }
+  .boot-bar span { transition: none; width: 100% !important; }
+}
