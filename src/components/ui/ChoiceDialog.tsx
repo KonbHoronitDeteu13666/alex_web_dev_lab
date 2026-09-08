@@ -3,13 +3,11 @@
 import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { ROUTES } from "@/lib/routes";
-import { tierById, type Category } from "@/data/tiers";
-import { discounted, formatPrice } from "@/lib/price";
+import type { Category } from "@/data/tiers";
 
 /**
- * Окно категории: разбор задач заказчика. Слева ситуация, справа пакет,
- * который её закрывает, с ценой и сроком. Это не список тарифов — это ответ
- * на вопрос «а мне что нужно».
+ * Окно категории: разговор с заказчиком — от минимальной задачи к потолку
+ * категории. Ни тарифов, ни цен: для этого есть блок с тарифами.
  */
 export default function ChoiceDialog({
   category,
@@ -67,41 +65,15 @@ export default function ChoiceDialog({
               {category.note}
             </p>
 
-            <div className="grid gap-2.5">
-              {category.needs.map((need) => {
-                const tier = tierById(need.tierId);
-
-                return (
-                  <div
-                    key={need.situation}
-                    className="grid gap-3 rounded-xl border border-line bg-panel-2/40 p-4 md:grid-cols-[1fr_auto] md:items-center md:gap-6 md:p-5"
-                  >
-                    <div>
-                      <p className="font-display text-base font-medium">
-                        {need.situation}
-                      </p>
-                      <p className="mt-1.5 text-[13.5px] leading-relaxed text-ink/80">
-                        {need.detail}
-                      </p>
-                    </div>
-
-                    <div className="flex items-baseline gap-3 border-t border-line pt-3 md:flex-col md:items-end md:gap-1 md:border-none md:pt-0 md:text-right">
-                      <span className="font-mono text-[10px] tracking-[0.18em] text-dim-2 uppercase">
-                        подойдёт
-                      </span>
-                      <span className="font-display text-base font-medium whitespace-nowrap text-mint">
-                        {tier.title}
-                      </span>
-                      <span className="font-mono text-[12px] whitespace-nowrap text-ink/80 tabular-nums">
-                        {formatPrice(discounted(tier.basePrice))}
-                      </span>
-                      <span className="font-mono text-[10.5px] whitespace-nowrap text-dim">
-                        {tier.term}
-                      </span>
-                    </div>
-                  </div>
-                );
-              })}
+            <div className="grid max-w-[76ch] gap-4">
+              {category.story.map((paragraph) => (
+                <p
+                  key={paragraph}
+                  className="text-[15px] leading-relaxed text-ink/90"
+                >
+                  {paragraph}
+                </p>
+              ))}
             </div>
 
             <div className="flex flex-wrap items-center gap-4 border-t border-line pt-4">

@@ -48,7 +48,7 @@ export default function ChoiceCards() {
             </ul>
 
             <span className="flex items-center gap-2 border-t border-line pt-5 font-mono text-[11px] tracking-[0.14em] text-mint uppercase">
-              разобрать задачи · {category.needs.length}
+              подробнее о категории
               <span aria-hidden>→</span>
             </span>
           </button>
