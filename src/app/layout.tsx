@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Unbounded, Manrope, JetBrains_Mono } from "next/font/google";
+import { Exo_2, Golos_Text } from "next/font/google";
 import "./globals.css";
 import Backdrop from "@/components/layout/Backdrop";
 
@@ -10,29 +10,22 @@ import { site } from "@/data/site";
  * next/font тянет переменный шрифт со всей осью весов — на кириллице это
  * сотня килобайт в критическом пути, и заголовок ждёт их на медленной сети.
  *
- * В разметке встречаются ровно два веса: font-medium и font-bold, оба
- * на заголовочном шрифте. Текст и моноширинный идут обычным начертанием.
- * Добавляете font-semibold или font-bold к тексту — допишите вес сюда,
- * иначе браузер нарисует его подделкой.
+ * Заголовки, цены, имя в шапке и служебные подписи набраны Exo 2,
+ * основной текст — Golos Text. У Exo 2 три веса: обычный для подписей,
+ * средний для заголовков, жирный для цен. Добавляете другой вес — допишите
+ * его сюда, иначе браузер нарисует подделку.
  */
-const unbounded = Unbounded({
+const exo = Exo_2({
   subsets: ["latin", "cyrillic"],
-  weight: ["500", "700"],
-  variable: "--font-unbounded",
+  weight: ["400", "500", "700"],
+  variable: "--font-exo",
   display: "swap",
 });
 
-const manrope = Manrope({
+const golos = Golos_Text({
   subsets: ["latin", "cyrillic"],
   weight: ["400"],
-  variable: "--font-manrope",
-  display: "swap",
-});
-
-const jetbrains = JetBrains_Mono({
-  subsets: ["latin", "cyrillic"],
-  weight: ["400"],
-  variable: "--font-jetbrains",
+  variable: "--font-golos",
   display: "swap",
 });
 
@@ -59,7 +52,7 @@ export default function RootLayout({
   return (
     <html
       lang="ru"
-      className={`${unbounded.variable} ${manrope.variable} ${jetbrains.variable}`}
+      className={`${exo.variable} ${golos.variable}`}
     >
       {/* Подложка со свечением — на всех страницах, поэтому живёт здесь. */}
       <body className="text-ink">

@@ -29,9 +29,11 @@
   --dur-ui: 150ms;
   --default-transition-duration: var(--dur-ui);
 
-  --font-display: var(--font-unbounded), ui-sans-serif, system-ui, sans-serif;
-  --font-body: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+  /* Exo 2 — заголовки, цены, имя в шапке и служебные подписи.
+     Golos Text — основной текст. Третьего шрифта на сайте нет. */
+  --font-display: var(--font-exo), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-golos), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-exo), ui-sans-serif, system-ui, sans-serif;
 }
 
 html {
